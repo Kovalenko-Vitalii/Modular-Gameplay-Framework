@@ -94,6 +94,7 @@ public sealed class PlayerMovement : MonoBehaviour
     public bool IsGrounded => _ground.IsWalkable;
     public bool IsOnSteepSlope => _ground.IsSteep;
     public Vector3 MoveDirection => _moveDirection;
+    public bool IsCrouching => _isCrouching;
 
     public static bool canMove = true;
 
