@@ -20,19 +20,11 @@ public sealed class PlayerMovement : MonoBehaviour
     [SerializeField, Min(0f)] private float jumpBufferTime = 0.12f; // Allows jump input to be buffered shortly before landing on a walkable surface
     [SerializeField, Min(0f)] private float jumpCooldown = 0.08f;
 
-    private float _lastWalkableGroundedTime = -999f;
-    private float _lastJumpPressedTime = -999f;
-    private float _lastJumpTime = -999f;
-
     [Header("Crouch")]
     [SerializeField, Min(0f)] private float crouchSpeed = 2.2f;
     [SerializeField, Min(0.1f)] private float crouchHeight = 1.2f;
     [SerializeField, Min(0f)] private float crouchSmoothness = 14f;
 
-    [Tooltip("Transform камеры или camera holder, который надо опускать при приседе.")]
-    [SerializeField] private Transform cameraRoot;
-
-    [SerializeField, Min(0f)] private float crouchCameraDrop = 0.55f;
     [SerializeField] private LayerMask crouchObstructionMask = ~0;
     [SerializeField, Min(0f)] private float standCheckSkin = 0.02f;
 
@@ -51,22 +43,22 @@ public sealed class PlayerMovement : MonoBehaviour
     private float groundProbeRadiusScale = 1.1f; // Slightly larger than controller radius to better detect edges
 
     [Header("Slope Handling")]
-
     [SerializeField, Min(0f)] private float slideSpeed = 5f;
     [SerializeField, Min(0f)] private float slideAcceleration = 35f;
-    
     [SerializeField, Range(0f, 5f)] private float slopeAngleTolerance = 1.5f; // Allow a small grace angle beyond the controller's slope limit to prevent jitter on edges
-
     [SerializeField, Range(55f, 89f)] private float wallLikeSlopeAngle = 68f; // Angles above this are treated as walls for sliding and detachment purposes
-
-    [Tooltip("Минимальная горизонтальная скорость выхода с 70-80 градусных слоупов.")]
     [SerializeField, Min(0f)] private float minWallLikeSlideHorizontalSpeed = 2.5f;
-
-    [Tooltip("Мягкое отталкивание от почти вертикальной поверхности, чтобы не залипать.")]
     [SerializeField, Min(0f)] private float wallDetachSpeed = 1.25f;
-
-    [Tooltip("Сколько секунд помнить контакт со стеноподобным слоупом.")]
     [SerializeField, Min(0f)] private float wallContactMemory = 0.12f;
+
+    [Header("Air Movement")]
+    [SerializeField, Min(0f)] private float groundAcceleration = 70f;
+    [SerializeField, Min(0f)] private float groundDeceleration = 80f;
+    [SerializeField, Min(0f)] private float airAcceleration = 14f;
+    [SerializeField, Min(0f)] private float airDeceleration = 1.5f;
+    [SerializeField, Min(0f)] private float maxAirHorizontalSpeed = 7f;
+    [SerializeField, Min(0f)] private float airWallDetachSpeed = 0.75f;
+    [SerializeField, Min(0f)] private float airWallContactMemory = 0.08f;
 
     [Header("Input")]
     [SerializeField] private InputActionReference moveAction;
@@ -78,6 +70,8 @@ public sealed class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform orientation;
 
     private CharacterController controller;
+
+    public event System.Action Jumped;
 
     public enum MovementState
     {
@@ -104,6 +98,10 @@ public sealed class PlayerMovement : MonoBehaviour
     private float _verticalInput;
     private float _verticalVelocity;
 
+    private float _lastWalkableGroundedTime = -999f;
+    private float _lastJumpPressedTime = -999f;
+    private float _lastJumpTime = -999f;
+
     private Vector3 _moveDirection;
     private Vector3 _slideVelocity;
 
@@ -120,7 +118,11 @@ public sealed class PlayerMovement : MonoBehaviour
 
     private float _standingHeight;
     private Vector3 _standingCenter;
-    private Vector3 _standingCameraLocalPosition;
+
+    private Vector3 _horizontalVelocity;
+
+    private Vector3 _lastAirWallNormal;
+    private float _lastAirWallContactTime = -999f;
 
     private readonly Collider[] _standCheckHits = new Collider[8];
 
@@ -145,12 +147,6 @@ public sealed class PlayerMovement : MonoBehaviour
 
         _standingHeight = controller.height;
         _standingCenter = controller.center;
-
-        if (cameraRoot == null)
-            cameraRoot = orientation;
-
-        if (cameraRoot != null)
-            _standingCameraLocalPosition = cameraRoot.localPosition;
 
         crouchHeight = Mathf.Clamp(crouchHeight, controller.radius * 2f, _standingHeight);
 
@@ -297,29 +293,122 @@ public sealed class PlayerMovement : MonoBehaviour
 
         Vector3 inputDirection = GetCameraRelativeInputDirection();
 
-        _moveDirection = inputDirection * _currentSpeed;
-        _moveDirection = RemoveUphillMovementOnSteepSlope(_moveDirection);
+        UpdateHorizontalVelocity(inputDirection, dt);
+
+        _horizontalVelocity = RemoveUphillMovementOnSteepSlope(_horizontalVelocity);
 
         transform.rotation = Quaternion.Euler(0f, orientation.eulerAngles.y, 0f);
 
         UpdateSlideVelocity(dt);
         UpdateStepOffset();
 
-        Vector3 lateralVelocity = _moveDirection + new Vector3(_slideVelocity.x, 0f, _slideVelocity.z);
-        lateralVelocity = CorrectVelocityAgainstWallLikeSlope(lateralVelocity);
+        Vector3 slideHorizontal = new Vector3(_slideVelocity.x, 0f, _slideVelocity.z);
 
-        _lastCollisionFlags = controller.Move(lateralVelocity * dt);
+        Vector3 lateralVelocity = _horizontalVelocity + slideHorizontal;
+
+        lateralVelocity = CorrectVelocityAgainstWallLikeSlope(lateralVelocity);
+        lateralVelocity = CorrectAirVelocityAgainstRecentWall(lateralVelocity);
 
         float finalVerticalVelocity = _verticalVelocity + Mathf.Min(0f, _slideVelocity.y);
-        _lastCollisionFlags |= controller.Move(Vector3.up * finalVerticalVelocity * dt);
+
+        Vector3 finalVelocity =
+            lateralVelocity +
+            Vector3.up * finalVerticalVelocity;
+
+        _lastCollisionFlags = controller.Move(finalVelocity * dt);
 
         if ((_lastCollisionFlags & CollisionFlags.Above) != 0 && _verticalVelocity > 0f)
             _verticalVelocity = 0f;
 
         if ((_lastCollisionFlags & CollisionFlags.Below) != 0 && _verticalVelocity < 0f)
             _verticalVelocity = -groundedStickForce;
+
+        _moveDirection = _horizontalVelocity;
     }
 
+    private void UpdateHorizontalVelocity(Vector3 inputDirection, float dt)
+    {
+        bool groundedOnWalkableSurface = _ground.IsWalkable && _verticalVelocity <= 0.01f;
+        bool hasInput = inputDirection.sqrMagnitude > MinSqrMagnitude;
+
+        if (groundedOnWalkableSurface)
+        {
+            Vector3 targetVelocity = inputDirection * _currentSpeed;
+
+            float acceleration = hasInput
+                ? groundAcceleration
+                : groundDeceleration;
+
+            _horizontalVelocity = Vector3.MoveTowards(
+                _horizontalVelocity,
+                targetVelocity,
+                acceleration * dt
+            );
+
+            return;
+        }
+
+        // В воздухе не даём мгновенный полный контроль.
+        if (hasInput)
+        {
+            float airTargetSpeed = Mathf.Min(_currentSpeed, maxAirHorizontalSpeed);
+            Vector3 targetVelocity = inputDirection * airTargetSpeed;
+
+            _horizontalVelocity = Vector3.MoveTowards(
+                _horizontalVelocity,
+                targetVelocity,
+                airAcceleration * dt
+            );
+        }
+        else
+        {
+            // Маленькое торможение в воздухе, но не мгновенная остановка.
+            _horizontalVelocity = Vector3.MoveTowards(
+                _horizontalVelocity,
+                Vector3.zero,
+                airDeceleration * dt
+            );
+        }
+
+        // Страховка от разгона выше лимита.
+        Vector3 flatVelocity = new Vector3(_horizontalVelocity.x, 0f, _horizontalVelocity.z);
+
+        if (flatVelocity.magnitude > maxAirHorizontalSpeed)
+        {
+            flatVelocity = flatVelocity.normalized * maxAirHorizontalSpeed;
+            _horizontalVelocity.x = flatVelocity.x;
+            _horizontalVelocity.z = flatVelocity.z;
+        }
+    }
+    private bool HasRecentAirWallContact()
+    {
+        return Time.time - _lastAirWallContactTime <= airWallContactMemory &&
+               _lastAirWallNormal.sqrMagnitude > MinSqrMagnitude;
+    }
+
+    private Vector3 CorrectAirVelocityAgainstRecentWall(Vector3 velocity)
+    {
+        if (_ground.IsWalkable)
+            return velocity;
+
+        if (!HasRecentAirWallContact())
+            return velocity;
+
+        Vector3 wallNormal = _lastAirWallNormal;
+
+        float intoWallSpeed = Vector3.Dot(velocity, wallNormal);
+
+        if (intoWallSpeed < 0f)
+        {
+            // Убираем скорость, направленную в стену.
+            velocity -= wallNormal * intoWallSpeed;
+
+            // Чуть-чуть выталкиваем наружу, чтобы капсула не висела на ребре.
+            velocity += wallNormal * airWallDetachSpeed;
+        }
+
+        return velocity;
+    }
     private Vector3 GetCameraRelativeInputDirection()
     {
         Vector3 forward = orientation.forward;
@@ -680,15 +769,26 @@ public sealed class PlayerMovement : MonoBehaviour
 
         float angle = Vector3.Angle(hit.normal, Vector3.up);
 
+        if (!_ground.IsWalkable && angle > controller.slopeLimit + slopeAngleTolerance)
+        {
+            Vector3 planarNormal = new Vector3(hit.normal.x, 0f, hit.normal.z);
+
+            if (planarNormal.sqrMagnitude > MinSqrMagnitude)
+            {
+                _lastAirWallNormal = planarNormal.normalized;
+                _lastAirWallContactTime = Time.time;
+            }
+        }
+
         if (angle < wallLikeSlopeAngle)
             return;
 
-        Vector3 planarNormal = new Vector3(hit.normal.x, 0f, hit.normal.z);
+        Vector3 wallLikePlanarNormal = new Vector3(hit.normal.x, 0f, hit.normal.z);
 
-        if (planarNormal.sqrMagnitude <= MinSqrMagnitude)
+        if (wallLikePlanarNormal.sqrMagnitude <= MinSqrMagnitude)
             return;
 
-        _lastWallLikeNormal = planarNormal.normalized;
+        _lastWallLikeNormal = wallLikePlanarNormal.normalized;
         _lastWallLikeContactTime = Time.time;
     }
 
@@ -744,6 +844,8 @@ public sealed class PlayerMovement : MonoBehaviour
         ConsumeJumpInput();
 
         _verticalVelocity = CalculateJumpVelocity();
+
+        Jumped?.Invoke();
 
         // Отключаем stepOffset на кадр прыжка, чтобы CharacterController
         // не пытался "прилипнуть" к ступеньке/краю во время старта прыжка.
@@ -816,31 +918,12 @@ public sealed class PlayerMovement : MonoBehaviour
 
         if ((controller.center - targetCenter).sqrMagnitude < 0.000025f)
             controller.center = targetCenter;
-
-        UpdateCrouchCamera(dt, shouldCrouch);
     }
 
     private Vector3 GetCrouchedCenter()
     {
         float heightDifference = _standingHeight - crouchHeight;
         return _standingCenter + Vector3.down * (heightDifference * 0.5f);
-    }
-
-    private void UpdateCrouchCamera(float dt, bool crouched)
-    {
-        if (cameraRoot == null)
-            return;
-
-        Vector3 targetLocalPosition = _standingCameraLocalPosition;
-
-        if (crouched)
-            targetLocalPosition.y -= crouchCameraDrop;
-
-        cameraRoot.localPosition = Vector3.Lerp(
-            cameraRoot.localPosition,
-            targetLocalPosition,
-            dt * crouchSmoothness
-        );
     }
 
     private bool CanStand()
@@ -897,36 +980,4 @@ public sealed class PlayerMovement : MonoBehaviour
         bottom = worldCenter - offset;
         top = worldCenter + offset;
     }
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        walkSpeed = Mathf.Max(0f, walkSpeed);
-        sprintSpeed = Mathf.Max(0f, sprintSpeed);
-        backwardSpeed = Mathf.Max(0f, backwardSpeed);
-
-        speedUpSmoothness = Mathf.Max(0f, speedUpSmoothness);
-        speedDownSmoothness = Mathf.Max(0f, speedDownSmoothness);
-
-        gravityForce = Mathf.Max(0f, gravityForce);
-        groundedStickForce = Mathf.Max(0f, groundedStickForce);
-        maxFallSpeed = Mathf.Max(1f, maxFallSpeed);
-
-        groundProbeDistance = Mathf.Max(0.01f, groundProbeDistance);
-        groundProbeStartOffset = Mathf.Max(0f, groundProbeStartOffset);
-
-        slideSpeed = Mathf.Max(0f, slideSpeed);
-        slideAcceleration = Mathf.Max(0f, slideAcceleration);
-
-        wallLikeSlopeAngle = Mathf.Clamp(wallLikeSlopeAngle, 55f, 89f);
-        minWallLikeSlideHorizontalSpeed = Mathf.Max(0f, minWallLikeSlideHorizontalSpeed);
-        wallDetachSpeed = Mathf.Max(0f, wallDetachSpeed);
-        wallContactMemory = Mathf.Max(0f, wallContactMemory);
-
-        jumpHeight = Mathf.Max(0f, jumpHeight);
-        coyoteTime = Mathf.Max(0f, coyoteTime);
-        jumpBufferTime = Mathf.Max(0f, jumpBufferTime);
-        jumpCooldown = Mathf.Max(0f, jumpCooldown);
-    }
-#endif
 }
