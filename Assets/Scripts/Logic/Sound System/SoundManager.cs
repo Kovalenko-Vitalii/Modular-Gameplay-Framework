@@ -5,6 +5,8 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
+    [SerializeField] AudioMixerGroup worldMixerGroup;
+
     private const string MASTER_KEY = "audio_master";
     private const string UI_KEY = "audio_ui";
     private const string SUBTITLE_KEY = "audio_subtitle";
@@ -72,19 +74,20 @@ public class SoundManager : MonoBehaviour
 
     public void PlayWorldOneShot(AudioClip clip, Vector3 position, float volumeMul = 1f, float pitch = 1f, float range = 10f)
     {
-        if (clip == null)
-            return;
-        
-        AudioSource source = new GameObject("OneShotAudio").AddComponent<AudioSource>();
-        Instantiate(source, position, Quaternion.identity);
+        if (clip == null) return;
 
-        source.ignoreListenerPause = false;
+        GameObject go = new GameObject("OneShotAudio");
+        go.transform.position = position;
+
+        AudioSource source = go.AddComponent<AudioSource>();
+        source.outputAudioMixerGroup = worldMixerGroup; 
+        source.spatialBlend = 1f;
+        source.rolloffMode = AudioRolloffMode.Linear;
+        source.maxDistance = range;
         source.pitch = pitch;
-
         source.PlayOneShot(clip, volumeMul);
 
-        float lifetime = clip.length / Mathf.Max(0.01f, Mathf.Abs(pitch));
-        Destroy(source.gameObject, lifetime + 0.1f);
+        Destroy(go, clip.length / Mathf.Max(0.01f, Mathf.Abs(pitch)) + 0.1f);
     }
 
     public void SetMasterVolume(float value)

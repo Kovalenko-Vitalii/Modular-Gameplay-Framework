@@ -10,8 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3dd72d4982bedbf4cad1d4944ce3f413, type: 3}
-  m_Name: Rain
+  m_Name: Indoor
   m_EditorClassIdentifier: Assembly-CSharp::AmbientProfile
-  localLayers: []
-  rainMultiplier: 1
-  windMultiplier: 1
+  localLayers:
+  - layer: 0
+    volume: 0.2
+  - layer: 2
+    volume: 0.237
+  globalLimits:
+  - layer: 5
+    maxVolume: 0.1
+  - layer: 6
+    maxVolume: 0.15

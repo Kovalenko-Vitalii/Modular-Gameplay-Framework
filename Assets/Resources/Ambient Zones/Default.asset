@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3dd72d4982bedbf4cad1d4944ce3f413, type: 3}
-  m_Name: Base Day
+  m_Name: Default
   m_EditorClassIdentifier: Assembly-CSharp::AmbientProfile
-  layers:
+  localLayers:
   - layer: 0
-    weight: 1
-  - layer: 3
-    weight: 1
+    volume: 1
+  globalLimits:
   - layer: 5
-    weight: 1
+    maxVolume: 1
+  - layer: 6
+    maxVolume: 1

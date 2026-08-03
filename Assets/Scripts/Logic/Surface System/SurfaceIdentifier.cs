@@ -16,5 +16,6 @@ public enum SurfaceType
     Grass,
     Dirt,
     Gravel,
-    Water
+    Water,
+    Sand
 }

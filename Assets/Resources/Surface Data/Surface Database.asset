@@ -173,6 +173,92 @@ MonoBehaviour:
       clips: []
     impactParticlePrefab: {fileID: 0}
     decalPrefab: {fileID: 0}
+  - surfaceType: 3
+    walkFootsteps:
+      clips:
+      - {fileID: 8300000, guid: 5e265270fb85126479eef52d8fce3b08, type: 3}
+      - {fileID: 8300000, guid: 3701a5fdf99882f40bc00eb9053eec92, type: 3}
+      - {fileID: 8300000, guid: 2f949b40b7283404099a802630fb2077, type: 3}
+      - {fileID: 8300000, guid: dfff2b3c7dfb43c419592789f0a6ab81, type: 3}
+      - {fileID: 8300000, guid: 812100e3982e56842adb6ba5be867b7a, type: 3}
+      - {fileID: 8300000, guid: 83c58d64f2e240c41b1f2c2885b253a6, type: 3}
+      - {fileID: 8300000, guid: 3610d597db7918e44906d575bd074616, type: 3}
+      - {fileID: 8300000, guid: 149e8ca9df68d744e9722158daa78ab1, type: 3}
+      - {fileID: 8300000, guid: d25a8335420d09f43bedf446e2deffa0, type: 3}
+      - {fileID: 8300000, guid: cb111f071b2e63844afba5ac99aceb2b, type: 3}
+    sprintFootsteps:
+      clips:
+      - {fileID: 8300000, guid: b25225c72201cd740b16b95b86d57940, type: 3}
+      - {fileID: 8300000, guid: 5e8e6e435e65fe146b588b8a9d2df461, type: 3}
+      - {fileID: 8300000, guid: 8900ae4b297a017448ddb78ea0c2d4da, type: 3}
+      - {fileID: 8300000, guid: be6f9c5983062b9488c5423a7e1fd1e0, type: 3}
+      - {fileID: 8300000, guid: 2244aa424da7d2f439f4c53fa73e8b53, type: 3}
+      - {fileID: 8300000, guid: 2c7ab9bda8ff6364ba31cc57a90a16d5, type: 3}
+      - {fileID: 8300000, guid: b16b005ddc0977b4aa402b5abce3205f, type: 3}
+      - {fileID: 8300000, guid: 150e70d1ee30a0547ab9ded90647ad8d, type: 3}
+      - {fileID: 8300000, guid: afe5e23d02afb5142bc95bacc1e287c0, type: 3}
+      - {fileID: 8300000, guid: f7c73eb9b5b8af24b87031b591566444, type: 3}
+    jumpStartClips:
+      clips:
+      - {fileID: 8300000, guid: df49938a1860650418b6d5654ed436be, type: 3}
+      - {fileID: 8300000, guid: d22035de002018b44bc76a915efcba10, type: 3}
+      - {fileID: 8300000, guid: 5c39ec0074165fb4eaf789fc68f5379b, type: 3}
+      - {fileID: 8300000, guid: c2694fab5eccc4249bd5a2083be61d3e, type: 3}
+    landClips:
+      clips:
+      - {fileID: 8300000, guid: 37cdbcb02c3324849ac457dfc5b1058e, type: 3}
+      - {fileID: 8300000, guid: 8a7a8ee0447e4b5469bce225745d9f42, type: 3}
+      - {fileID: 8300000, guid: 7e629da20f6fdee418e5e60ba9efc23c, type: 3}
+      - {fileID: 8300000, guid: a04e8112fb4cca944baabc0048ff839d, type: 3}
+    impactClips:
+      clips: []
+    impactParticlePrefab: {fileID: 0}
+    decalPrefab: {fileID: 0}
+  - surfaceType: 8
+    walkFootsteps:
+      clips:
+      - {fileID: 8300000, guid: 557e96b16076cb84285c90941906b44c, type: 3}
+      - {fileID: 8300000, guid: 93b5a4dc803c25c48a325a38b5617c33, type: 3}
+      - {fileID: 8300000, guid: 752adf85de15e284ebf55d376e1f4276, type: 3}
+      - {fileID: 8300000, guid: 6fa9a250bffc6454a840a823ac5ae71d, type: 3}
+      - {fileID: 8300000, guid: 41b5781294b7da44ebaad3bd7be35926, type: 3}
+      - {fileID: 8300000, guid: 27c1afdeb55574a48831d6f430f1cbac, type: 3}
+      - {fileID: 8300000, guid: 3bf9975566f9cd847977ed3ebb6fd3e3, type: 3}
+      - {fileID: 8300000, guid: 475881e2fee063d47b0d1aee0dad3b3a, type: 3}
+      - {fileID: 8300000, guid: 1c9813dc085b5374884cf7bcbaa27dca, type: 3}
+      - {fileID: 8300000, guid: 579926ded69755b45bd048a07dc306c2, type: 3}
+    sprintFootsteps:
+      clips:
+      - {fileID: 8300000, guid: 82b9e7907a6c3154b86a53c1be46ff71, type: 3}
+      - {fileID: 8300000, guid: f43edb311d1c4d74fa9b4b86c9157fa6, type: 3}
+      - {fileID: 8300000, guid: 9fa438d00f348394a8f0f6c053659a36, type: 3}
+      - {fileID: 8300000, guid: 1241db8d81c902d4db1bc5e06ba500b3, type: 3}
+      - {fileID: 8300000, guid: 524ca5d8ba6570f47a403855a9d2cf29, type: 3}
+      - {fileID: 8300000, guid: 6f1fa4fa8b3675843abe9345bbefffdd, type: 3}
+      - {fileID: 8300000, guid: 4abc431d61ba42a4197ca0aba3bad8d3, type: 3}
+      - {fileID: 8300000, guid: db210683cc12f49488148d7e59a51aec, type: 3}
+      - {fileID: 8300000, guid: 4bcc738c9307a9d4784ce4e137f5aefb, type: 3}
+      - {fileID: 8300000, guid: 17a55e09664ccf54392bb53bbf824804, type: 3}
+    jumpStartClips:
+      clips:
+      - {fileID: 8300000, guid: b120cc7d7055a284ea89422d100043e0, type: 3}
+      - {fileID: 8300000, guid: 64a62780b84db9645b00e69eb0621928, type: 3}
+      - {fileID: 8300000, guid: 7cd697be0072bfc4882068307562c2a9, type: 3}
+      - {fileID: 8300000, guid: 6866bd26706082149a4be4b47f1e1b3d, type: 3}
+      - {fileID: 8300000, guid: e161741de42dca1428e352cf4e26b50f, type: 3}
+    landClips:
+      clips:
+      - {fileID: 8300000, guid: 9064dac268872fd48bf90e84554267ab, type: 3}
+      - {fileID: 8300000, guid: cff0e50a53df0a94299dc5ef1863ab62, type: 3}
+      - {fileID: 8300000, guid: e5f9c2116d87f5a46a40ce04919d2dcc, type: 3}
+      - {fileID: 8300000, guid: 41ec355b830e30e40ac5b45954d91907, type: 3}
+      - {fileID: 8300000, guid: 778bae15671a6c74c93c28c84cae9fe4, type: 3}
+    impactClips:
+      clips: []
+    impactParticlePrefab: {fileID: 0}
+    decalPrefab: {fileID: 0}
   terrainLayerSurfaces:
-  - layer: {fileID: 8574412962073106934, guid: b287f4c9b9c143e488656e5f87b48c4b, type: 2}
+  - layer: {fileID: 8574412962073106934, guid: d2f812cda9a67324c9ec06a6b4b28c2a, type: 2}
     surfaceType: 4
+  - layer: {fileID: 8574412962073106934, guid: 75736f0fece622f4e94f637eb5cee5c5, type: 2}
+    surfaceType: 8

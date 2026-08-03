@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3dd72d4982bedbf4cad1d4944ce3f413, type: 3}
-  m_Name: Cave
+  m_Name: High
   m_EditorClassIdentifier: Assembly-CSharp::AmbientProfile
-  localLayers: []
-  rainMultiplier: 0.1
-  windMultiplier: 0.1
+  localLayers:
+  - layer: 5
+    volume: 1
+  globalLimits: []

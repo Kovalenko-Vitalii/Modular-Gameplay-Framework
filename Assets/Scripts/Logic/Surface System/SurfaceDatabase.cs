@@ -5,7 +5,7 @@ using UnityEngine;
 public class SurfaceDatabase : ScriptableObject
 {
     [Header("Fallback")]
-    [SerializeField] private SurfaceType defaultSurface = SurfaceType.Tile;
+    [SerializeField] private SurfaceType defaultSurface = SurfaceType.Grass;
 
     [Header("Surfaces")]
     [SerializeField] private SurfaceEntry[] surfaces;
