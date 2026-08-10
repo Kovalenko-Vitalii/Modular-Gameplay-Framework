@@ -27,23 +27,21 @@ public class GameStateManager : MonoBehaviour
 
     private void OnEnable()
     {
-        InputListener.ActionPressed += OnActionPressed;
+        UIWindowManager.WindowChanged += OnWindowChanged;
     }
 
     private void OnDisable()
     {
-        InputListener.ActionPressed -= OnActionPressed;
+        UIWindowManager.WindowChanged -= OnWindowChanged;
     }
 
-    private void OnActionPressed(GameAction action)
+    private void OnWindowChanged(UIWindowId window)
     {
-        if (action == GameAction.Esc || action == GameAction.Inventory)
-            TogglePause();
-    }
+        // Don't let a window opening/closing clobber Loading/Cutscene/Menu.
+        if (Current != GameState.Gameplay && Current != GameState.Paused)
+            return;
 
-    public void TogglePause()
-    {
-        SetState(Current == GameState.Gameplay ? GameState.Paused : GameState.Gameplay);
+        SetState(window == UIWindowId.None ? GameState.Gameplay : GameState.Paused);
     }
 
     public void SetState(GameState newState)
