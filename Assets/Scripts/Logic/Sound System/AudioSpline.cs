@@ -9,7 +9,7 @@ public class AudioSpline : MonoBehaviour
 
     void Start() => listener = GameObject.FindGameObjectWithTag("Player").transform;
     
-    private void FixedUpdate()
+    private void Update()
     {
         if (spline == null || listener == null)
             return;

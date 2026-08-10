@@ -2,10 +2,38 @@ using UnityEngine;
 
 public sealed class CursorLockController : MonoBehaviour
 {
+    public static CursorLockController Instance { get; private set; }
+
     [SerializeField] private bool lockOnStart = true;
     [SerializeField] private bool hideCursorWhenLocked = true;
 
     public bool IsLocked { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
+    private void OnEnable()
+    {
+        GameStateManager.StateChanged += OnStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameStateManager.StateChanged -= OnStateChanged;
+    }
+
+    private void OnStateChanged(GameState state)
+    {
+        SetLocked(state == GameState.Gameplay);
+    }
 
     private void Start()
     {

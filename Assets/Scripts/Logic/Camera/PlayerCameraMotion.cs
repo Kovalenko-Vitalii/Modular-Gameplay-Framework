@@ -1,5 +1,8 @@
 using UnityEngine;
 
+// <summary>
+// Class that handles the camera motion for the player, including crouch offset and head bobbing
+// </summary>
 public sealed class PlayerCameraMotion : MonoBehaviour, IPlayerLateTick
 {
     [Header("Links")]

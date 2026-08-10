@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
+// <summary>
+// Singleton class that manages all audio in the game, including UI, subtitles, and world sounds
+// </summary>
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
@@ -52,6 +55,22 @@ public class SoundManager : MonoBehaviour
         LoadVolumes();
     }
 
+
+    private void OnEnable()
+    {
+        GameStateManager.StateChanged += OnStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameStateManager.StateChanged -= OnStateChanged;
+    }
+
+    private void OnStateChanged(GameState state)
+    {
+        SetAudioPaused(state == GameState.Paused);
+    }
+
     private void Start() => ApplyVolumes();
 
     public void SetAudioPaused(bool paused) => AudioListener.pause = paused;
@@ -72,6 +91,7 @@ public class SoundManager : MonoBehaviour
         subtitleSource.PlayOneShot(clip, volumeMul);
     }
 
+    // Plays a 3D sound at the specified position in the world
     public void PlayWorldOneShot(AudioClip clip, Vector3 position, float volumeMul = 1f, float pitch = 1f, float range = 10f)
     {
         if (clip == null) return;

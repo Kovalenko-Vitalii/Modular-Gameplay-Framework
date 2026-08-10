@@ -13,10 +13,12 @@ public class AmbientManager : MonoBehaviour
     Dictionary<AmbientLayerId, AmbientLayer> lookup;
     readonly List<AmbientZone> activeZones = new();
     readonly Dictionary<AmbientLayerId, float> globalState = new();
+    readonly Dictionary<AmbientLayerId, float> resultBuffer = new(); // reused every frame
     Transform listener;
 
-    [Header("DEBUG WEATHER")]
-    [SerializeField] private float debugRain;
+    // Cached once - Enum.GetValues uses reflection and allocates a new
+    // array every call, so this must only ever be paid once, not per-frame.
+    private static readonly AmbientLayerId[] AllLayerIds = (AmbientLayerId[])Enum.GetValues(typeof(AmbientLayerId));
     
     private void Awake()
     {
@@ -43,14 +45,9 @@ public class AmbientManager : MonoBehaviour
 
     private void Update()
     {
-        SetGlobalLayer(AmbientLayerId.Rain, debugRain);
         CalculateTargets();
         ApplyFade();
     }
-
-
-
-
 
     // =============================
     // WEATHER API
@@ -77,26 +74,17 @@ public class AmbientManager : MonoBehaviour
     // =============================
     private void CalculateTargets()
     {
-        Dictionary<AmbientLayerId, float> result
-            = new();
+        resultBuffer.Clear();
 
-        foreach (AmbientLayerId id
-            in Enum.GetValues(typeof(AmbientLayerId)))
-        {
-            result[id] = 0;
-        }
+        foreach (AmbientLayerId id in AllLayerIds)
+            resultBuffer[id] = 0f;
 
         // Global sounds
         foreach (var pair in globalState)
-        {
-            result[pair.Key] = pair.Value;
-        }
+            resultBuffer[pair.Key] = pair.Value;
 
         // Default world ambience
-        ApplyProfile(
-            defaultProfile,
-            1f,
-            result);
+        ApplyProfile(defaultProfile, 1f, resultBuffer);
 
         // Local zones
         foreach (var zone in activeZones)
@@ -104,24 +92,14 @@ public class AmbientManager : MonoBehaviour
             if (zone.Profile == null)
                 continue;
 
-            float influence =
-                zone.GetInfluence(listener.position);
-
-            ApplyProfile(
-                zone.Profile,
-                influence,
-                result);
+            float influence = zone.GetInfluence(listener.position);
+            ApplyProfile(zone.Profile, influence, resultBuffer);
         }
 
-        foreach (var pair in result)
+        foreach (var pair in resultBuffer)
         {
-            if (lookup.TryGetValue(
-                pair.Key,
-                out AmbientLayer layer))
-            {
-                layer.targetWeight =
-                    pair.Value;
-            }
+            if (lookup.TryGetValue(pair.Key, out AmbientLayer layer))
+                layer.targetWeight = pair.Value;
         }
     }
 

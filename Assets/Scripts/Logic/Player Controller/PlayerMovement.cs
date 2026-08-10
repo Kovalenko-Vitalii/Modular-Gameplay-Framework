@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.CullingGroup;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(CharacterController))]
-public sealed class PlayerMovement : MonoBehaviour
+public sealed class PlayerMovement : MonoBehaviour, IPlayerTick
 {
     [Header("Walking")]
     [SerializeField, Min(0f)] private float walkSpeed = 4f;
@@ -164,6 +165,10 @@ public sealed class PlayerMovement : MonoBehaviour
         SetActionEnabled(jumpAction, true);
         SetActionEnabled(sprintAction, true);
         SetActionEnabled(crouchAction, true);
+
+        PlayerTickSystem.Instance?.Register(this);
+
+        GameStateManager.StateChanged += OnStateChanged;
     }
 
     private void OnDisable()
@@ -172,12 +177,19 @@ public sealed class PlayerMovement : MonoBehaviour
         SetActionEnabled(jumpAction, false);
         SetActionEnabled(sprintAction, false);
         SetActionEnabled(crouchAction, false);
+
+        PlayerTickSystem.Instance?.Unregister(this);
+
+        GameStateManager.StateChanged -= OnStateChanged;
     }
 
-    private void Update()
+    private void OnStateChanged(GameState state)
     {
-        float dt = Time.deltaTime;
+        canMove = state == GameState.Gameplay;
+    }
 
+    public void Tick(float dt)
+    {
         ReadInput();
         UpdateCrouch(dt);
         BufferJumpInput();
@@ -191,7 +203,7 @@ public sealed class PlayerMovement : MonoBehaviour
         ApplyGravity(dt);
         Move(dt);
     }
-    
+
     private static void SetActionEnabled(InputActionReference actionReference, bool enabled)
     {
         if (actionReference == null || actionReference.action == null)
@@ -348,7 +360,6 @@ public sealed class PlayerMovement : MonoBehaviour
             return;
         }
 
-        // В воздухе не даём мгновенный полный контроль.
         if (hasInput)
         {
             float airTargetSpeed = Mathf.Min(_currentSpeed, maxAirHorizontalSpeed);
@@ -362,7 +373,6 @@ public sealed class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // Маленькое торможение в воздухе, но не мгновенная остановка.
             _horizontalVelocity = Vector3.MoveTowards(
                 _horizontalVelocity,
                 Vector3.zero,
@@ -400,10 +410,8 @@ public sealed class PlayerMovement : MonoBehaviour
 
         if (intoWallSpeed < 0f)
         {
-            // Убираем скорость, направленную в стену.
             velocity -= wallNormal * intoWallSpeed;
 
-            // Чуть-чуть выталкиваем наружу, чтобы капсула не висела на ребре.
             velocity += wallNormal * airWallDetachSpeed;
         }
 
@@ -827,8 +835,6 @@ public sealed class PlayerMovement : MonoBehaviour
 
     private void UpdateGroundMemory()
     {
-        // Обновляем grounded memory только когда стоим на нормальной поверхности
-        // и не летим вверх после прыжка.
         if (_ground.IsWalkable && _verticalVelocity <= 0.01f)
             _lastWalkableGroundedTime = Time.time;
     }
@@ -847,11 +853,8 @@ public sealed class PlayerMovement : MonoBehaviour
 
         Jumped?.Invoke();
 
-        // Отключаем stepOffset на кадр прыжка, чтобы CharacterController
-        // не пытался "прилипнуть" к ступеньке/краю во время старта прыжка.
         controller.stepOffset = 0f;
 
-        // На всякий случай убираем вертикальную часть slide.
         if (_slideVelocity.y < 0f)
             _slideVelocity.y = 0f;
 
@@ -871,11 +874,9 @@ public sealed class PlayerMovement : MonoBehaviour
         if (Time.time - _lastJumpTime < jumpCooldown)
             return false;
 
-        // Нельзя прыгать со слишком крутого слоупа.
         if (_ground.IsSteep)
             return false;
 
-        // Запрещаем повторный прыжок, пока персонаж уже летит вверх.
         if (_verticalVelocity > 0.01f)
             return false;
 
@@ -890,7 +891,6 @@ public sealed class PlayerMovement : MonoBehaviour
         _lastJumpPressedTime = -999f;
         _lastJumpTime = Time.time;
 
-        // Чтобы coyote time не дал второй прыжок сразу после первого.
         _lastWalkableGroundedTime = -999f;
     }
 

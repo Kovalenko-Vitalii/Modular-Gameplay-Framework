@@ -1,5 +1,8 @@
 using UnityEngine;
 
+// <summary>
+// Class that handles playing footstep sounds based on the player's movement state and surface type
+// </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(AudioSource))]
 public sealed class FootstepPlayer : MonoBehaviour, IPlayerTick

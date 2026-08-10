@@ -1,22 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// <summary>
+// Singleton system that manages player tickable objects and calls their Tick() and LateTick() methods every frame
+// </summary>
 [DefaultExecutionOrder(-1000)]
 public class PlayerTickSystem : MonoBehaviour
 {
-    private const string TAG = "PlayerTickSystem";
+    const string TAG = "PlayerTickSystem";
 
     public static PlayerTickSystem Instance { get; private set; }
 
-    private readonly List<IPlayerTick> ticks = new();
-    private readonly List<IPlayerLateTick> lateTicks = new();
+    // Lists of registered tickable objects
+    readonly List<IPlayerTick> ticks = new();
+    readonly List<IPlayerLateTick> lateTicks = new();
 
-    private readonly List<IPlayerTick> tickBuffer = new();
-    private readonly List<IPlayerLateTick> lateTickBuffer = new();
+    // Buffers to avoid modifying the tick lists while iterating over them
+    readonly List<IPlayerTick> tickBuffer = new();
+    readonly List<IPlayerLateTick> lateTickBuffer = new();
 
-    public bool isTicking = true;
+    bool isTicking = true;
 
-    private void Awake()
+    void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -29,12 +34,28 @@ public class PlayerTickSystem : MonoBehaviour
         GameLog.Log(TAG, "Awake() finished. Singleton set");
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         if (Instance == this)
             Instance = null;
     }
-    
+
+    private void OnEnable()
+    {
+        GameStateManager.StateChanged += OnStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameStateManager.StateChanged -= OnStateChanged;
+    }
+
+    private void OnStateChanged(GameState state)
+    {
+        isTicking = state == GameState.Gameplay;
+    }
+
+    // Registers an object that implements IPlayerTick or IPlayerLateTick to be ticked every frame
     public void Register(object tickable)
     {
         bool registered = false;
@@ -55,6 +76,7 @@ public class PlayerTickSystem : MonoBehaviour
             GameLog.Warning(TAG, $"Tried to register non-tickable object: {tickable}");
     }
 
+    // Unregisters an object that implements IPlayerTick or IPlayerLateTick from being ticked every frame
     public void Unregister(object tickable)
     {
         if (tickable is IPlayerTick tick)
@@ -64,7 +86,8 @@ public class PlayerTickSystem : MonoBehaviour
             lateTicks.Remove(lateTick);
     }
 
-    private void Update()
+    // Calls Tick() on all registered IPlayerTick objects every frame
+    void Update()
     {
         if (!isTicking) return;
 
@@ -77,7 +100,8 @@ public class PlayerTickSystem : MonoBehaviour
             tickBuffer[i].Tick(dt);
     }
 
-    private void LateUpdate()
+    // Calls LateTick() on all registered IPlayerLateTick objects every frame
+    void LateUpdate()
     {
         if (!isTicking) return;
 
@@ -91,11 +115,13 @@ public class PlayerTickSystem : MonoBehaviour
     }
 }
 
+// Interface for objects that want to be ticked every frame by the PlayerTickSystem
 public interface IPlayerTick
 {
     void Tick(float dt);
 }
 
+// Interface for objects that want to be late-ticked every frame by the PlayerTickSystem
 public interface IPlayerLateTick
 {
     void LateTick(float dt);
