@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class UIWindowView : MonoBehaviour
 {
     [SerializeField] private UIWindowId windowId;
     [SerializeField] private GameObject root;
 
+    [SerializeField] private UnityEvent onShown;
     public UIWindowId WindowId => windowId;
 
     protected virtual void OnEnable()
@@ -37,6 +39,9 @@ public class UIWindowView : MonoBehaviour
             OnHidden();
     }
 
-    protected virtual void OnShown() { }
+    protected virtual void OnShown() 
+    {
+        onShown?.Invoke();
+    }
     protected virtual void OnHidden() { }
 }
