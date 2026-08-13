@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class UIActions : MonoBehaviour
 {
-    public void ResumeGame() => UIWindowManager.Instance.CloseWindow();
+    public void ResumeGame() => GameStateManager.Instance.SetPaused(false);
 
     public void OpenInventory() => UIWindowManager.Instance.OpenWindow(UIWindowId.Inventory);
 

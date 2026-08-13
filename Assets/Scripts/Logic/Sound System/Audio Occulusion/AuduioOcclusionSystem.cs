@@ -28,7 +28,7 @@ public class AudioOcclusionSystem : MonoBehaviour
     {
         Instance = this;
 
-        var audioListener = FindFirstObjectByType<AudioListener>();
+        var audioListener = FindAnyObjectByType<AudioListener>();
         if (audioListener != null)
             listener = audioListener.transform;
         else

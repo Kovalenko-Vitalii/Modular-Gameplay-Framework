@@ -42,18 +42,14 @@ public class PlayerTickSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        GameStateManager.StateChanged += OnStateChanged;
+        GameStateManager.PauseChanged += OnPausedChanged;
+        if (GameStateManager.Instance != null)
+            isTicking = !GameStateManager.Instance.IsPaused;
     }
 
-    private void OnDisable()
-    {
-        GameStateManager.StateChanged -= OnStateChanged;
-    }
+    private void OnDisable() => GameStateManager.PauseChanged -= OnPausedChanged; 
 
-    private void OnStateChanged(GameState state)
-    {
-        isTicking = state == GameState.Gameplay;
-    }
+    private void OnPausedChanged(bool isPaused) =>isTicking = !isPaused;
 
     // Registers an object that implements IPlayerTick or IPlayerLateTick to be ticked every frame
     public void Register(object tickable)

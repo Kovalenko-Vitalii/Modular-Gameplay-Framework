@@ -168,7 +168,7 @@ public sealed class PlayerMovement : MonoBehaviour, IPlayerTick
 
         PlayerTickSystem.Instance?.Register(this);
 
-        GameStateManager.StateChanged += OnStateChanged;
+        GameStateManager.ModeChanged += OnStateChanged;
     }
 
     private void OnDisable()
@@ -180,12 +180,12 @@ public sealed class PlayerMovement : MonoBehaviour, IPlayerTick
 
         PlayerTickSystem.Instance?.Unregister(this);
 
-        GameStateManager.StateChanged -= OnStateChanged;
+        GameStateManager.ModeChanged -= OnStateChanged;
     }
 
-    private void OnStateChanged(GameState state)
+    private void OnStateChanged(GameMode state)
     {
-        canMove = state == GameState.Gameplay;
+        canMove = state == GameMode.Gameplay;
     }
 
     public void Tick(float dt)

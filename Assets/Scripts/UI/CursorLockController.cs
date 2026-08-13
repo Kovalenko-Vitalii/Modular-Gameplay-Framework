@@ -22,18 +22,13 @@ public sealed class CursorLockController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameStateManager.StateChanged += OnStateChanged;
+        GameStateManager.PauseChanged += OnPausedChanged;
+        if (GameStateManager.Instance != null)
+            SetLocked(!GameStateManager.Instance.IsPaused);
     }
 
-    private void OnDisable()
-    {
-        GameStateManager.StateChanged -= OnStateChanged;
-    }
-
-    private void OnStateChanged(GameState state)
-    {
-        SetLocked(state == GameState.Gameplay);
-    }
+    private void OnDisable() => GameStateManager.PauseChanged -= OnPausedChanged;
+    private void OnPausedChanged(bool isPaused) => SetLocked(!isPaused);
 
     private void Start()
     {

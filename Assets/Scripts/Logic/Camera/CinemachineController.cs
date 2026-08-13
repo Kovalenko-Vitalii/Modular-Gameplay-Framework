@@ -13,16 +13,11 @@ public sealed class CinemachineController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameStateManager.StateChanged += OnStateChanged;
+        GameStateManager.PauseChanged += OnPausedChanged;
+        if (GameStateManager.Instance != null)
+            inputController.enabled = !GameStateManager.Instance.IsPaused;
     }
 
-    private void OnDisable()
-    {
-        GameStateManager.StateChanged -= OnStateChanged;
-    }
-
-    private void OnStateChanged(GameState state)
-    {
-        inputController.enabled = state == GameState.Gameplay;
-    }
+    private void OnDisable() => GameStateManager.PauseChanged -= OnPausedChanged;   
+    private void OnPausedChanged(bool isPaused) => inputController.enabled = !isPaused;    
 }

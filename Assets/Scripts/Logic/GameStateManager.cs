@@ -1,72 +1,59 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 // <summary>
 // Singleton class that manages the game state
 // </summary>
-[DefaultExecutionOrder(-2000)]
+[DefaultExecutionOrder(-2000)] // Initializes before other systems
 public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager Instance { get; private set; }
 
     string TAG = "GameStateManager";
-    public GameState Current { get; private set; } = GameState.MainMenu;
 
-    public static event Action<GameState> StateChanged;
+    [SerializeField] private GameMode[] pausingModes = { GameMode.MainMenu, GameMode.Loading, GameMode.Cutscene };
+
+    public GameMode CurrentMode { get; private set; } = GameMode.Gameplay;
+    public bool IsPaused { get; private set; } = false;
+
+    public static event Action<bool> PauseChanged; 
+    public static event Action<GameMode> ModeChanged;
+
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
     }
 
-    private void OnEnable()
+    // --- API for requesting a pause ---
+    public void SetPaused(bool paused)
     {
-        UIWindowManager.WindowChanged += OnWindowChanged;
+        if (paused == IsPaused) return;
+        IsPaused = paused;
+        GameLog.Log(TAG, "Paused changed to " + IsPaused);
+        PauseChanged?.Invoke(IsPaused);
     }
 
-    private void OnDisable()
+    public void SetMode(GameMode newMode)
     {
-        UIWindowManager.WindowChanged -= OnWindowChanged;
-    }
+        if (newMode == CurrentMode) return;
 
-    private void OnWindowChanged(UIWindowId window)
-    {
-        // Don't let a window opening/closing clobber Loading/Cutscene/Menu.
-        if (Current != GameState.Gameplay && Current != GameState.Paused)
-            return;
+        CurrentMode = newMode;
+        GameLog.Log(TAG, "Mode changed to " + newMode);
+        ModeChanged?.Invoke(newMode);
 
-        SetState(window == UIWindowId.None ? GameState.Gameplay : GameState.Paused);
-    }
-
-    public void SetState(GameState newState)
-    {
-        if (newState == Current)
-            return;
-
-        Current = newState;
-        ApplyStateConsequences(newState);
-        StateChanged?.Invoke(newState);
-    }
-
-    private void ApplyStateConsequences(GameState state)
-    {
-        bool paused = state == GameState.Paused;
-
-        GameLog.Log(TAG, "State changed to " + state);
+        bool shouldPause = Array.IndexOf(pausingModes, newMode) >= 0;
+        SetPaused(shouldPause);
     }
 }
 
-public enum GameState
+public enum GameMode
 {
-    Gameplay,
-    Paused,
+    Boot,
+    MainMenu,
     Loading,
-    Cutscene,
-    MainMenu
+    Gameplay,
+    Cutscene
 }

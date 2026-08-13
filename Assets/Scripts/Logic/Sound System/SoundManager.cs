@@ -58,21 +58,15 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameStateManager.StateChanged += OnStateChanged;
+        GameStateManager.PauseChanged += OnPausedChanged;
+        if (GameStateManager.Instance != null)
+            SetAudioPaused(GameStateManager.Instance.IsPaused); 
     }
 
-    private void OnDisable()
-    {
-        GameStateManager.StateChanged -= OnStateChanged;
-    }
-
-    private void OnStateChanged(GameState state)
-    {
-        SetAudioPaused(state == GameState.Paused);
-    }
+    private void OnDisable() => GameStateManager.PauseChanged -= OnPausedChanged;
+    private void OnPausedChanged(bool isPaused) =>SetAudioPaused(isPaused);
 
     private void Start() => ApplyVolumes();
-
     public void SetAudioPaused(bool paused) => AudioListener.pause = paused;
    
     public void PlayUI(AudioClip clip, float volumeMul = 1f)

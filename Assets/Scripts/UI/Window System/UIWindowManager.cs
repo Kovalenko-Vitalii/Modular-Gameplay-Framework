@@ -29,11 +29,20 @@ public class UIWindowManager : MonoBehaviour
     private void OnEnable()
     {
         InputListener.ActionPressed += OnActionPressed;
+        // optional: react if some other system forces a state that should close windows
+        GameStateManager.ModeChanged += OnGameStateChanged;
     }
 
     private void OnDisable()
     {
         InputListener.ActionPressed -= OnActionPressed;
+        GameStateManager.ModeChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameMode state)
+    {
+        if (state == GameMode.Cutscene || state == GameMode.Loading)
+            CloseWindow(); // don't leave a window open under a cutscene
     }
 
     private void OnActionPressed(GameAction action)
@@ -43,19 +52,21 @@ public class UIWindowManager : MonoBehaviour
             case GameAction.Esc:
                 HandleEsc();
                 break;
-
-            case GameAction.Inventory:
-                ToggleWindow(UIWindowId.Inventory);
-                break;
         }
     }
 
     private void HandleEsc()
     {
         if (Current == UIWindowId.None)
+        {
             OpenWindow(UIWindowId.Esc);
+            GameStateManager.Instance.SetPaused(true);
+        }
         else
+        {
             CloseWindow();
+            GameStateManager.Instance.SetPaused(false);
+        }
     }
 
     public void ToggleWindow(UIWindowId window)
