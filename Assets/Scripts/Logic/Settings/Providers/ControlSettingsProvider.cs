@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// <summary>
+// Provides control settings for the settings menu, allowing users to rebind input actions.
+// </summary>
 public class ControlsSettingsProvider : ISettingsCategoryProvider
 {
     public string CategoryName => "Controls";
@@ -9,12 +12,14 @@ public class ControlsSettingsProvider : ISettingsCategoryProvider
     private readonly InputActionAsset actions;
     private readonly System.Action onAnyRebind;
 
+    // Constructor
     public ControlsSettingsProvider(InputActionAsset actions, System.Action onAnyRebind = null)
     {
         this.actions = actions;
         this.onAnyRebind = onAnyRebind;
     }
 
+    // Builds the list of settings rows for each input action and its bindings
     public List<ISettingRow> BuildSettings()
     {
         var rows = new List<ISettingRow>();
@@ -43,6 +48,9 @@ public class ControlsSettingsProvider : ISettingsCategoryProvider
     }
 }
 
+// <summary>
+// Handles the persistence of input binding overrides using PlayerPrefs
+// </summary>
 public static class InputRebindPersistence
 {
     private const string PrefsKey = "InputBindingOverrides";

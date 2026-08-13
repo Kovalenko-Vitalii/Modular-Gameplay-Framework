@@ -3,19 +3,24 @@ using UnityEngine.InputSystem;
 
 public class RebindSettingDefinition : ISettingRow
 {
+    // Interface implementation
     public string Name { get; }
-
+    public string CurrentValue =>
+            isWaiting
+                ? "Press any key..."
+                : action.GetBindingDisplayString(bindingIndex, InputBinding.DisplayStringOptions.DontIncludeInteractions); 
+    public bool SecondaryEnabled => action.bindings[bindingIndex].hasOverrides && !isWaiting;
+    public SettingRowMode Mode => SettingRowMode.Rebind;
     private readonly InputAction action;
-    private readonly int bindingIndex;
-    private readonly Action onSaved;
+    public event Action Changed;
 
+    // Class members
+    private readonly int bindingIndex;
+    private readonly Action onSaved; // same as onChanged, but for rebinding, since we don't have a payload to pass
     private InputActionRebindingExtensions.RebindingOperation activeOp;
     private bool isWaiting;
 
-    public event Action Changed;
-
-    public SettingRowMode Mode => SettingRowMode.Rebind;
-
+    // Constructor
     public RebindSettingDefinition(string name, InputAction action, int bindingIndex, Action onSaved = null)
     {
         Name = name;
@@ -24,13 +29,8 @@ public class RebindSettingDefinition : ISettingRow
         this.onSaved = onSaved;
     }
 
-    public string CurrentValue =>
-        isWaiting
-            ? "Press any key..."
-            : action.GetBindingDisplayString(bindingIndex, InputBinding.DisplayStringOptions.DontIncludeInteractions);
-
-    public bool SecondaryEnabled => action.bindings[bindingIndex].hasOverrides && !isWaiting;
-
+    // Interface implementation
+    // PrimaryAction starts the rebinding process for the specified action and binding index
     public void PrimaryAction()
     {
         if (isWaiting) return;
@@ -64,6 +64,7 @@ public class RebindSettingDefinition : ISettingRow
         activeOp.Start();
     }
 
+    // SecondaryAction removes any binding overrides for the specified action and binding index
     public void SecondaryAction()
     {
         if (isWaiting) return;
@@ -73,6 +74,7 @@ public class RebindSettingDefinition : ISettingRow
         Changed?.Invoke();
     }
 
+    // CancelIfActive cancels the active rebinding operation if it is currently in progress
     public void CancelIfActive()
     {
         activeOp?.Cancel();

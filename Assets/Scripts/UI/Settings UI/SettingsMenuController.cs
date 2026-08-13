@@ -14,7 +14,7 @@ public class SettingsMenuController : MonoBehaviour
     private void Awake()
     {
         InputRebindPersistence.Load(inputActions);
-        controls = new ControlsSettingsProvider(inputActions, () => InputRebindPersistence.Save(inputActions));
+        controls = new ControlsSettingsProvider(inputActions, () => InputRebindPersistence.Save(inputActions)); // Save the input bindings whenever a rebind occurs
     }
 
     private void Start() => ShowGame();

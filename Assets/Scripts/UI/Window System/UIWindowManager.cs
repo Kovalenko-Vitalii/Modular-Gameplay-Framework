@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+// <summary>
+// Singleton class that manages the currently open UI window
+// </summary>
 [DefaultExecutionOrder(-1900)]
 public class UIWindowManager : MonoBehaviour
 {

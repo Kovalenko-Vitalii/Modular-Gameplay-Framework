@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4174491228012291882}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: HeadPosition
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 8811345318210399575}
   - component: {fileID: 6033740957654070110}
   - component: {fileID: 251763613735897408}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
@@ -126,7 +126,7 @@ MonoBehaviour:
   maxFallSpeed: 55
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 65
   groundProbeDistance: 0.35
   groundProbeStartOffset: 0.05
   slideSpeed: 5
@@ -165,10 +165,10 @@ MonoBehaviour:
   controller: {fileID: 1599832966131815275}
   crouchCameraDrop: 0.75
   crouchSmoothness: 14
-  walkFrequency: 7
-  sprintFrequency: 10
-  walkHeight: 0.1
-  sprintHeight: 0.11
+  walkFrequency: 8
+  sprintFrequency: 11
+  walkHeight: 0.05
+  sprintHeight: 0.08
   bobReturnSpeed: 10
   moveSpeedThreshold: 0.2
 --- !u!114 &6033740957654070110

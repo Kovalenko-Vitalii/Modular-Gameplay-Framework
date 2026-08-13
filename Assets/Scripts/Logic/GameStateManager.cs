@@ -10,7 +10,7 @@ public class GameStateManager : MonoBehaviour
     public static GameStateManager Instance { get; private set; }
 
     string TAG = "GameStateManager";
-    public GameState Current { get; private set; } = GameState.Gameplay;
+    public GameState Current { get; private set; } = GameState.MainMenu;
 
     public static event Action<GameState> StateChanged;
 
@@ -68,5 +68,5 @@ public enum GameState
     Paused,
     Loading,
     Cutscene,
-    Menu
+    MainMenu
 }

@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// <summary>
+// Provides audio settings for the settings menu, including master volume, UI volume, subtitle volume, and world volume.
+// </summary>
 public class AudioSettingsProvider : ISettingsCategoryProvider
 {
     public string CategoryName => "Audio";
@@ -27,6 +30,7 @@ public class AudioSettingsProvider : ISettingsCategoryProvider
         };
     }
 
+    // Function to create a volume setting with a label, getter, and setter for the current value
     private SettingDefinition CreateVolumeSetting(
         string label,
         System.Func<float> getCurrent,
@@ -45,7 +49,9 @@ public class AudioSettingsProvider : ISettingsCategoryProvider
             index => setValue(IndexToLinear(index)));
     }
 
+    // Converts an index (0-10) to a linear volume value (0.0-1.0)
     private float IndexToLinear(int index) => index / 10f;
 
+    // Converts a linear volume value (0.0-1.0) to an index (0-10)
     private int LinearToIndex(float linear) => Mathf.RoundToInt(linear * 10f);
 }

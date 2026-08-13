@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 
+// <summary>
+// Provides game-related settings for the settings menu
+// </summary>
 public class GameSettingsProvider : ISettingsCategoryProvider
 {
     public string CategoryName => "Game";

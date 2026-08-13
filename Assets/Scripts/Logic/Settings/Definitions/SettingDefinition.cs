@@ -3,16 +3,19 @@ using System.Collections.Generic;
 
 public class SettingDefinition :ISettingRow
 {
+    // Interface implementation
     public string Name { get; }
-    public IReadOnlyList<string> Options { get; }
-
-    public int CurrentIndex { get; private set; }
-
+    public string CurrentValue => Options[CurrentIndex];
+    public bool SecondaryEnabled => Options.Count > 1;
     public SettingRowMode Mode => SettingRowMode.Cycle;
+    public event Action Changed; // Callback with no payload, for ui
 
-    public event Action Changed;
-    private readonly Action<int> onChanged;
+    // Class members
+    public IReadOnlyList<string> Options { get; }
+    public int CurrentIndex { get; private set; }
+    private readonly Action<int> onChanged; // Callback with payload
 
+    // Constructor
     public SettingDefinition(
         string name,
         IReadOnlyList<string> options,
@@ -25,12 +28,11 @@ public class SettingDefinition :ISettingRow
         this.onChanged = onChanged;
     }
 
-    public string CurrentValue => Options[CurrentIndex];
-    public bool SecondaryEnabled => Options.Count > 1;
-
+    // Interface implementation
     public void PrimaryAction() => Next();
     public void SecondaryAction() => Previous();
 
+    // Methods to change the current index
     public void Next()
     {
         CurrentIndex++;
@@ -38,7 +40,6 @@ public class SettingDefinition :ISettingRow
         onChanged?.Invoke(CurrentIndex);
         Changed?.Invoke();
     }
-
     public void Previous()
     {
         CurrentIndex--;
