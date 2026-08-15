@@ -1,0 +1,13 @@
+UI Layer System has following architecture:
+-Canvas [must have UI Screen Manager]
+
+	-Gameplay Screen [must have UI Screen, UI Window Manager]
+
+		-Root
+
+			-Inventoy View [must have UI Window View, UI Tab Group]
+
+				-Root			
+					Inventory Tab
+					Skills Tab
+					Quests Tab

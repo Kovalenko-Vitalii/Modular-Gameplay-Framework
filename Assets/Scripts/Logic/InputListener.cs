@@ -10,11 +10,11 @@ public class InputListener : MonoBehaviour
 
     [SerializeField] private List<ListenedAction> actions;
 
-    public static event Action<GameAction> ActionPressed;
-    public static event Action<GameAction> ActionReleased;
+    public static event Action<InputAction> ActionPressed;
+    public static event Action<InputAction> ActionReleased;
 
-    private readonly Dictionary<GameAction, Action<InputAction.CallbackContext>> performedHandlers = new();
-    private readonly Dictionary<GameAction, Action<InputAction.CallbackContext>> canceledHandlers = new();
+    private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> performedHandlers = new();
+    private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> canceledHandlers = new();
 
     private void Awake()
     {
@@ -34,10 +34,10 @@ public class InputListener : MonoBehaviour
             if (entry.action == null || entry.action.action == null)
                 continue;
 
-            GameAction id = entry.id;
+            InputAction id = entry.id;
 
-            Action<InputAction.CallbackContext> onPerformed = _ => ActionPressed?.Invoke(id);
-            Action<InputAction.CallbackContext> onCanceled = _ => ActionReleased?.Invoke(id);
+            Action<UnityEngine.InputSystem.InputAction.CallbackContext> onPerformed = _ => ActionPressed?.Invoke(id);
+            Action<UnityEngine.InputSystem.InputAction.CallbackContext> onCanceled = _ => ActionReleased?.Invoke(id);
 
             performedHandlers[id] = onPerformed;
             canceledHandlers[id] = onCanceled;
@@ -69,7 +69,7 @@ public class InputListener : MonoBehaviour
     }
 }
 
-public enum GameAction
+public enum InputAction
 {
     Esc,
     Inventory,
@@ -79,6 +79,6 @@ public enum GameAction
 [Serializable]
 public class ListenedAction
 {
-    public GameAction id;
+    public InputAction id;
     public InputActionReference action;
 }

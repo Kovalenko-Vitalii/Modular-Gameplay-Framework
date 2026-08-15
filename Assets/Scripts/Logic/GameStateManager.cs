@@ -12,7 +12,9 @@ public class GameStateManager : MonoBehaviour
 
     string TAG = "GameStateManager";
 
-    [SerializeField] private GameMode[] pausingModes = { GameMode.MainMenu, GameMode.Loading, GameMode.Cutscene };
+    [SerializeField] private GameMode[] pausingModes = { GameMode.MainMenu, GameMode.MainMenu, GameMode.Loading, GameMode.Cutscene }; // THIS IS POINTLESS
+
+    private readonly HashSet<string> pauseReasons = new();
 
     public GameMode CurrentMode { get; private set; } = GameMode.Gameplay;
     public bool IsPaused { get; private set; } = false;
@@ -28,10 +30,18 @@ public class GameStateManager : MonoBehaviour
     }
 
     // --- API for requesting a pause ---
-    public void SetPaused(bool paused)
+    public void SetPauseReason(string reason, bool active)
     {
-        if (paused == IsPaused) return;
-        IsPaused = paused;
+        bool changed = active ? pauseReasons.Add(reason) : pauseReasons.Remove(reason);
+        if (!changed) return;
+        RecomputePause();
+    }
+
+    private void RecomputePause()
+    {
+        bool shouldPause = pauseReasons.Count > 0;
+        if (shouldPause == IsPaused) return;
+        IsPaused = shouldPause;
         GameLog.Log(TAG, "Paused changed to " + IsPaused);
         PauseChanged?.Invoke(IsPaused);
     }
@@ -44,8 +54,8 @@ public class GameStateManager : MonoBehaviour
         GameLog.Log(TAG, "Mode changed to " + newMode);
         ModeChanged?.Invoke(newMode);
 
-        bool shouldPause = Array.IndexOf(pausingModes, newMode) >= 0;
-        SetPaused(shouldPause);
+        bool modeForcesPause = Array.IndexOf(pausingModes, newMode) >= 0;
+        SetPauseReason(TAG, modeForcesPause);
     }
 }
 

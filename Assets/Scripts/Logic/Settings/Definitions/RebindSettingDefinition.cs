@@ -11,7 +11,7 @@ public class RebindSettingDefinition : ISettingRow
                 : action.GetBindingDisplayString(bindingIndex, InputBinding.DisplayStringOptions.DontIncludeInteractions); 
     public bool SecondaryEnabled => action.bindings[bindingIndex].hasOverrides && !isWaiting;
     public SettingRowMode Mode => SettingRowMode.Rebind;
-    private readonly InputAction action;
+    private readonly UnityEngine.InputSystem.InputAction action;
     public event Action Changed;
 
     // Class members
@@ -21,7 +21,7 @@ public class RebindSettingDefinition : ISettingRow
     private bool isWaiting;
 
     // Constructor
-    public RebindSettingDefinition(string name, InputAction action, int bindingIndex, Action onSaved = null)
+    public RebindSettingDefinition(string name, UnityEngine.InputSystem.InputAction action, int bindingIndex, Action onSaved = null)
     {
         Name = name;
         this.action = action;
