@@ -9,6 +9,7 @@ public class UIWindowManager : MonoBehaviour
     private const string TAG = "UIWindowManager";
 
     [SerializeField] private UIActionBinding[] bindings;
+    [SerializeField] private UIWindowDefinition defaultWindow;
 
     private string pauseReason;
     private readonly List<UIWindowDefinition> stack = new();
@@ -34,13 +35,23 @@ public class UIWindowManager : MonoBehaviour
         InputListener.ActionPressed -= HandleActionPressed;
     }
 
-    private void HandleActionPressed(InputAction action) => HandleAction(action);
+    private void HandleActionPressed(InputAction action)
+    {
+        if (UIScreenManager.Instance.Current?.Windows != this) return;
+        HandleAction(action);
+    }
 
 
     private void HandleGameModeChanged(GameMode state)
     {
         if (state == GameMode.Cutscene || state == GameMode.Loading)
             CloseAll();
+    }
+
+    public void OpenDefaults()
+    {
+        if (defaultWindow == null) return;
+            Open(defaultWindow);
     }
 
     // Called by UIScreenManager, only on the currently active screen

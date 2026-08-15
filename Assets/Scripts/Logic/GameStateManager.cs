@@ -16,7 +16,7 @@ public class GameStateManager : MonoBehaviour
 
     private readonly HashSet<string> pauseReasons = new();
 
-    public GameMode CurrentMode { get; private set; } = GameMode.Gameplay;
+    public GameMode CurrentMode { get; private set; } = GameMode.Boot;
     public bool IsPaused { get; private set; } = false;
 
     public static event Action<bool> PauseChanged; 
@@ -27,6 +27,7 @@ public class GameStateManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        SetMode(GameMode.MainMenu);
     }
 
     // --- API for requesting a pause ---

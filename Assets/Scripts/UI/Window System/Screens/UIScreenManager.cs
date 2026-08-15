@@ -36,22 +36,17 @@ public class UIScreenManager : MonoBehaviour
     private void HandleModeChanged(GameMode mode)
     {
         UIScreenId? targetId = ResolveScreen(mode);
-        if (targetId == null)
-        {
-            Current?.Deactivate();
-            Current = null;
-            return;
-        }
+        var next = targetId.HasValue ? FindScreen(targetId.Value) : null;
 
-        var next = FindScreen(targetId.Value);
-        if (next == Current) return;
+        foreach (var screen in screens)
+            if (screen != next) screen.Deactivate();
 
-        Current?.Deactivate();
+        if (next != null && next != Current) next.Activate();
         Current = next;
-        Current?.Activate();
 
-        GameLog.Log(TAG, "Active screen changed to " + targetId.Value);
-        ScreenChanged?.Invoke(targetId.Value);
+        if (targetId.HasValue)
+            GameLog.Log(TAG, "Active screen changed to " + targetId.Value);
+        ScreenChanged?.Invoke(targetId ?? default);
     }
 
     // Cutscene deliberately maps to null here: it doesn't own a screen,
