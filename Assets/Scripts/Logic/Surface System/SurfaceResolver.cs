@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SurfaceResolver : MonoBehaviour
 {
+    public static SurfaceResolver Instance { get; private set; }
     [Header("Database")]
     [SerializeField] private SurfaceDatabase database;
 
@@ -12,6 +13,17 @@ public class SurfaceResolver : MonoBehaviour
 
     private SurfaceType DefaultSurface =>
         database != null ? database.DefaultSurface : SurfaceType.Tile;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }   
 
     public SurfaceEntry GetSurfaceBelow(Vector3 worldPosition)
     {

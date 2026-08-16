@@ -52,8 +52,7 @@ public sealed class FootstepPlayer : MonoBehaviour, IPlayerTick
         if (controller == null)
             controller = GetComponent<CharacterController>();
 
-        if (surfaceResolver == null)
-            surfaceResolver = GetComponent<SurfaceResolver>();
+        surfaceResolver = SurfaceResolver.Instance;
 
         if (source == null)
             source = GetComponent<AudioSource>();

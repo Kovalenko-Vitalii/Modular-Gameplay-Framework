@@ -4,12 +4,12 @@ using UnityEngine;
 
 // <summary>
 // Singleton class that manages the game state
+// Defines current game mode and whether the game is paused
 // </summary>
 [DefaultExecutionOrder(-2000)] // Initializes before other systems
 public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager Instance { get; private set; }
-
     string TAG = "GameStateManager";
 
     [SerializeField] private GameMode[] pausingModes = { GameMode.MainMenu, GameMode.MainMenu, GameMode.Loading, GameMode.Cutscene }; // THIS IS POINTLESS
@@ -27,14 +27,27 @@ public class GameStateManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        SetMode(GameMode.MainMenu);
+        SetMode(GameMode.MainMenu); // Not sure if this is the best place to do this, but it works for now
     }
 
     // --- API for requesting a pause ---
-    public void SetPauseReason(string reason, bool active)
+
+    // <summary>
+    // Sets a pause reason. If active is true, the reason is added to the list of reasons to pause.
+    // If active is false, the reason is removed from the list of reasons to pause.
+    // </summary>
+    public void SetPauseReason(string reason, bool active) // reason could be changed to object but string works for now
     {
-        bool changed = active ? pauseReasons.Add(reason) : pauseReasons.Remove(reason);
-        if (!changed) return;
+        bool changed;
+
+        if (active)
+            changed = pauseReasons.Add(reason);
+        else      
+            changed = pauseReasons.Remove(reason);
+
+        if (!changed) 
+            return;
+
         RecomputePause();
     }
 
