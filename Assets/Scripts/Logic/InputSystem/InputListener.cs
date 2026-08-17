@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// <summary>
+// Layer of abstractio over Unity Input System
+// Allows other systems listen to input actions without knowing about the underlying input system
+// </summary>
+
+// !!! MAKE IT DATA DRIVEN SYSTEM LATER !!!
 [DefaultExecutionOrder(-1500)]
-public class InputListener : MonoBehaviour
-{
+public class InputListener : MonoBehaviour {
     public static InputListener Instance { get; private set; }
+    string TAG = "InputListener";
 
     [SerializeField] private List<ListenedAction> actions;
 
@@ -16,21 +22,18 @@ public class InputListener : MonoBehaviour
     private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> performedHandlers = new();
     private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> canceledHandlers = new();
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
+    private void Awake() {
+        if (Instance != null && Instance != this) { 
+            Destroy(gameObject); 
+            return; 
         }
-
         Instance = this;
+
+        GameLog.Log(TAG, "Initialized");
     }
 
-    private void OnEnable()
-    {
-        foreach (var entry in actions)
-        {
+    private void OnEnable() {
+        foreach (var entry in actions) {
             if (entry.action == null || entry.action.action == null)
                 continue;
 
@@ -48,10 +51,8 @@ public class InputListener : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        foreach (var entry in actions)
-        {
+    private void OnDisable() {
+        foreach (var entry in actions) {
             if (entry.action == null || entry.action.action == null)
                 continue;
 
@@ -67,18 +68,4 @@ public class InputListener : MonoBehaviour
         performedHandlers.Clear();
         canceledHandlers.Clear();
     }
-}
-
-public enum InputAction
-{
-    Esc,
-    Inventory,
-    Interact
-}
-
-[Serializable]
-public class ListenedAction
-{
-    public InputAction id;
-    public InputActionReference action;
 }

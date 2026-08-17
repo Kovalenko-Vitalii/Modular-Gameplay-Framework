@@ -3,7 +3,7 @@ using UnityEngine;
 // <summary>
 // Class that handles the camera motion for the player, including crouch offset and head bobbing
 // </summary>
-public sealed class PlayerCameraMotion : MonoBehaviour, IPlayerLateTick
+public sealed class PlayerCameraMotion : MonoBehaviour, ILateTick
 {
     [Header("Links")]
     [SerializeField] private Transform cameraRoot;
@@ -46,12 +46,12 @@ public sealed class PlayerCameraMotion : MonoBehaviour, IPlayerLateTick
 
     private void OnEnable()
     {
-        PlayerTickSystem.Instance?.Register(this);
+        TickSystem.Instance?.Register(this);
     }
 
     private void OnDisable()
     {
-        PlayerTickSystem.Instance?.Unregister(this);
+        TickSystem.Instance?.Unregister(this);
     }
 
     public void LateTick(float dt)

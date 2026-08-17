@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// <summary>
+// Singleton class that manages scene loading and unloading
+// </summary>
 public class SceneLoader : MonoBehaviour
 {
     string TAG = "SceneLoader";
@@ -25,17 +28,10 @@ public class SceneLoader : MonoBehaviour
 
     private void Awake()
     {
-        GameLog.Log(TAG, $"Awake() initiated");
-
-        if (Instance != null && Instance != this)
-        {
-            GameLog.Warning(TAG, $"Duplicate SceneLoader -> destroying id={GetInstanceID()}");
-            Destroy(gameObject);
-            return;
-        }
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; } 
         Instance = this;
 
-        GameLog.Log(TAG, $"Awake() finished. Singleton set");
+        GameLog.Log(TAG, "Initialized");
     }
 
     // Load content scene and activate automatically when loaded
@@ -100,19 +96,6 @@ public class SceneLoader : MonoBehaviour
 
         StartCoroutine(FinishSwapRoutine(sceneName));
         return _activeLoadOp;
-    }
-
-    // Trigger scene activation
-    // DEPRECIATED
-    public void ActivateLoadedScene()
-    {
-        if (_activeLoadOp != null)
-        {
-            GameLog.Log(TAG, "ActivateLoadedScene()");
-            _activeLoadOp.allowSceneActivation = true;
-        }
-        else
-            GameLog.Warning(TAG, "ActivateLoadedScene called but _activeLoadOp is null");
     }
 
     // This method used to wait for scene load and than switch it with current one

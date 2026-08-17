@@ -3652,7 +3652,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 658369999}
-  - component: {fileID: 658369998}
+  - component: {fileID: 658370000}
   m_Layer: 0
   m_Name: PlayerTickSystem
   m_TagString: Untagged
@@ -3660,18 +3660,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &658369998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 658369997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b92cdd22be292246ac17d7356712806, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerTickSystem
 --- !u!4 &658369999
 Transform:
   m_ObjectHideFlags: 0
@@ -3687,6 +3675,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &658370000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658369997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 386383262db6c7941a56ff438ef8103a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TickSystem
 --- !u!1 &708251645
 GameObject:
   m_ObjectHideFlags: 0

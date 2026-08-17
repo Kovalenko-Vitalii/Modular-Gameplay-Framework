@@ -2,36 +2,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // <summary>
-// Singleton system that manages player tickable objects and calls their Tick() and LateTick() methods every frame
+// Ticking system that allows manage simulation process
 // </summary>
 [DefaultExecutionOrder(-1000)]
-public class PlayerTickSystem : MonoBehaviour
+public class TickSystem : MonoBehaviour
 {
     const string TAG = "PlayerTickSystem";
 
-    public static PlayerTickSystem Instance { get; private set; }
+    public static TickSystem Instance { get; private set; }
 
     // Lists of registered tickable objects
-    readonly List<IPlayerTick> ticks = new();
-    readonly List<IPlayerLateTick> lateTicks = new();
+    readonly List<ITick> ticks = new();
+    readonly List<ILateTick> lateTicks = new();
 
     // Buffers to avoid modifying the tick lists while iterating over them
-    readonly List<IPlayerTick> tickBuffer = new();
-    readonly List<IPlayerLateTick> lateTickBuffer = new();
+    readonly List<ITick> tickBuffer = new();
+    readonly List<ILateTick> lateTickBuffer = new();
 
     bool isTicking = true;
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
 
-        GameLog.Log(TAG, "Awake() finished. Singleton set");
+        GameLog.Log(TAG, "Initialized");
     }
 
     void OnDestroy()
@@ -40,6 +35,7 @@ public class PlayerTickSystem : MonoBehaviour
             Instance = null;
     }
 
+    // acceptable level of glue 
     private void OnEnable()
     {
         GameStateManager.PauseChanged += OnPausedChanged;
@@ -51,18 +47,20 @@ public class PlayerTickSystem : MonoBehaviour
 
     private void OnPausedChanged(bool isPaused) =>isTicking = !isPaused;
 
+    // <summary>
     // Registers an object that implements IPlayerTick or IPlayerLateTick to be ticked every frame
+    // </summary>
     public void Register(object tickable)
     {
         bool registered = false;
 
-        if (tickable is IPlayerTick tick && !ticks.Contains(tick))
+        if (tickable is ITick tick && !ticks.Contains(tick))
         {
             ticks.Add(tick);
             registered = true;
         }
 
-        if (tickable is IPlayerLateTick lateTick && !lateTicks.Contains(lateTick))
+        if (tickable is ILateTick lateTick && !lateTicks.Contains(lateTick))
         {
             lateTicks.Add(lateTick);
             registered = true;
@@ -72,17 +70,22 @@ public class PlayerTickSystem : MonoBehaviour
             GameLog.Warning(TAG, $"Tried to register non-tickable object: {tickable}");
     }
 
+    // <summary>
     // Unregisters an object that implements IPlayerTick or IPlayerLateTick from being ticked every frame
+    // </summary>
     public void Unregister(object tickable)
     {
-        if (tickable is IPlayerTick tick)
+        if (tickable is ITick tick)
             ticks.Remove(tick);
 
-        if (tickable is IPlayerLateTick lateTick)
+        if (tickable is ILateTick lateTick)
             lateTicks.Remove(lateTick);
     }
 
-    // Calls Tick() on all registered IPlayerTick objects every frame
+    // <summary>
+    // Ticks all registered IPlayerTick objects every frame
+    // Analog to Update()
+    // </summary>
     void Update()
     {
         if (!isTicking) return;
@@ -96,7 +99,10 @@ public class PlayerTickSystem : MonoBehaviour
             tickBuffer[i].Tick(dt);
     }
 
-    // Calls LateTick() on all registered IPlayerLateTick objects every frame
+    // <summary>
+    // Ticks all registered IPlayerLateTick objects every frame
+    // Analog to LateUpdate()
+    // </summary>
     void LateUpdate()
     {
         if (!isTicking) return;
@@ -109,16 +115,4 @@ public class PlayerTickSystem : MonoBehaviour
         for (int i = 0; i < lateTickBuffer.Count; i++)
             lateTickBuffer[i].LateTick(dt);
     }
-}
-
-// Interface for objects that want to be ticked every frame by the PlayerTickSystem
-public interface IPlayerTick
-{
-    void Tick(float dt);
-}
-
-// Interface for objects that want to be late-ticked every frame by the PlayerTickSystem
-public interface IPlayerLateTick
-{
-    void LateTick(float dt);
 }
