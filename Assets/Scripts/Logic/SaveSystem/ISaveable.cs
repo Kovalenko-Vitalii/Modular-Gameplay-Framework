@@ -1,4 +1,9 @@
-// Interface used for any instance that should be saved
+/// <summary>
+/// Interface for objects that can be saved, restored, and reset to default state.
+/// 
+/// !!! Recommended to use SaveableBehaviour or a similar base class to handle registration automatically. !!!
+/// 
+/// </summary>
 public interface ISaveable
 {
     string saveId { get; }
