@@ -40,6 +40,9 @@ namespace SaveSystem {
         private SaveSlotData pendingLoadData;
         private string pendingLoadSlotId;
 
+        private bool activeProfilePersisted;      // has the ActiveProfile ever been written to disk?
+        private string pendingNewGameScene;
+
         private void Awake()
         {
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -96,13 +99,10 @@ namespace SaveSystem {
                 updatedUtcTicks = now
             };
 
-            SaveFileIO.EnsureFolder(ProfileSlotsFolder(profileId));
-            SaveFileIO.WriteIndex(ProfileIndexPath(profileId), profile);
-
             ActiveProfileId = profileId;
             ActiveProfile = profile;
+            activeProfilePersisted = false;
 
-            ProfilesChanged?.Invoke();
             GameLog.Log(TAG, $"Created profile '{profileId}' ('{displayName}')");
             return profile;
         }
@@ -111,6 +111,13 @@ namespace SaveSystem {
         /// Updates display name of existing profile. Does not change active profile unless the renamed profile is currently active.
         /// </summary>
         public void RenameProfile(string profileId, string displayName) {
+            if (profileId == ActiveProfileId && !activeProfilePersisted)
+            {
+                ActiveProfile.displayName = displayName;
+                ActiveProfile.updatedUtcTicks = DateTime.UtcNow.Ticks;
+                return;
+            }
+
             var path = ProfileIndexPath(profileId);
             var profile = SaveFileIO.ReadIndex(path);
             if (string.IsNullOrEmpty(profile.profileId)) {
@@ -137,6 +144,7 @@ namespace SaveSystem {
             if (ActiveProfileId == profileId) {
                 ActiveProfileId = null;
                 ActiveProfile = null;
+                activeProfilePersisted = false;
             }
 
             GameLog.Log(TAG, $"Deleted profile '{profileId}'");
@@ -145,6 +153,7 @@ namespace SaveSystem {
         private void OpenProfile(string profileId) {
             ActiveProfileId = profileId;
             ActiveProfile = SaveFileIO.ReadIndex(ProfileIndexPath(profileId));
+            activeProfilePersisted = true;
         }
 
         // ---------- Save / load within the active profile ----------
@@ -302,6 +311,7 @@ namespace SaveSystem {
         {
             if (!EnsureActiveProfile()) return;
             SaveRegistry.ResetAllToDefaults();
+            pendingNewGameScene = sceneName;
             GameFlowApi.StartGame(sceneName);
         }
 
@@ -318,22 +328,30 @@ namespace SaveSystem {
 
         private void HandleContentLoaded(string sceneName)
         {
-            if (pendingLoadData == null || sceneName != pendingLoadData.sceneName)
-                return; // not a scene load we initiated (e.g. GameFlowController starting a new game)
+            if (pendingLoadData != null && sceneName == pendingLoadData.sceneName)
+            {
+                var data = pendingLoadData;
+                var slotId = pendingLoadSlotId;
+                pendingLoadData = null;
+                pendingLoadSlotId = null;
 
-            var data = pendingLoadData;
-            var slotId = pendingLoadSlotId;
-            pendingLoadData = null;
-            pendingLoadSlotId = null;
+                SaveRegistry.RestoreAll(data.objectStates);
 
-            SaveRegistry.RestoreAll(data.objectStates);
+                IsBusy = false;
+                GameStateManager.Instance.SetMode(GameMode.Gameplay);
+                GameStateManager.Instance.SetPauseReason(TAG, false);
 
-            IsBusy = false;
-            GameStateManager.Instance.SetMode(GameMode.Gameplay);
-            GameStateManager.Instance.SetPauseReason(TAG, false);
+                LoadCompleted?.Invoke(slotId);
+                GameLog.Log(TAG, $"LoadSlot('{slotId}') complete, scene='{data.sceneName}'");
+                return;
+            }
 
-            LoadCompleted?.Invoke(slotId);
-            GameLog.Log(TAG, $"LoadSlot('{slotId}') complete, scene='{data.sceneName}'");
+            if (pendingNewGameScene != null && sceneName == pendingNewGameScene)
+            {
+                pendingNewGameScene = null;
+                SaveAuto();
+                return;
+            }
         }
 
         private void SaveInternal(string slotId, string displayName, bool isAuto)
@@ -348,6 +366,7 @@ namespace SaveSystem {
 
             try
             {
+                SaveFileIO.EnsureFolder(ProfileSlotsFolder(ActiveProfileId));
                 SaveFileIO.WriteSlot(SlotPath(ActiveProfileId, slotId), data);
 
                 var nowTicks = DateTime.UtcNow.Ticks;
@@ -371,8 +390,14 @@ namespace SaveSystem {
                     meta.updatedUtcTicks = nowTicks;
                 }
 
-                ActiveProfile.updatedUtcTicks = nowTicks; // so ListProfiles can show "last played" without opening slots
+                ActiveProfile.updatedUtcTicks = nowTicks;
                 SaveFileIO.WriteIndex(ProfileIndexPath(ActiveProfileId), ActiveProfile);
+
+                if (!activeProfilePersisted)
+                {
+                    activeProfilePersisted = true;
+                    ProfilesChanged?.Invoke();
+                }
             }
             catch (Exception ex)
             {
