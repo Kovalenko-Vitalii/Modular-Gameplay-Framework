@@ -30,10 +30,9 @@ public class ResumeGameButton : MonoBehaviour {
         }
     }
 
-    private void OnResumeClicked() {
-        button.interactable = false;
-        SaveApi.ContinueLatestGame();
-    }
+    private void OnResumeClicked() => SaveApi.ContinueLatestGame();
+        
+    
 
     private void HandleSaveChanged(string slotId) => button.interactable = SaveApi.CanContinue();
 

@@ -9,7 +9,9 @@ public class AmbientZone : MonoBehaviour
     public AmbientProfile Profile => profile;
     public int Priority => priority;
 
-
+    private void OnDestroy() {
+        AmbientManager.Instance.UnregisterZone(this);
+    }
 
     private void OnTriggerEnter(Collider other)
     {

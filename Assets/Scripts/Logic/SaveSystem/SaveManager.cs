@@ -192,8 +192,7 @@ namespace SaveSystem {
         /// <summary>
         /// Deletes a manual save from any profile, active or not.
         /// </summary>
-        public void DeleteManualSave(string profileId, string slotId)
-        {
+        public void DeleteManualSave(string profileId, string slotId) {
             var indexPath = ProfileIndexPath(profileId);
             var profile = SaveFileIO.ReadIndex(indexPath);
             var meta = profile.manualSaves.FirstOrDefault(m => m.slotId == slotId);
@@ -246,25 +245,21 @@ namespace SaveSystem {
         /// <summary>
         /// Loads whichever save (auto or manual) was updated most recently in this profile.
         /// </summary>
-        public void ContinueProfile(string profileId)
-        {
+        public void ContinueProfile(string profileId) {
             var profile = SaveFileIO.ReadIndex(ProfileIndexPath(profileId));
-            if (string.IsNullOrEmpty(profile.profileId))
-            {
+            if (string.IsNullOrEmpty(profile.profileId)) {
                 GameLog.Error(TAG, $"ContinueProfile: profile '{profileId}' not found.");
                 LoadFailed?.Invoke(profileId, "Profile not found");
                 return;
             }
 
             var latest = profile.autoSave;
-            foreach (var meta in profile.manualSaves)
-            {
+            foreach (var meta in profile.manualSaves) {
                 if (string.IsNullOrEmpty(latest?.slotId) || meta.updatedUtcTicks > latest.updatedUtcTicks)
                     latest = meta;
             }
 
-            if (string.IsNullOrEmpty(latest?.slotId))
-            {
+            if (string.IsNullOrEmpty(latest?.slotId)) {
                 GameLog.Warning(TAG, $"ContinueProfile: profile '{profileId}' has no saves yet.");
                 LoadFailed?.Invoke(profileId, "No saves in this profile");
                 return;
@@ -277,13 +272,11 @@ namespace SaveSystem {
         /// Loads whichever save, in whichever profile, was updated most recently overall.
         /// Intended for a single "Continue" button on the main menu (no profile picked yet).
         /// </summary>
-        public void ContinueLatestGame()
-        {
+        public void ContinueLatestGame() {
             var profiles = ListProfiles();
             SaveProfile latestProfile = null;
 
-            foreach (var profile in profiles)
-            {
+            foreach (var profile in profiles) {
                 bool hasAnySave = !string.IsNullOrEmpty(profile.autoSave?.slotId) || profile.manualSaves.Count > 0;
                 if (!hasAnySave)
                     continue;
@@ -292,8 +285,7 @@ namespace SaveSystem {
                     latestProfile = profile;
             }
 
-            if (latestProfile == null)
-            {
+            if (latestProfile == null) {
                 GameLog.Warning(TAG, "ContinueLatestGame: no profile has any saves yet.");
                 LoadFailed?.Invoke(null, "No saves found");
                 return;
