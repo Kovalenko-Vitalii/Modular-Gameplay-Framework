@@ -30,11 +30,12 @@ namespace SaveSystem {
         public bool HasAutoSave => !string.IsNullOrEmpty(ActiveProfile?.autoSave?.slotId);
         public bool CanContinue() => ListProfiles().Any(p => !string.IsNullOrEmpty(p.autoSave?.slotId) || p.manualSaves.Count > 0);
     
-
-        public event Action<string> SaveCompleted;       // slotId
+        public event Action ProfilesChanged;   // profileId
+        public event Action<string> SaveCompleted;        // slotId
         public event Action<string, string> SaveFailed;   // slotId, reason
         public event Action<string> LoadCompleted;        // slotId
         public event Action<string, string> LoadFailed;   // profileId or slotId, reason
+        
 
         private SaveSlotData pendingLoadData;
         private string pendingLoadSlotId;
@@ -101,6 +102,7 @@ namespace SaveSystem {
             ActiveProfileId = profileId;
             ActiveProfile = profile;
 
+            ProfilesChanged?.Invoke();
             GameLog.Log(TAG, $"Created profile '{profileId}' ('{displayName}')");
             return profile;
         }

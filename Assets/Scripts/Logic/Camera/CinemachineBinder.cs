@@ -9,10 +9,10 @@ using UnityEngine;
 public class CinemachineBinder : MonoBehaviour {
     private const string TAG = "CinemachinePlayerTarget";
 
-    [SerializeField] private CinemachineCamera cinemachineCamera;
     [SerializeField] private string headPositionTag = "HeadPosition"; // not the best approach but didn`t find anything better ;(
 
     private PlayerSpawner playerSpawner;
+    private CinemachineCamera cinemachineCamera;
 
     private void Reset() => cinemachineCamera = GetComponent<CinemachineCamera>();
 

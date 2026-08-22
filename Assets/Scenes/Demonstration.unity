@@ -12047,8 +12047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0978943d91f98c34ba7ba7b1b8039b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineBinder
-  vcam: {fileID: 526279879}
-  playerSpawner: {fileID: 1626912605}
+  headPositionTag: HeadPosition
 --- !u!43 &534532791
 Mesh:
   m_ObjectHideFlags: 0
