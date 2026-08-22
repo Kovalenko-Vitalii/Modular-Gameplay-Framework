@@ -6,6 +6,10 @@ using System.Collections.Generic;
 /// </summary>
 [Serializable]
 public class SaveProfile {
+    public string profileId;
+    public string displayName;
+    public long createdUtcTicks;
+    public long updatedUtcTicks;
     public SaveSlotMeta autoSave = new();
     public List<SaveSlotMeta> manualSaves = new();
 }
