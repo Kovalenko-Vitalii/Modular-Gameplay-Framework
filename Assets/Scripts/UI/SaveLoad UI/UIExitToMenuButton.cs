@@ -21,6 +21,6 @@ public class UIExitToMenuButton : MonoBehaviour {
     }
 
     private void OnExitToMenuClicked() {
-        GameFlowApi.ExitToMenu();
+        GameFlowController.Instance.ExitToMenu();
     }
 }

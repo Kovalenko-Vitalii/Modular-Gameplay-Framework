@@ -40,7 +40,7 @@ public class LoadSaveProfile : MonoBehaviour {
 
         spawnedSlots.Clear();
 
-        foreach (var saveProfile in SaveApi.ListProfiles()) {
+        foreach (var saveProfile in SaveManager.Instance.ListProfiles()) {
             var instance = Instantiate(profilePrefab, scrollRect.content);
             spawnedSlots.Add(instance);
 

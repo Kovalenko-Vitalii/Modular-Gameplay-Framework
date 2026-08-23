@@ -6,12 +6,11 @@ using System;
 /// Central registry of active ISaveable objects, plus methods to capture,
 /// restore and reset their state.
 /// </summary>
-public static class SaveRegistry
-{
+public static class SaveRegistry {
     private static readonly Dictionary<string, ISaveable> saveablesById = new();
 
     /// <summary>
-    /// Registers a saveable object. Called automatically by SaveableBehaviour.Awake.
+    /// Registers a saveable object. Called automatically by SaveableBehaviour.Awake()
     /// Warns and ignores the new instance if its saveId is already registered.
     /// </summary>
     public static void Register(ISaveable saveable) {
@@ -45,7 +44,7 @@ public static class SaveRegistry
     /// Objects not present in the save, or entries with no matching object, are left/skipped.
     /// </summary>
     public static List<ObjectStateEntry> CaptureAll() {
-        var entries = new List<ObjectStateEntry>(saveablesById.Count);
+        var entries = new List<ObjectStateEntry>();
 
         foreach (var saveable in saveablesById.Values) {
             var state = saveable.CaptureState();
@@ -73,18 +72,17 @@ public static class SaveRegistry
     /// Objects not present in the save are left in their default state.
     /// </summary>
     public static void RestoreAll(List<ObjectStateEntry> savedEntries) {
-        foreach (var saveable in saveablesById.Values)
-            saveable.ResetToDefaultState();
-
         if (savedEntries == null)
             return;
+
+        ResetAllToDefaults();
 
         foreach (var entry in savedEntries) {
             if (string.IsNullOrWhiteSpace(entry.saveId))
                 continue;
 
             if (!saveablesById.TryGetValue(entry.saveId, out var target))
-                continue; // object no longer exists in the current scene - nothing to restore onto
+                continue; // object don`t exist in the current scene - nothing to restore onto
 
             if (!SaveTypeRegistry.TryGetType(entry.type, out var stateType)) {
                 Debug.LogWarning($"Unknown save state type '{entry.type}' for saveId='{entry.saveId}'. " +

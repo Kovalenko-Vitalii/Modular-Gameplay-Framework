@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// <summary>
-// Singleton class that manages the game state
-// Defines current game mode and whether the game is paused
-// </summary>
+/// <summary>
+/// Global game state provider.
+/// </summary>
 [DefaultExecutionOrder(-2000)] // Initializes before other systems
 public class GameStateManager : MonoBehaviour {
     public static GameStateManager Instance { get; private set; }
@@ -25,24 +24,23 @@ public class GameStateManager : MonoBehaviour {
     public static event Action<bool> PauseChanged; 
     public static event Action<GameMode> ModeChanged;
 
-
     private void Awake() {
         if (Instance != null && Instance != this) { 
-            Destroy(gameObject); return; 
+            Destroy(gameObject); 
+            return; 
         }
-        Instance = this;
-        SetMode(GameMode.MainMenu); // Not sure if this is the best place to do this, but it works for now
 
+        Instance = this;
         GameLog.Log(TAG, "Initialized");
     }
 
-    // --- PUBLIC API ---
+    /// --- PUBLIC API ---
 
-    // <summary>
-    // Sets a pause reason. If active is true, the reason is added to the list of reasons to pause.
-    // If active is false, the reason is removed from the list of reasons to pause.
-    // </summary>
-    public void SetPauseReason(string reason, bool active) { // reason could be changed to object but string works for now
+    /// <summary>
+    /// Sets a pause reason. If active is true, the reason is added to the list of reasons to pause.
+    /// If active is false, the reason is removed from the list of reasons to pause.
+    /// </summary>
+    public void SetPauseReason(string reason, bool active) { // !!! reason could be changed to object but string works for now !!!
         bool changed;
 
         if (active)
@@ -56,23 +54,23 @@ public class GameStateManager : MonoBehaviour {
         RecomputePause();
     }
 
-    // <summary>
-    // If any pause reasons are active, pause the game
-    // </summary>
+    /// <summary>
+    /// If any pause reasons are active, pause the game
+    /// </summary>
     private void RecomputePause() {
         bool shouldPause = pauseReasons.Count > 0;
         if (shouldPause == IsPaused) 
             return;
+
         IsPaused = shouldPause;
         PauseChanged?.Invoke(IsPaused);
-
         GameLog.Log(TAG, "Paused changed to " + IsPaused);
     }
 
-    // <summary>
-    // Sets game mode to selected.
-    // If new mode is in the list of pausing modes game will be paused
-    // </summary>
+    /// <summary>
+    /// Sets game mode to selected.
+    /// If new mode is in the list of pausing modes game will be paused.
+    /// </summary>
     public void SetMode(GameMode newMode) {
         if (newMode == CurrentMode) 
             return;

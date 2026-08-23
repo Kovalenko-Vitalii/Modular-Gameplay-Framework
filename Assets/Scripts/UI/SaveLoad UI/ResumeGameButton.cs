@@ -6,6 +6,7 @@ public class ResumeGameButton : MonoBehaviour {
     Button button;
 
     private void Awake() => button = GetComponent<Button>();
+
     private void Start() {
         if (SaveManager.Instance == null) {
             button.interactable = false;
@@ -13,7 +14,7 @@ public class ResumeGameButton : MonoBehaviour {
             return;
         }
 
-        button.interactable = SaveApi.CanContinue();
+        button.interactable = SaveManager.Instance.CanContinue();
         button.onClick.AddListener(OnResumeClicked);
 
         SaveManager.Instance.SaveCompleted += HandleSaveChanged;
@@ -30,11 +31,8 @@ public class ResumeGameButton : MonoBehaviour {
         }
     }
 
-    private void OnResumeClicked() => SaveApi.ContinueLatestGame();
-        
-    
+    private void OnResumeClicked() => SaveManager.Instance.ContinueLatestGame();
 
-    private void HandleSaveChanged(string slotId) => button.interactable = SaveApi.CanContinue();
-
-    private void HandleLoadFailed(string profileId, string reason) => button.interactable = SaveApi.CanContinue();
+    private void HandleSaveChanged(string slotId) => button.interactable = SaveManager.Instance.CanContinue();
+    private void HandleLoadFailed(string profileId, string reason) => button.interactable = SaveManager.Instance.CanContinue();
 }

@@ -1,3 +1,4 @@
+using SaveSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -31,6 +32,6 @@ public class ProfileSlotUI : MonoBehaviour {
             return;
         }
 
-        SaveApi.ContinueProfile(profileId);
+        SaveManager.Instance.PlayProfile(profileId);
     }
 }

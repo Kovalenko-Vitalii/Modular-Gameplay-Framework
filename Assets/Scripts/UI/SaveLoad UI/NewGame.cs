@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using SaveSystem;
 
 /// <summary>
 /// Basic script to demonstrate ability to create new save profile and run it
@@ -19,8 +20,7 @@ public class NewGame : MonoBehaviour {
         if (string.IsNullOrEmpty(profileName)) 
             return;
 
-        SaveApi.CreateProfile(profileName);
-        SaveApi.NewGame("Demonstration");
+        SaveManager.Instance.CreateProfile(profileName);
+        SaveManager.Instance.NewGame("Demonstration"); // !!! need to figure out how to do properly !!!
     }
-
 }

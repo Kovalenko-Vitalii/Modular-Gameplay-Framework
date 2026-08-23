@@ -1,6 +1,6 @@
-// <summary>
-// Hardcoded list of game modes
-// </summary>
+/// <summary>
+/// List of game modes
+/// </summary>
 public enum GameMode
 {
     Boot,

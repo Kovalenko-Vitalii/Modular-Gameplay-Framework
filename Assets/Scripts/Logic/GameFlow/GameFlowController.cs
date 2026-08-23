@@ -1,17 +1,20 @@
 using UnityEngine;
 
-// <summary>
-// Mystery class that controls the flow of the game
-// </summary>
+/// <summary>
+/// Highest point in game flow hierarchy. 
+/// Designed to start global flow changes as StartGame, ExitToMenu etc.
+/// </summary>
 [DefaultExecutionOrder(-1000)]
 public class GameFlowController : MonoBehaviour {
     private const string TAG = "GameFlowController";
     public static GameFlowController Instance { get; private set; }
 
-    [SerializeField] string menuSceneName;
-    private string pendingScene;
-    private GameMode pendingMode;
+    [SerializeField] string defaultSceneName;
 
+    [SerializeField] string menuSceneName; // !!! THIS IS BAD APPROACH !!!
+
+    private void Start() => Boot();
+     
     private void Awake() {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
@@ -19,45 +22,32 @@ public class GameFlowController : MonoBehaviour {
         GameLog.Log(TAG, "Initialized");
     }
 
-    private void Start() {
-        SceneLoader.Instance.ContentLoaded += HandleContentLoaded;
-        ExitToMenu();
-    }
-    private void OnDestroy() { 
-        if (SceneLoader.Instance != null) 
-            SceneLoader.Instance.ContentLoaded -= HandleContentLoaded; 
-    }
+    public void StartGame(string sceneName) => RequestLoad(sceneName, GameMode.Gameplay);
+    public void ExitToMenu() => RequestLoad(menuSceneName, GameMode.MainMenu);
+    private void Boot() => RequestLoad(menuSceneName, GameMode.MainMenu);
 
-    public void StartGame(string sceneName) {
+    /// <summary>
+    /// Method that initiates scene load and mode change.
+    /// </summary>
+    /// <param name="targetSceneName"> Scene that should be loaded </param>
+    /// <param name="targetMode"> Mode that should be set </param>
+    private void RequestLoad(string targetSceneName, GameMode targetMode) {
         if (SceneLoader.Instance.IsBusy) {
-            GameLog.Warning(TAG, "StartGame ignored: SceneLoader busy");
+            GameLog.Warning(TAG, $"Load of '{targetSceneName}' ignored: SceneLoader busy");
             return;
         }
 
-        pendingScene = sceneName;
-        pendingMode = GameMode.Gameplay;
         GameStateManager.Instance.SetMode(GameMode.Loading);
-        SceneLoader.Instance.LoadContent(sceneName);
-    }
+        SceneLoader.Instance.LoadContent(targetSceneName);
 
-    public void ExitToMenu() {
-        if (SceneLoader.Instance.IsBusy) {
-            GameLog.Warning(TAG, "ExitToMenu ignored: SceneLoader busy");
-            return;
+        void OnLoaded(string loadedSceneName) {
+            if (loadedSceneName != targetSceneName)
+                return;
+            SceneLoader.Instance.ContentLoaded -= OnLoaded;
+            GameStateManager.Instance.SetMode(targetMode);
+            GameLog.Log(TAG, $"Content loaded for '{loadedSceneName}', mode set to {targetMode}");
         }
 
-        pendingScene = menuSceneName;
-        pendingMode = GameMode.MainMenu;
-        GameStateManager.Instance.SetMode(GameMode.Loading);
-        SceneLoader.Instance.LoadContent(menuSceneName);
-    }
-
-    private void HandleContentLoaded(string sceneName) {
-        if (sceneName != pendingScene) 
-            return; // ignore unrelated loads, if any
-
-        pendingScene = null;
-        GameStateManager.Instance.SetMode(pendingMode);
-        Debug.Log($"{TAG}: Content loaded for scene '{sceneName}', game mode set to Gameplay");
+        SceneLoader.Instance.ContentLoaded += OnLoaded;
     }
 }

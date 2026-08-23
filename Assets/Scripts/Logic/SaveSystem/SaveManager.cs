@@ -10,16 +10,10 @@ namespace SaveSystem {
     /// </summary>
     [DefaultExecutionOrder(-1500)]
     public class SaveManager : MonoBehaviour {
-        private const string TAG = "SaveManager";
-        private const string AutoSaveSlotId = "autosave";
-
         public static SaveManager Instance { get; private set; }
 
-        [SerializeField] private string saveFolderName = "Saves";
-
-        private string RootFolder => Path.Combine(Application.persistentDataPath, saveFolderName);
-        private string ProfilesFolder => Path.Combine(RootFolder, "Profiles");
-        private string ProfileFolder(string profileId) => Path.Combine(ProfilesFolder, profileId);
+        private string SavesFolder => Path.Combine(Application.persistentDataPath, "Saves");
+        private string ProfileFolder(string profileId) => Path.Combine(SavesFolder, profileId);
         private string ProfileIndexPath(string profileId) => Path.Combine(ProfileFolder(profileId), "index.json");
         private string ProfileSlotsFolder(string profileId) => Path.Combine(ProfileFolder(profileId), "Slots");
         private string SlotPath(string profileId, string slotId) => Path.Combine(ProfileSlotsFolder(profileId), slotId + ".json");
@@ -28,27 +22,30 @@ namespace SaveSystem {
         public SaveProfile ActiveProfile { get; private set; }
         public bool IsBusy { get; private set; }
         public bool HasAutoSave => !string.IsNullOrEmpty(ActiveProfile?.autoSave?.slotId);
-        public bool CanContinue() => ListProfiles().Any(p => !string.IsNullOrEmpty(p.autoSave?.slotId) || p.manualSaves.Count > 0);
+        public bool CanContinue() => ListProfiles().Any(profile => !string.IsNullOrEmpty(profile.autoSave?.slotId) || profile.manualSaves.Count > 0);
     
-        public event Action ProfilesChanged;   // profileId
+        public event Action ProfilesChanged;
         public event Action<string> SaveCompleted;        // slotId
         public event Action<string, string> SaveFailed;   // slotId, reason
         public event Action<string> LoadCompleted;        // slotId
         public event Action<string, string> LoadFailed;   // profileId or slotId, reason
         
-
         private SaveSlotData pendingLoadData;
         private string pendingLoadSlotId;
 
-        private bool activeProfilePersisted;      // has the ActiveProfile ever been written to disk?
+        private bool activeProfilePersisted; // !!! not sure if this is best approach !!!
         private string pendingNewGameScene;
 
-        private void Awake()
-        {
-            if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-            Instance = this;
+        const string TAG = "SaveManager";
 
-            SaveFileIO.EnsureFolder(ProfilesFolder);
+        private void Awake() {
+            if (Instance != null && Instance != this) { 
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+            SaveFileIO.EnsureFolder(SavesFolder);
             GameLog.Log(TAG, "Initialized");
         }
 
@@ -58,35 +55,75 @@ namespace SaveSystem {
                 SceneLoader.Instance.ContentLoaded -= HandleContentLoaded; 
         }
 
-        // ---------- Profile CRUD ----------
-
+        /// --------------------------------
+        /// ---------- PUBLIC API ---------- 
+        /// --------------------------------
+   
         /// <summary>
-        /// Scans disk for every profile folder and reads its index.
+        /// Loads whichever save, in whichever profile, was updated most recently overall.
+        /// Intended for a single "Continue" button on the main menu (no profile picked yet).
         /// </summary>
-        public List<SaveProfile> ListProfiles() {
-            SaveFileIO.EnsureFolder(ProfilesFolder);
-            var result = new List<SaveProfile>();
+        public void ContinueLatestGame() {
+            SaveProfile latestProfile = null;
 
-            foreach (var dir in Directory.GetDirectories(ProfilesFolder)) {
-                var profileId = Path.GetFileName(dir);
-                var indexPath = ProfileIndexPath(profileId);
-                if (!File.Exists(indexPath))
+            foreach (var profile in ListProfiles()) {
+                if (!profile.HasAnySave)
                     continue;
 
-                var profile = SaveFileIO.ReadIndex(indexPath);
-                if (string.IsNullOrEmpty(profile.profileId)) {
-                    GameLog.Warning(TAG, $"Skipping unreadable/corrupt profile folder '{profileId}'.");
-                    continue;
-                }
-
-                result.Add(profile);
+                if (latestProfile == null || profile.updatedUtcTicks > latestProfile.updatedUtcTicks)
+                    latestProfile = profile;
             }
 
-            return result;
+            if (latestProfile == null) {
+                GameLog.Warning(TAG, "ContinueLatestGame: no profile has any saves yet.");
+                LoadFailed?.Invoke(null, "No saves found");
+                return;
+            }
+
+            PlayProfile(latestProfile.profileId);
         }
 
         /// <summary>
-        /// Creates a new profile with prompted display name.
+        /// Loads whichever save (auto or manual) was updated most recently in this profile.
+        /// </summary>
+        public void PlayProfile(string profileId) {
+            var profile = SaveFileIO.ReadIndex(ProfileIndexPath(profileId));
+
+            if (string.IsNullOrEmpty(profile.profileId)) {
+                GameLog.Error(TAG, $"ContinueProfile: profile '{profileId}' not found.");
+                LoadFailed?.Invoke(profileId, "Profile not found");
+                return;
+            }
+
+            var latest = profile.Latest();
+
+            if (string.IsNullOrEmpty(latest?.slotId)) {
+                GameLog.Warning(TAG, $"ContinueProfile: profile '{profileId}' has no saves yet.");
+                LoadFailed?.Invoke(profileId, "No saves in this profile");
+                return;
+            }
+
+            LoadSlot(profileId, latest.slotId);
+        }
+
+        /// <summary>
+        /// Wipes every registered ISaveable back to its default state (clears anything left over
+        /// on persistent/DontDestroyOnLoad saveables from a previous run) and starts a fresh game
+        /// in the active profile. Call CreateProfile first.
+        /// </summary>
+        public void NewGame(string sceneName) {
+            if (!EnsureActiveProfile())
+                return;
+
+            SaveRegistry.ResetAllToDefaults();
+            pendingNewGameScene = sceneName;
+            GameFlowController.Instance.StartGame(sceneName); // !!! coupling should be reworked here !!!
+        }
+
+        /// ---------- PROFILE CRUD ----------
+
+        /// <summary>
+        /// Creates and activates a new save profile.
         /// </summary>
         public SaveProfile CreateProfile(string displayName) {
             var profileId = Guid.NewGuid().ToString("N");
@@ -108,11 +145,54 @@ namespace SaveSystem {
         }
 
         /// <summary>
-        /// Updates display name of existing profile. Does not change active profile unless the renamed profile is currently active.
+        /// Deletes profile with all related data.
+        /// </summary>
+        public void DeleteProfile(string profileId) {
+            var dir = ProfileFolder(profileId);
+
+            if (Directory.Exists(dir))
+                Directory.Delete(dir, recursive: true);
+
+            if (ActiveProfileId == profileId) {
+                ActiveProfileId = null;
+                ActiveProfile = null;
+                activeProfilePersisted = false;
+            }
+
+            GameLog.Log(TAG, $"Deleted profile '{profileId}'");
+        }
+
+        /// <summary>
+        /// Returns all valid save profiles found on disk.
+        /// </summary>
+        public List<SaveProfile> ListProfiles() {
+            SaveFileIO.EnsureFolder(SavesFolder);
+            var result = new List<SaveProfile>();
+
+            foreach (var dir in Directory.GetDirectories(SavesFolder)) {
+                var profileId = Path.GetFileName(dir);
+                var indexPath = ProfileIndexPath(profileId);
+                if (!File.Exists(indexPath))
+                    continue;
+
+                var profile = SaveFileIO.ReadIndex(indexPath);
+                if (string.IsNullOrEmpty(profile.profileId)) {
+                    GameLog.Warning(TAG, $"Skipping unreadable/corrupt profile folder '{profileId}'.");
+                    continue;
+                }
+
+                result.Add(profile);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Updates display name of existing profile. 
+        /// Does not change active profile unless the renamed profile is currently active.
         /// </summary>
         public void RenameProfile(string profileId, string displayName) {
-            if (profileId == ActiveProfileId && !activeProfilePersisted)
-            {
+            if (profileId == ActiveProfileId && !activeProfilePersisted) {
                 ActiveProfile.displayName = displayName;
                 ActiveProfile.updatedUtcTicks = DateTime.UtcNow.Ticks;
                 return;
@@ -133,60 +213,41 @@ namespace SaveSystem {
                 ActiveProfile = profile;
         }
 
-        /// <summary>
-        /// Deletes profile with all related data.
-        /// </summary>
-        public void DeleteProfile(string profileId) {
-            var dir = ProfileFolder(profileId);
-            if (Directory.Exists(dir))
-                Directory.Delete(dir, recursive: true);
-
-            if (ActiveProfileId == profileId) {
-                ActiveProfileId = null;
-                ActiveProfile = null;
-                activeProfilePersisted = false;
-            }
-
-            GameLog.Log(TAG, $"Deleted profile '{profileId}'");
-        }
-
-        private void OpenProfile(string profileId) {
-            ActiveProfileId = profileId;
-            ActiveProfile = SaveFileIO.ReadIndex(ProfileIndexPath(profileId));
-            activeProfilePersisted = true;
-        }
-
-        // ---------- Save / load within the active profile ----------
+        /// ---------- SAVE SLOT CRUD ----------
 
         /// <summary>
         /// Saves current game state to a auto-save slot in active profile.
         /// </summary>
-        public void SaveAuto() {
+        public void AutoSave() {
             if (!EnsureActiveProfile()) 
                 return;
-            SaveInternal(AutoSaveSlotId, "Auto Save", isAuto: true);
+            SaveInternal("autosave", "Auto Save", isAutoSave: true);
         }
 
         /// <summary>
         /// Create a new manual save slot in active profile.  
         /// Then save current game state to created slot in active profile. Return new slotId or null if failed. 
         /// </summary>
-        public string SaveManual(string displayName) {
+        public string NewManualSave(string displayName) {
             if (!EnsureActiveProfile())
                 return null;
+
             var slotId = Guid.NewGuid().ToString("N");
-            SaveInternal(slotId, displayName, isAuto: false);
+            SaveInternal(slotId, displayName, isAutoSave: false);
             return slotId;
         }
 
+        /// <summary>
+        /// Overwrites manual save in active profile.
+        /// </summary>
         public void OverwriteManual(string slotId) {
-            if (!EnsureActiveProfile()) 
+            if (!EnsureActiveProfile()) // !!! Should not be active profile at all !!!
                 return;
             if (ActiveProfile.manualSaves.All(m => m.slotId != slotId)) {
                 GameLog.Warning(TAG, $"OverwriteManual: no existing manual slot '{slotId}' in profile '{ActiveProfileId}'.");
                 return;
             }
-            SaveInternal(slotId, null, isAuto: false);
+            SaveInternal(slotId, null, isAutoSave: false);
         }
 
         /// <summary>
@@ -196,6 +257,7 @@ namespace SaveSystem {
             var indexPath = ProfileIndexPath(profileId);
             var profile = SaveFileIO.ReadIndex(indexPath);
             var meta = profile.manualSaves.FirstOrDefault(m => m.slotId == slotId);
+
             if (meta == null)
                 return;
 
@@ -207,13 +269,24 @@ namespace SaveSystem {
                 ActiveProfile = profile;
         }
 
+
+        /// -----------------------------
+        /// ---------- PRIVATE ----------
+        /// -----------------------------
+        
+        private void SetActiveProfile(string profileId) { /// !!! wtf !!!
+            ActiveProfileId = profileId;
+            ActiveProfile = SaveFileIO.ReadIndex(ProfileIndexPath(profileId));
+            activeProfilePersisted = true;
+        }
+
         /// <summary>
         /// Loads a specific save slot from a specific profile: reads it from disk, gets its
         /// scene active via SceneLoader (reusing the current scene if it already matches), then
         /// restores state onto every registered ISaveable once that scene is active. Becomes the
         /// active profile as a side effect.
         /// </summary>
-        public void LoadSlot(string profileId, string slotId) {
+        private void LoadSlot(string profileId, string slotId) { /// !!! WTF !!!
             if (IsBusy) { 
                 GameLog.Warning(TAG, "LoadSlot ignored: SaveManager busy");
                 return;
@@ -225,92 +298,25 @@ namespace SaveSystem {
             }
 
             var data = SaveFileIO.ReadSlot(SlotPath(profileId, slotId));
+
             if (data == null) {
                 GameLog.Error(TAG, $"LoadSlot('{profileId}'/'{slotId}') failed: slot file missing or unreadable");
                 LoadFailed?.Invoke(slotId, "Slot file missing or unreadable");
                 return;
             }
-
-            OpenProfile(profileId);
+                
+            SetActiveProfile(profileId);
 
             IsBusy = true;
             pendingLoadData = data;
             pendingLoadSlotId = slotId;
 
-            GameStateManager.Instance.SetPauseReason(TAG, true);
+            GameStateManager.Instance.SetPauseReason(TAG, true); // !!! coupling need to be fixed !!!
             GameStateManager.Instance.SetMode(GameMode.Loading);
             SceneLoader.Instance.LoadContent(data.sceneName);
         }
 
-        /// <summary>
-        /// Loads whichever save (auto or manual) was updated most recently in this profile.
-        /// </summary>
-        public void ContinueProfile(string profileId) {
-            var profile = SaveFileIO.ReadIndex(ProfileIndexPath(profileId));
-            if (string.IsNullOrEmpty(profile.profileId)) {
-                GameLog.Error(TAG, $"ContinueProfile: profile '{profileId}' not found.");
-                LoadFailed?.Invoke(profileId, "Profile not found");
-                return;
-            }
-
-            var latest = profile.autoSave;
-            foreach (var meta in profile.manualSaves) {
-                if (string.IsNullOrEmpty(latest?.slotId) || meta.updatedUtcTicks > latest.updatedUtcTicks)
-                    latest = meta;
-            }
-
-            if (string.IsNullOrEmpty(latest?.slotId)) {
-                GameLog.Warning(TAG, $"ContinueProfile: profile '{profileId}' has no saves yet.");
-                LoadFailed?.Invoke(profileId, "No saves in this profile");
-                return;
-            }
-
-            LoadSlot(profileId, latest.slotId);
-        }
-
-        /// <summary>
-        /// Loads whichever save, in whichever profile, was updated most recently overall.
-        /// Intended for a single "Continue" button on the main menu (no profile picked yet).
-        /// </summary>
-        public void ContinueLatestGame() {
-            var profiles = ListProfiles();
-            SaveProfile latestProfile = null;
-
-            foreach (var profile in profiles) {
-                bool hasAnySave = !string.IsNullOrEmpty(profile.autoSave?.slotId) || profile.manualSaves.Count > 0;
-                if (!hasAnySave)
-                    continue;
-
-                if (latestProfile == null || profile.updatedUtcTicks > latestProfile.updatedUtcTicks)
-                    latestProfile = profile;
-            }
-
-            if (latestProfile == null) {
-                GameLog.Warning(TAG, "ContinueLatestGame: no profile has any saves yet.");
-                LoadFailed?.Invoke(null, "No saves found");
-                return;
-            }
-
-            ContinueProfile(latestProfile.profileId);
-        }
-
-        /// <summary>
-        /// Wipes every registered ISaveable back to its default state (clears anything left over
-        /// on persistent/DontDestroyOnLoad saveables from a previous run) and starts a fresh game
-        /// in the active profile. Call CreateProfile first.
-        /// </summary>
-        public void NewGame(string sceneName)
-        {
-            if (!EnsureActiveProfile()) return;
-            SaveRegistry.ResetAllToDefaults();
-            pendingNewGameScene = sceneName;
-            GameFlowApi.StartGame(sceneName);
-        }
-
-        // ---------- Internals ----------
-
-        private bool EnsureActiveProfile()
-        {
+        private bool EnsureActiveProfile() { // !!! wtf !!!
             if (!string.IsNullOrEmpty(ActiveProfileId))
                 return true;
 
@@ -318,10 +324,8 @@ namespace SaveSystem {
             return false;
         }
 
-        private void HandleContentLoaded(string sceneName)
-        {
-            if (pendingLoadData != null && sceneName == pendingLoadData.sceneName)
-            {
+        private void HandleContentLoaded(string sceneName) { // !!! wtf
+            if (pendingLoadData != null && sceneName == pendingLoadData.sceneName) {
                 var data = pendingLoadData;
                 var slotId = pendingLoadSlotId;
                 pendingLoadData = null;
@@ -338,31 +342,27 @@ namespace SaveSystem {
                 return;
             }
 
-            if (pendingNewGameScene != null && sceneName == pendingNewGameScene)
-            {
+            if (pendingNewGameScene != null && sceneName == pendingNewGameScene) {
                 pendingNewGameScene = null;
-                SaveAuto();
+                AutoSave();
                 return;
             }
         }
 
-        private void SaveInternal(string slotId, string displayName, bool isAuto)
-        {
-            var data = new SaveSlotData
-            {
+        private void SaveInternal(string slotId, string displayName, bool isAutoSave) {
+            var data = new SaveSlotData {
                 slotId = slotId,
                 version = Application.version,
                 sceneName = SceneLoader.Instance.CurrentContentScene,
                 objectStates = SaveRegistry.CaptureAll()
             };
 
-            try
-            {
+            try {
                 SaveFileIO.EnsureFolder(ProfileSlotsFolder(ActiveProfileId));
                 SaveFileIO.WriteSlot(SlotPath(ActiveProfileId, slotId), data);
 
                 var nowTicks = DateTime.UtcNow.Ticks;
-                if (isAuto)
+                if (isAutoSave)
                 {
                     ActiveProfile.autoSave ??= new SaveSlotMeta { slotId = slotId, createdUtcTicks = nowTicks };
                     ActiveProfile.autoSave.slotId = slotId;

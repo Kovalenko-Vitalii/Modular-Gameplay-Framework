@@ -38,7 +38,7 @@ public class SaveButton : MonoBehaviour {
 
     private void HandleClick() {
         button.interactable = false;
-        SaveApi.SaveAuto();
+        SaveManager.Instance.AutoSave();
     }
 
     private void HandleSaveCompleted(string slotId) {
