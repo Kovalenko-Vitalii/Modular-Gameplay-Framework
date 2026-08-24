@@ -8,31 +8,31 @@ public class ResumeGameButton : MonoBehaviour {
     private void Awake() => button = GetComponent<Button>();
 
     private void Start() {
-        if (SaveManager.Instance == null) {
+        if (SaveService.Instance == null) {
             button.interactable = false;
             Debug.LogError("Could not link to SaveManager!");
             return;
         }
 
-        button.interactable = SaveManager.Instance.CanContinue();
+        button.interactable = SaveService.Instance.CanContinue();
         button.onClick.AddListener(OnResumeClicked);
 
-        SaveManager.Instance.SaveCompleted += HandleSaveChanged;
-        SaveManager.Instance.LoadFailed += HandleLoadFailed;
+        SaveService.Instance.SaveCompleted += HandleSaveChanged;
+        SaveService.Instance.LoadFailed += HandleLoadFailed;
     }
 
     private void OnDestroy() {
         if (button != null)
             button.onClick.RemoveListener(OnResumeClicked);
 
-        if (SaveManager.Instance != null) {
-            SaveManager.Instance.SaveCompleted -= HandleSaveChanged;
-            SaveManager.Instance.LoadFailed -= HandleLoadFailed;
+        if (SaveService.Instance != null) {
+            SaveService.Instance.SaveCompleted -= HandleSaveChanged;
+            SaveService.Instance.LoadFailed -= HandleLoadFailed;
         }
     }
 
     private void OnResumeClicked() => GameFlowController.Instance.ResumeGame();
 
-    private void HandleSaveChanged(string slotId) => button.interactable = SaveManager.Instance.CanContinue();
-    private void HandleLoadFailed(string profileId, string reason) => button.interactable = SaveManager.Instance.CanContinue();
+    private void HandleSaveChanged(string slotId) => button.interactable = SaveService.Instance.CanContinue();
+    private void HandleLoadFailed(string profileId, string reason) => button.interactable = SaveService.Instance.CanContinue();
 }

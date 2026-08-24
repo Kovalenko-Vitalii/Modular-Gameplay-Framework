@@ -1,5 +1,6 @@
 using SaveSystem;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 /// <summary>
 /// Highest point in game flow hierarchy. 
@@ -35,27 +36,18 @@ public class GameFlowController : MonoBehaviour {
     }
 
     public void StartNewGame(string newGameScene, string profileName) {
+        SaveService.Instance.PrepareForNewGame(profileName);
         RequestLoad(newGameScene, GameMode.Gameplay);
-        SaveManager.Instance.CreateProfile(profileName);
     }
 
-    public void StartGame(string profileId) {
-        string slotId = SaveManager.Instance.GetLatestSlotId(profileId);
-        SaveSlotData latestData = SaveManager.Instance.GetSaveData(profileId, slotId);
-        string sceneName = latestData.sceneName;
-
+    public void StartGame(string profileId) {  
+        string sceneName = SaveService.Instance.StartGame(profileId);
         RequestLoad(sceneName, GameMode.Gameplay);
-        SaveManager.Instance.CacheData(profileId, slotId);
     }
 
     public void ResumeGame() { 
-        var (latestProfileId, latestSlotId) = SaveManager.Instance.GetLatestSaveInfo();
-        SaveSlotData latestData = SaveManager.Instance.GetSaveData(latestProfileId, latestSlotId);
-        string sceneName = latestData.sceneName;
-
+        string sceneName = SaveService.Instance.Resume();
         RequestLoad(sceneName, GameMode.Gameplay);
-        SaveManager.Instance.CacheData(latestProfileId, latestSlotId);
-        Debug.Log(latestProfileId);
     }
 
     public void ReturnToMenu() => RequestLoad(menuSceneName, GameMode.MainMenu);
@@ -85,7 +77,7 @@ public class GameFlowController : MonoBehaviour {
             return;
 
         hasPendingLoad = false;
-        SaveManager.Instance.ApplyCacheData();
+        SaveService.Instance.ApplyPendingData();
         GameStateManager.Instance.SetMode(pendingMode);
         GameLog.Log(TAG, $"Content loaded for '{loadedSceneName}', mode set to {pendingMode}");
     }

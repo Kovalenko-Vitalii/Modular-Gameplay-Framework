@@ -15,19 +15,19 @@ namespace SaveSystem {
 
         /// <summary>
         /// Returns SaveProfile located at specified path.
-        /// If nothing found creates blank one and returns it.
+        /// If nothing found returns null.
         /// </summary>
         public static SaveProfile GetProfile(string profilePath) {
             if (!File.Exists(profilePath))
-                return new SaveProfile();
+                return null;
 
             try {
                 var json = File.ReadAllText(profilePath);
-                return JsonUtility.FromJson<SaveProfile>(json) ?? new SaveProfile();
+                return JsonUtility.FromJson<SaveProfile>(json) ?? null;
             }
             catch (Exception ex) {
                 Debug.LogError($"[SaveFileIO] Failed to read index at '{profilePath}': {ex.Message}");
-                return new SaveProfile();
+                return null;
             }
         }
 
@@ -35,7 +35,7 @@ namespace SaveSystem {
 
         /// <summary>
         /// Returns SaveSlotData located at specified path.
-        /// If nothing found creates blank one and returns it.
+        /// If nothing found returns null.
         /// </summary>
         public static SaveSlotData GetSlotData(string slotDataPath) {
             if (!File.Exists(slotDataPath))
@@ -63,6 +63,10 @@ namespace SaveSystem {
         /// The real file is never observed in a half-written state.
         /// </summary> 
         private static void AtomicWrite(string path, string contents) {
+            var dir = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(dir))
+                Directory.CreateDirectory(dir);
+
             var tmpPath = path + ".tmp";
             File.WriteAllText(tmpPath, contents);
 

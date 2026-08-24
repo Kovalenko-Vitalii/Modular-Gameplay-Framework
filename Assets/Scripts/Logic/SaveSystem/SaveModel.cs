@@ -6,13 +6,18 @@ using System.Collections.Generic;
 /// </summary>
 [Serializable]
 public class SaveProfile {
-    public string profileId;
+    public string id;
     public string displayName;
     public long createdUtcTicks;
     public long updatedUtcTicks;
     public SaveSlotMeta autoSave = new();
     public List<SaveSlotMeta> manualSaves = new();
 
+    public SaveProfile() {
+        id = Guid.NewGuid().ToString("N");
+        createdUtcTicks = DateTime.UtcNow.Ticks;
+        updatedUtcTicks = createdUtcTicks;
+    }
     public bool HasAnySave => !string.IsNullOrEmpty(autoSave?.slotId) || manualSaves.Count > 0;
     public SaveSlotMeta Latest() {
         var latest = autoSave;

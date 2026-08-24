@@ -14,7 +14,7 @@ public class ProfileSlotUI : MonoBehaviour {
             return;
         }
 
-        profileId = saveProfile.profileId;
+        profileId = saveProfile.id;
 
         if (nameText != null)
             nameText.text = saveProfile.displayName;

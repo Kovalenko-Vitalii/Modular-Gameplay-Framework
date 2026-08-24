@@ -21,24 +21,24 @@ public class SaveButton : MonoBehaviour {
     private void OnEnable() {
         button.onClick.AddListener(HandleClick);
 
-        if (SaveManager.Instance != null) {
-            SaveManager.Instance.SaveCompleted += HandleSaveCompleted;
-            SaveManager.Instance.SaveFailed += HandleSaveFailed;
+        if (SaveService.Instance != null) {
+            SaveService.Instance.SaveCompleted += HandleSaveCompleted;
+            SaveService.Instance.SaveFailed += HandleSaveFailed;
         }
     }
 
     private void OnDisable() {
         button.onClick.RemoveListener(HandleClick);
 
-        if (SaveManager.Instance != null) {
-            SaveManager.Instance.SaveCompleted -= HandleSaveCompleted;
-            SaveManager.Instance.SaveFailed -= HandleSaveFailed;
+        if (SaveService.Instance != null) {
+            SaveService.Instance.SaveCompleted -= HandleSaveCompleted;
+            SaveService.Instance.SaveFailed -= HandleSaveFailed;
         }
     }
 
     private void HandleClick() {
         button.interactable = false;
-        SaveManager.Instance.AutoSave(SaveManager.Instance.ActiveProfile.profileId);
+        SaveService.Instance.AutoSave();
     }
 
     private void HandleSaveCompleted(string slotId) {
