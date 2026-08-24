@@ -34,7 +34,7 @@ namespace SaveSystem {
         private string pendingLoadSlotId;
 
         private bool activeProfilePersisted; // !!! not sure if this is best approach !!!
-        private string pendingNewGameScene;
+        private string pendingNewGameScene; 
 
         const string TAG = "SaveManager";
 
@@ -49,77 +49,12 @@ namespace SaveSystem {
             GameLog.Log(TAG, "Initialized");
         }
 
-        private void Start() => SceneLoader.Instance.ContentLoaded += HandleContentLoaded;
-        private void OnDestroy() { 
-            if (SceneLoader.Instance != null) 
-                SceneLoader.Instance.ContentLoaded -= HandleContentLoaded; 
-        }
-
         /// --------------------------------
         /// ---------- PUBLIC API ---------- 
         /// --------------------------------
-   
-        /// <summary>
-        /// Loads whichever save, in whichever profile, was updated most recently overall.
-        /// Intended for a single "Continue" button on the main menu (no profile picked yet).
-        /// </summary>
-        public void ContinueLatestGame() {
-            SaveProfile latestProfile = null;
 
-            foreach (var profile in ListProfiles()) {
-                if (!profile.HasAnySave)
-                    continue;
-
-                if (latestProfile == null || profile.updatedUtcTicks > latestProfile.updatedUtcTicks)
-                    latestProfile = profile;
-            }
-
-            if (latestProfile == null) {
-                GameLog.Warning(TAG, "ContinueLatestGame: no profile has any saves yet.");
-                LoadFailed?.Invoke(null, "No saves found");
-                return;
-            }
-
-            PlayProfile(latestProfile.profileId);
-        }
-
-        /// <summary>
-        /// Loads whichever save (auto or manual) was updated most recently in this profile.
-        /// </summary>
-        public void PlayProfile(string profileId) {
-            var profile = SaveFileIO.ReadIndex(ProfileIndexPath(profileId));
-
-            if (string.IsNullOrEmpty(profile.profileId)) {
-                GameLog.Error(TAG, $"ContinueProfile: profile '{profileId}' not found.");
-                LoadFailed?.Invoke(profileId, "Profile not found");
-                return;
-            }
-
-            var latest = profile.Latest();
-
-            if (string.IsNullOrEmpty(latest?.slotId)) {
-                GameLog.Warning(TAG, $"ContinueProfile: profile '{profileId}' has no saves yet.");
-                LoadFailed?.Invoke(profileId, "No saves in this profile");
-                return;
-            }
-
-            LoadSlot(profileId, latest.slotId);
-        }
-
-        /// <summary>
-        /// Wipes every registered ISaveable back to its default state (clears anything left over
-        /// on persistent/DontDestroyOnLoad saveables from a previous run) and starts a fresh game
-        /// in the active profile. Call CreateProfile first.
-        /// </summary>
-        public void NewGame(string sceneName) {
-            if (!EnsureActiveProfile())
-                return;
-
-            SaveRegistry.ResetAllToDefaults();
-            pendingNewGameScene = sceneName;
-            GameFlowController.Instance.StartGame(sceneName); // !!! coupling should be reworked here !!!
-        }
-
+        public void ResetToDefault() => SaveRegistry.ResetAllToDefaults();
+  
         /// ---------- PROFILE CRUD ----------
 
         /// <summary>
@@ -213,8 +148,6 @@ namespace SaveSystem {
                 ActiveProfile = profile;
         }
 
-        /// ---------- SAVE SLOT CRUD ----------
-
         /// <summary>
         /// Saves current game state to a auto-save slot in active profile.
         /// </summary>
@@ -270,61 +203,72 @@ namespace SaveSystem {
         }
 
 
-        /// -----------------------------
-        /// ---------- PRIVATE ----------
-        /// -----------------------------
-        
-        private void SetActiveProfile(string profileId) { /// !!! wtf !!!
-            ActiveProfileId = profileId;
-            ActiveProfile = SaveFileIO.ReadIndex(ProfileIndexPath(profileId));
-            activeProfilePersisted = true;
+        public SaveSlotData GetSaveData(string profileId, string slotId) {
+            return SaveFileIO.ReadSlot(SlotPath(profileId, slotId));
         }
 
         /// <summary>
-        /// Loads a specific save slot from a specific profile: reads it from disk, gets its
-        /// scene active via SceneLoader (reusing the current scene if it already matches), then
-        /// restores state onto every registered ISaveable once that scene is active. Becomes the
-        /// active profile as a side effect.
+        /// Returns information about 
         /// </summary>
-        private void LoadSlot(string profileId, string slotId) { /// !!! WTF !!!
-            if (IsBusy) { 
-                GameLog.Warning(TAG, "LoadSlot ignored: SaveManager busy");
-                return;
+        public (string, string) GetLatestSaveInfo() {
+            SaveProfile latestProfile = null;
+
+            foreach (var profile in ListProfiles()) {
+                if (!profile.HasAnySave)
+                    continue;
+
+                if (latestProfile == null || profile.updatedUtcTicks > latestProfile.updatedUtcTicks)
+                    latestProfile = profile;
             }
 
-            if (SceneLoader.Instance.IsBusy) {
-                GameLog.Warning(TAG, "LoadSlot ignored: SceneLoader busy"); 
-                return; 
+            if (latestProfile == null) {
+                GameLog.Warning(TAG, "ContinueLatestGame: no profile has any saves yet.");
+                LoadFailed?.Invoke(null, "No saves found");
+                return (null, null);
             }
 
-            var data = SaveFileIO.ReadSlot(SlotPath(profileId, slotId));
-
-            if (data == null) {
-                GameLog.Error(TAG, $"LoadSlot('{profileId}'/'{slotId}') failed: slot file missing or unreadable");
-                LoadFailed?.Invoke(slotId, "Slot file missing or unreadable");
-                return;
-            }
-                
-            SetActiveProfile(profileId);
-
-            IsBusy = true;
-            pendingLoadData = data;
-            pendingLoadSlotId = slotId;
-
-            GameStateManager.Instance.SetPauseReason(TAG, true); // !!! coupling need to be fixed !!!
-            GameStateManager.Instance.SetMode(GameMode.Loading);
-            SceneLoader.Instance.LoadContent(data.sceneName);
+            string latestSlotId = GetLatestSlotId(latestProfile.profileId);
+            
+            return (latestProfile.profileId , latestSlotId);
         }
 
-        private bool EnsureActiveProfile() { // !!! wtf !!!
-            if (!string.IsNullOrEmpty(ActiveProfileId))
-                return true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string GetLatestSlotId(string profileId) {
+            var profile = SaveFileIO.ReadIndex(ProfileIndexPath(profileId));
 
-            GameLog.Error(TAG, "No active profile - call CreateProfile, LoadSlot or ContinueProfile first.");
-            return false;
+            if (string.IsNullOrEmpty(profile.profileId)) {
+                GameLog.Error(TAG, $"ContinueProfile: profile '{profileId}' not found.");
+                LoadFailed?.Invoke(profileId, "Profile not found");
+                return null;
+            }
+
+            SaveSlotMeta latest = profile.Latest();
+
+            if (string.IsNullOrEmpty(latest?.slotId)) {
+                GameLog.Warning(TAG, $"ContinueProfile: profile '{profileId}' has no saves yet.");
+                LoadFailed?.Invoke(profileId, "No saves in this profile");
+                return null;
+            }
+
+            return latest.slotId;
         }
 
-        private void HandleContentLoaded(string sceneName) { // !!! wtf
+        /// <summary>
+        /// 
+        /// </summary>
+       
+        public void NewProfilePreparation(string sceneName, string profileName) {
+            if (!EnsureActiveProfile())
+                return;
+
+            SaveRegistry.ResetAllToDefaults();
+            CreateProfile(profileName);
+            pendingNewGameScene = sceneName;
+        }
+
+        public void HandleContentLoaded(string sceneName) {
             if (pendingLoadData != null && sceneName == pendingLoadData.sceneName) {
                 var data = pendingLoadData;
                 var slotId = pendingLoadSlotId;
@@ -349,6 +293,36 @@ namespace SaveSystem {
             }
         }
 
+        /// -----------------------------
+        /// ---------- PRIVATE ----------
+        /// -----------------------------
+
+        /// <summary>
+        /// Caches data that will be used when HandleContentLoaded() is called.
+        /// </summary>
+        public void LoadSlot(string profileId, string slotId) { /// !!! WTF !!!
+            if (IsBusy) { 
+                GameLog.Warning(TAG, "LoadSlot ignored: SaveManager busy");
+                return;
+            }
+
+            var data = SaveFileIO.ReadSlot(SlotPath(profileId, slotId));
+
+            if (data == null) {
+                GameLog.Error(TAG, $"LoadSlot('{profileId}'/'{slotId}') failed: slot file missing or unreadable");
+                LoadFailed?.Invoke(slotId, "Slot file missing or unreadable");
+                return;
+            }
+
+            ActiveProfileId = profileId;
+            ActiveProfile = SaveFileIO.ReadIndex(ProfileIndexPath(profileId));
+            activeProfilePersisted = true;
+
+            IsBusy = true;
+            pendingLoadData = data;
+            pendingLoadSlotId = slotId;
+        }
+ 
         private void SaveInternal(string slotId, string displayName, bool isAutoSave) {
             var data = new SaveSlotData {
                 slotId = slotId,
@@ -400,6 +374,14 @@ namespace SaveSystem {
 
             SaveCompleted?.Invoke(slotId);
             GameLog.Log(TAG, $"Saved slot '{slotId}' in profile '{ActiveProfileId}' (scene='{data.sceneName}')");
+        }
+
+        private bool EnsureActiveProfile() {
+            if (!string.IsNullOrEmpty(ActiveProfileId))
+                return true;
+
+            GameLog.Error(TAG, "No active profile - call CreateProfile, LoadSlot or ContinueProfile first.");
+            return false;
         }
     }
 }

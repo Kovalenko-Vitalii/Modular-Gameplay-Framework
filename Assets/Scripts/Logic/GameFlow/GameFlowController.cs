@@ -1,3 +1,4 @@
+using SaveSystem;
 using UnityEngine;
 
 /// <summary>
@@ -9,45 +10,78 @@ public class GameFlowController : MonoBehaviour {
     private const string TAG = "GameFlowController";
     public static GameFlowController Instance { get; private set; }
 
-    [SerializeField] string defaultSceneName;
+    private string pendingSceneName;
+    private GameMode pendingMode;
+    private bool hasPendingLoad;
 
     [SerializeField] string menuSceneName; // !!! THIS IS BAD APPROACH !!!
 
     private void Start() => Boot();
      
     private void Awake() {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        if (Instance != null && Instance != this) { 
+            Destroy(gameObject);
+            return; 
+        }
+        
         Instance = this;
-
+        SceneLoader.Instance.ContentLoaded += HandleContentLoaded;
         GameLog.Log(TAG, "Initialized");
     }
 
-    public void StartGame(string sceneName) => RequestLoad(sceneName, GameMode.Gameplay);
-    public void ExitToMenu() => RequestLoad(menuSceneName, GameMode.MainMenu);
+    private void OnDestroy() {
+        if (SceneLoader.Instance != null)
+            SceneLoader.Instance.ContentLoaded -= HandleContentLoaded;
+    }
+
+    public void StartNewGame(string newGameScene, string profileName) {
+        RequestLoad(newGameScene, GameMode.Gameplay);
+        SaveManager.Instance.NewProfilePreparation(newGameScene, profileName);
+    }
+    public void StartGame(string profileId) {
+        string slotId = SaveManager.Instance.GetLatestSlotId(profileId);
+        SaveSlotData latestData = SaveManager.Instance.GetSaveData(profileId, slotId);
+        string sceneName = latestData.sceneName;
+
+        RequestLoad(sceneName, GameMode.Gameplay);
+        SaveManager.Instance.LoadSlot(profileId, slotId);
+    }
+    public void ResumeGame() { 
+        var (latestProfileId, latestSlotId) = SaveManager.Instance.GetLatestSaveInfo();
+        SaveSlotData latestData = SaveManager.Instance.GetSaveData(latestProfileId, latestSlotId);
+        string sceneName = latestData.sceneName;
+
+        RequestLoad(sceneName, GameMode.Gameplay);
+        SaveManager.Instance.LoadSlot(latestProfileId, latestSlotId);
+        Debug.Log(latestProfileId);
+    }
+    public void ReturnToMenu() => RequestLoad(menuSceneName, GameMode.MainMenu);
     private void Boot() => RequestLoad(menuSceneName, GameMode.MainMenu);
 
-    /// <summary>
-    /// Method that initiates scene load and mode change.
-    /// </summary>
-    /// <param name="targetSceneName"> Scene that should be loaded </param>
-    /// <param name="targetMode"> Mode that should be set </param>
     private void RequestLoad(string targetSceneName, GameMode targetMode) {
         if (SceneLoader.Instance.IsBusy) {
             GameLog.Warning(TAG, $"Load of '{targetSceneName}' ignored: SceneLoader busy");
             return;
         }
 
+        pendingSceneName = targetSceneName;
+        pendingMode = targetMode;
+        hasPendingLoad = true;
+
         GameStateManager.Instance.SetMode(GameMode.Loading);
         SceneLoader.Instance.LoadContent(targetSceneName);
+    }
 
-        void OnLoaded(string loadedSceneName) {
-            if (loadedSceneName != targetSceneName)
-                return;
-            SceneLoader.Instance.ContentLoaded -= OnLoaded;
-            GameStateManager.Instance.SetMode(targetMode);
-            GameLog.Log(TAG, $"Content loaded for '{loadedSceneName}', mode set to {targetMode}");
-        }
+    private void HandleContentLoaded(string loadedSceneName) {
+        if (!hasPendingLoad)
+            return;
 
-        SceneLoader.Instance.ContentLoaded += OnLoaded;
+        if (loadedSceneName != pendingSceneName)
+            return;
+
+        hasPendingLoad = false;
+        SaveManager.Instance.HandleContentLoaded(loadedSceneName);
+        GameStateManager.Instance.SetMode(pendingMode);
+        GameLog.Log(TAG, $"Content loaded for '{loadedSceneName}', mode set to {pendingMode}");
     }
 }

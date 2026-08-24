@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Additive scene loading manager.
 /// </summary>
+[DefaultExecutionOrder(-1500)]
 public class SceneLoader : MonoBehaviour {
     string TAG = "SceneLoader";
     public static SceneLoader Instance { get; private set; }

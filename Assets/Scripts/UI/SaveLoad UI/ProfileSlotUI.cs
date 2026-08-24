@@ -1,7 +1,5 @@
-using SaveSystem;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Profiling;
 using UnityEngine.UI;
 
 public class ProfileSlotUI : MonoBehaviour {
@@ -32,6 +30,6 @@ public class ProfileSlotUI : MonoBehaviour {
             return;
         }
 
-        SaveManager.Instance.PlayProfile(profileId);
+        GameFlowController.Instance.StartGame(profileId);
     }
 }

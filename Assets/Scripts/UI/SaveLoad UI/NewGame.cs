@@ -20,7 +20,6 @@ public class NewGame : MonoBehaviour {
         if (string.IsNullOrEmpty(profileName)) 
             return;
 
-        SaveManager.Instance.CreateProfile(profileName);
-        SaveManager.Instance.NewGame("Demonstration"); // !!! need to figure out how to do properly !!!
+        GameFlowController.Instance.StartNewGame("Demonstration", profileName);
     }
 }

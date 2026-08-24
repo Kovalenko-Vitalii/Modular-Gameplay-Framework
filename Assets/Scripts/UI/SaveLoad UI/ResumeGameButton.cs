@@ -31,7 +31,7 @@ public class ResumeGameButton : MonoBehaviour {
         }
     }
 
-    private void OnResumeClicked() => SaveManager.Instance.ContinueLatestGame();
+    private void OnResumeClicked() => GameFlowController.Instance.ResumeGame();
 
     private void HandleSaveChanged(string slotId) => button.interactable = SaveManager.Instance.CanContinue();
     private void HandleLoadFailed(string profileId, string reason) => button.interactable = SaveManager.Instance.CanContinue();
