@@ -36,27 +36,32 @@ public class GameFlowController : MonoBehaviour {
 
     public void StartNewGame(string newGameScene, string profileName) {
         RequestLoad(newGameScene, GameMode.Gameplay);
-        SaveManager.Instance.NewProfilePreparation(newGameScene, profileName);
+        SaveManager.Instance.CreateProfile(profileName);
     }
+
     public void StartGame(string profileId) {
         string slotId = SaveManager.Instance.GetLatestSlotId(profileId);
         SaveSlotData latestData = SaveManager.Instance.GetSaveData(profileId, slotId);
         string sceneName = latestData.sceneName;
 
         RequestLoad(sceneName, GameMode.Gameplay);
-        SaveManager.Instance.PutCacheData(profileId, slotId);
+        SaveManager.Instance.CacheData(profileId, slotId);
     }
+
     public void ResumeGame() { 
         var (latestProfileId, latestSlotId) = SaveManager.Instance.GetLatestSaveInfo();
         SaveSlotData latestData = SaveManager.Instance.GetSaveData(latestProfileId, latestSlotId);
         string sceneName = latestData.sceneName;
 
         RequestLoad(sceneName, GameMode.Gameplay);
-        SaveManager.Instance.PutCacheData(latestProfileId, latestSlotId);
+        SaveManager.Instance.CacheData(latestProfileId, latestSlotId);
         Debug.Log(latestProfileId);
     }
+
     public void ReturnToMenu() => RequestLoad(menuSceneName, GameMode.MainMenu);
+
     private void Boot() => RequestLoad(menuSceneName, GameMode.MainMenu);
+
 
     private void RequestLoad(string targetSceneName, GameMode targetMode) {
         if (SceneLoader.Instance.IsBusy) {
@@ -80,7 +85,7 @@ public class GameFlowController : MonoBehaviour {
             return;
 
         hasPendingLoad = false;
-        SaveManager.Instance.ApplyCacheData(loadedSceneName);
+        SaveManager.Instance.ApplyCacheData();
         GameStateManager.Instance.SetMode(pendingMode);
         GameLog.Log(TAG, $"Content loaded for '{loadedSceneName}', mode set to {pendingMode}");
     }

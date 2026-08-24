@@ -13,37 +13,45 @@ namespace SaveSystem {
             Directory.CreateDirectory(folderPath);
         }
 
-        public static SaveProfile ReadIndex(string indexPath) {
-            if (!File.Exists(indexPath))
+        /// <summary>
+        /// Returns SaveProfile located at specified path.
+        /// If nothing found creates blank one and returns it.
+        /// </summary>
+        public static SaveProfile GetProfile(string profilePath) {
+            if (!File.Exists(profilePath))
                 return new SaveProfile();
 
             try {
-                var json = File.ReadAllText(indexPath);
+                var json = File.ReadAllText(profilePath);
                 return JsonUtility.FromJson<SaveProfile>(json) ?? new SaveProfile();
             }
             catch (Exception ex) {
-                Debug.LogError($"[SaveFileIO] Failed to read index at '{indexPath}': {ex.Message}");
+                Debug.LogError($"[SaveFileIO] Failed to read index at '{profilePath}': {ex.Message}");
                 return new SaveProfile();
             }
         }
 
-        public static void WriteIndex(string indexPath, SaveProfile index) =>  AtomicWrite(indexPath, JsonUtility.ToJson(index, true));
+        public static void WriteProfile(string profilePath, SaveProfile profile) =>  AtomicWrite(profilePath, JsonUtility.ToJson(profile, true));
 
-        public static SaveSlotData ReadSlot(string slotPath) {
-            if (!File.Exists(slotPath))
+        /// <summary>
+        /// Returns SaveSlotData located at specified path.
+        /// If nothing found creates blank one and returns it.
+        /// </summary>
+        public static SaveSlotData GetSlotData(string slotDataPath) {
+            if (!File.Exists(slotDataPath))
                 return null;
 
             try {
-                var json = File.ReadAllText(slotPath);
+                var json = File.ReadAllText(slotDataPath);
                 return JsonUtility.FromJson<SaveSlotData>(json);
             }
             catch (Exception ex) {
-                Debug.LogError($"[SaveFileIO] Failed to read slot at '{slotPath}': {ex.Message}");
+                Debug.LogError($"[SaveFileIO] Failed to read slot at '{slotDataPath}': {ex.Message}");
                 return null;
             }
         }
 
-        public static void WriteSlot(string slotPath, SaveSlotData data) => AtomicWrite(slotPath, JsonUtility.ToJson(data, true)); 
+        public static void WriteSlotData(string slotDataPath, SaveSlotData data) => AtomicWrite(slotDataPath, JsonUtility.ToJson(data, true)); 
 
         public static void DeleteSlot(string slotPath) {
             if (File.Exists(slotPath))
@@ -53,7 +61,7 @@ namespace SaveSystem {
         /// <summary>
         /// Writes to a "<path>.tmp" file first, then atomically replaces the real path.
         /// The real file is never observed in a half-written state.
-        /// </summary>
+        /// </summary> 
         private static void AtomicWrite(string path, string contents) {
             var tmpPath = path + ".tmp";
             File.WriteAllText(tmpPath, contents);
