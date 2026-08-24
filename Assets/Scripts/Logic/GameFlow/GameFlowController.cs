@@ -44,7 +44,7 @@ public class GameFlowController : MonoBehaviour {
         string sceneName = latestData.sceneName;
 
         RequestLoad(sceneName, GameMode.Gameplay);
-        SaveManager.Instance.LoadSlot(profileId, slotId);
+        SaveManager.Instance.PutCacheData(profileId, slotId);
     }
     public void ResumeGame() { 
         var (latestProfileId, latestSlotId) = SaveManager.Instance.GetLatestSaveInfo();
@@ -52,7 +52,7 @@ public class GameFlowController : MonoBehaviour {
         string sceneName = latestData.sceneName;
 
         RequestLoad(sceneName, GameMode.Gameplay);
-        SaveManager.Instance.LoadSlot(latestProfileId, latestSlotId);
+        SaveManager.Instance.PutCacheData(latestProfileId, latestSlotId);
         Debug.Log(latestProfileId);
     }
     public void ReturnToMenu() => RequestLoad(menuSceneName, GameMode.MainMenu);
@@ -80,7 +80,7 @@ public class GameFlowController : MonoBehaviour {
             return;
 
         hasPendingLoad = false;
-        SaveManager.Instance.HandleContentLoaded(loadedSceneName);
+        SaveManager.Instance.ApplyCacheData(loadedSceneName);
         GameStateManager.Instance.SetMode(pendingMode);
         GameLog.Log(TAG, $"Content loaded for '{loadedSceneName}', mode set to {pendingMode}");
     }
