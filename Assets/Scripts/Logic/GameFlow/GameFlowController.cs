@@ -36,17 +36,20 @@ public class GameFlowController : MonoBehaviour {
     }
 
     public void StartNewGame(string newGameScene, string profileName) {
-        SaveService.Instance.PrepareForNewGame(profileName);
+        if (string.IsNullOrEmpty(newGameScene)) return;
+        SaveService.Instance.StartNewGame(profileName);
         RequestLoad(newGameScene, GameMode.Gameplay);
     }
 
     public void StartGame(string profileId) {  
-        string sceneName = SaveService.Instance.StartGame(profileId);
+        string sceneName = SaveService.Instance.StartExisingGame(profileId);
+        if (sceneName == null) return;
         RequestLoad(sceneName, GameMode.Gameplay);
     }
 
     public void ResumeGame() { 
         string sceneName = SaveService.Instance.Resume();
+        if (sceneName == null) return;
         RequestLoad(sceneName, GameMode.Gameplay);
     }
 
@@ -70,12 +73,9 @@ public class GameFlowController : MonoBehaviour {
     }
 
     private void HandleContentLoaded(string loadedSceneName) {
-        if (!hasPendingLoad)
-            return;
-
-        if (loadedSceneName != pendingSceneName)
-            return;
-
+        if (!hasPendingLoad) return;
+        if (loadedSceneName != pendingSceneName) return;
+            
         hasPendingLoad = false;
         SaveService.Instance.ApplyPendingData();
         GameStateManager.Instance.SetMode(pendingMode);

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SaveSystem
 {
     /// <summary>
-    /// 
+    /// Provides basic operations with save data.
     /// </summary>
     public class SaveRepository {
         private string SavesFolder => Path.Combine(Application.persistentDataPath, "Saves");
@@ -18,9 +18,64 @@ namespace SaveSystem
 
 
         const string TAG = "SaveRepository";
-
-        public void EnsureFolder() => SaveFileIO.EnsureFolder(SavesFolder);
         
+        public void EnsureFolder() => SaveFileIO.EnsureFolder(SavesFolder);
+
+        /// <summary>
+        /// Returns profile by specified profileId.
+        /// </summary>
+        public SaveProfile GetProfile(string profileId) => SaveFileIO.GetProfile(ProfileIndexPath(profileId));
+
+        /// <summary>
+        /// Returns dataSlot by specified slotId and profileId
+        /// </summary>
+        public SaveSlotData GetData(string profileId, string slotId) => SaveFileIO.GetSlotData(SlotPath(profileId, slotId));
+
+        /// <summary>
+        /// Returns latest save saveSlotId and it`s profileId.
+        /// </summary>
+        public (string, string) GetLatestSaveInfo() {
+            SaveProfile latestProfile = null;
+
+            foreach (var profile in ListProfiles()) {
+                if (!profile.HasAnySave)
+                    continue;
+
+                if (latestProfile == null || profile.updatedUtcTicks > latestProfile.updatedUtcTicks)
+                    latestProfile = profile;
+            }
+
+            if (latestProfile == null) {
+                GameLog.Warning(TAG, "ContinueLatestGame: no profile has any saves yet.");
+                return (null, null);
+            }
+
+            string latestSlotId = GetLatestSlotId(latestProfile.id);
+
+            return (latestProfile.id, latestSlotId);
+        }
+
+        /// <summary>
+        /// Returns latest slot within specified Id.
+        /// </summary>
+        public string GetLatestSlotId(string profileId) {
+            var profile = SaveFileIO.GetProfile(ProfileIndexPath(profileId));
+
+            if (string.IsNullOrEmpty(profile.id)) {
+                GameLog.Error(TAG, $"ContinueProfile: profile '{profileId}' not found.");
+                return null;
+            }
+
+            SaveSlotMeta latest = profile.Latest();
+
+            if (string.IsNullOrEmpty(latest?.slotId)) {
+                GameLog.Warning(TAG, $"ContinueProfile: profile '{profileId}' has no saves yet.");
+                return null;
+            }
+
+            return latest.slotId;
+        }
+
         /// <summary>
         /// Returns all valid save profiles found on disk.
         /// </summary>
@@ -47,18 +102,14 @@ namespace SaveSystem
             return result;
         }
 
-        public SaveProfile GetProfile(string profileId) => SaveFileIO.GetProfile(ProfileIndexPath(profileId));
-
         /// <summary>
         /// Creates and activates a new save profile.
         /// </summary>
-        public SaveProfile CreateProfile(string displayName)
-        {
+        public SaveProfile CreateProfile(string displayName) {
             var profileId = Guid.NewGuid().ToString("N");
             var now = DateTime.UtcNow.Ticks;
 
-            var profile = new SaveProfile
-            {
+            var profile = new SaveProfile {
                 id = profileId,
                 displayName = displayName,
                 createdUtcTicks = now,
@@ -83,31 +134,14 @@ namespace SaveSystem
 
             GameLog.Log(TAG, $"Deleted profile '{profileId}'");
         }
-
-        /// <summary>
-        /// Updates display name of existing profile. 
-        /// Does not change active profile unless the renamed profile is currently active.
-        /// </summary>
-        public void RenameProfile(string profileId, string displayName) {
-            var path = ProfileIndexPath(profileId);
-            var profile = SaveFileIO.GetProfile(path);
-
-            if (string.IsNullOrEmpty(profile.id)) {
-                GameLog.Warning(TAG, $"RenameProfile: profile '{profileId}' not found.");
-                return;
-            }
-
-            profile.displayName = displayName;
-            profile.updatedUtcTicks = DateTime.UtcNow.Ticks;
-            SaveFileIO.WriteProfile(path, profile);
-        }
-
-        public SaveSlotData GetData(string profileId, string slotId) => SaveFileIO.GetSlotData(SlotPath(profileId, slotId));
         
+        /// <summary>
+        /// Deletes specified saveSlotData from specified profile.
+        /// </summary>
         public SaveProfile DeleteData(string profileId, string slotId) {
             var profilePath = ProfileIndexPath(profileId);
             var profile = SaveFileIO.GetProfile(profilePath);
-            var meta = profile.manualSaves.FirstOrDefault(meta => meta.slotId == slotId);
+            var meta = profile.manualSaves.FirstOrDefault(m => m.slotId == slotId);
 
             if (meta == null)
                 return null;
@@ -119,101 +153,27 @@ namespace SaveSystem
             return profile;
         }
 
-        public (bool, string) Save(string profileId, SaveSlotData data, string displayName, bool isAutoSave) {
-            SaveProfile profile = GetProfile(profileId);
-            if (profile == null)
-                return (false, "Profile not found, id: " + profileId);
-
-            try {
-                SaveFileIO.WriteSlotData(SlotPath(profileId, data.slotId), data);
-
-                var nowTicks = DateTime.UtcNow.Ticks;
-
-                SaveFileIO.WriteProfile(ProfileIndexPath(profileId), profile);
-
-                if (isAutoSave)
-                {
-                    profile.autoSave ??= new SaveSlotMeta
-                    {
-                        slotId = data.slotId,
-                        createdUtcTicks = nowTicks
-                    };
-                    profile.autoSave.slotId = data.slotId;
-                    profile.autoSave.displayName = displayName;
-                    profile.autoSave.updatedUtcTicks = nowTicks;
-                }
-                else
-                {
-                    var meta = profile.manualSaves.FirstOrDefault(m => m.slotId == data.slotId);
-                    if (meta == null)
-                    {
-                        meta = new SaveSlotMeta { slotId = data.slotId, createdUtcTicks = nowTicks };
-                        profile.manualSaves.Add(meta);
-                    }
-
-                    if (!string.IsNullOrEmpty(displayName))
-                        meta.displayName = displayName;
-                    meta.updatedUtcTicks = nowTicks;
-                }
-            } catch (Exception ex) {
-                GameLog.Error(TAG, $"Save to slot '{data.slotId}' (profile '{profileId}') failed: {ex.Message}");
-                return (false, ex.Message);
-            }
-
-            SaveFileIO.WriteProfile(ProfileIndexPath(profileId), profile);
-            GameLog.Log(TAG, $"Saved slot '{data.slotId}' in profile '{profileId}' (scene='{data.sceneName}')");
-            return (true, null);
-        }
-
-        /// <summary>
-        /// Returns information about 
-        /// </summary>
-        public (string, string) GetLatestSaveInfo()
-        {
-            SaveProfile latestProfile = null;
-
-            foreach (var profile in ListProfiles())
-            {
-                if (!profile.HasAnySave)
-                    continue;
-
-                if (latestProfile == null || profile.updatedUtcTicks > latestProfile.updatedUtcTicks)
-                    latestProfile = profile;
-            }
-
-            if (latestProfile == null)
-            {
-                GameLog.Warning(TAG, "ContinueLatestGame: no profile has any saves yet.");
-                return (null, null);
-            }
-
-            string latestSlotId = GetLatestSlotId(latestProfile.id);
-
-            return (latestProfile.id, latestSlotId);
-        }
-
         /// <summary>
         /// 
         /// </summary>
-        public string GetLatestSlotId(string profileId)
-        {
-            var profile = SaveFileIO.GetProfile(ProfileIndexPath(profileId));
+        public (SaveProfile, string) SaveData(string profileId, SaveSlotData data, string displayName, bool isAutoSave) {
+            SaveProfile profile = GetProfile(profileId);
 
-            if (string.IsNullOrEmpty(profile.id))
-            {
-                GameLog.Error(TAG, $"ContinueProfile: profile '{profileId}' not found.");
-                return null;
-            }
+            if (profile == null)
+                return (null, "Profile not found, id: " + profileId);
 
-            SaveSlotMeta latest = profile.Latest();
+            if (string.IsNullOrEmpty(data.slotId))
+                return (null, "Slot ID cannot be null or empty.");
 
-            if (string.IsNullOrEmpty(latest?.slotId))
-            {
-                GameLog.Warning(TAG, $"ContinueProfile: profile '{profileId}' has no saves yet.");
-                return null;
-            }
+            SaveFileIO.WriteSlotData(SlotPath(profileId, data.slotId), data);
 
-            return latest.slotId;
+            (SaveProfile updatedProfile, string message) = profile.SaveData(data, isAutoSave);
+
+            if (updatedProfile != null) {
+                SaveFileIO.WriteProfile(ProfileIndexPath(profileId), updatedProfile);
+                return (updatedProfile, message);
+            } else 
+                return (null, message);   
         }
     }
 }

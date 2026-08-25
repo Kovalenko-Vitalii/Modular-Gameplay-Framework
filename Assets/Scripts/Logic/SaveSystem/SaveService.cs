@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace SaveSystem {
     [DefaultExecutionOrder(-1500)]
@@ -43,14 +41,20 @@ namespace SaveSystem {
 
         ///  --- LOADING SAVE METHODS ----
         
-        public void PrepareForNewGame(string displayName) {
+        /// <summary>
+        /// Prepares save service for new game being created.
+        /// </summary>
+        public void StartNewGame(string displayName) {
             SaveProfile newProfile = repository.CreateProfile(displayName);
 
             ActiveProfile = newProfile;
             PendingLoadData = null;
         }
 
-        public string StartGame(string profileId) {
+        /// <summary>
+        /// Prepares save service for loading new game.
+        /// </summary>
+        public string StartExisingGame(string profileId) {
             string latestSlotId = repository.GetLatestSlotId(profileId);
             var data = repository.GetData(profileId, latestSlotId);
 
@@ -63,6 +67,9 @@ namespace SaveSystem {
             return data.sceneName;
         }
 
+        /// <summary>
+        /// Finds latest saveSlot out of all profiles and prepares to load it.
+        /// </summary>
         public string Resume() {
             (string latestProfileId, string latestSlotId) = repository.GetLatestSaveInfo();
 
@@ -81,8 +88,9 @@ namespace SaveSystem {
             PreparePendingData(latestProfileId, latestSlotId);
             return data.sceneName;
         }
+
         /// <summary>
-        /// Takes profile and slot id`s that will be applied when scene is loaded.
+        /// Sets pending data (profile and slot id`s that will be applied when scene is loaded).
         /// </summary>
         public void PreparePendingData(string profileId, string slotId) {
             if (PendingLoadData != null) { 
@@ -111,7 +119,7 @@ namespace SaveSystem {
         }
 
         /// <summary>
-        /// When scene is loaded apply PendingLoadData
+        /// When scene is loaded applies PendingLoadData
         /// </summary>
         public void ApplyPendingData() {
             SaveRegistry.ResetAllToDefaults();
@@ -134,46 +142,50 @@ namespace SaveSystem {
         /// <summary>
         /// Saves current game state to a auto-save slot in active profile.
         /// </summary> !!!
-        public void AutoSave() => SaveCurrentGame("autosave", "Auto Save", isAutoSave: true);
+        public void AutoSave() => SaveToActiveProfile("autosave", "Auto Save", isAutoSave: true);
 
         /// <summary>
         /// Create a new manual save slot in active profile.  
         /// Then save current game state to created slot in active profile. Return new slotId or null if failed. 
         /// </summary>
-        public void NewManualSave(string displayName) => SaveCurrentGame(null, displayName, isAutoSave: false);
+        public void NewManualSave(string displayName) => SaveToActiveProfile(Guid.NewGuid().ToString("N"), displayName, isAutoSave: false);
 
         /// <summary>
         /// Overwrites manual save in active profile.
-        /// </summary> !!!
-        public void OverwriteManual(string slotId, string displayName) => SaveCurrentGame(slotId, displayName, isAutoSave: false);
+        /// </summary>
+        public void OverwriteManual(string slotId, string displayName) => SaveToActiveProfile(slotId, displayName, isAutoSave: false);
         
         /// <summary>
         /// 
         /// </summary>
-        private void SaveCurrentGame(string slotId, string displayName, bool isAutoSave) {
+        private void SaveToActiveProfile(string slotId, string displayName, bool isAutoSave) {
             if (ActiveProfile == null) {
                 SaveFailed.Invoke(null, "No Active profile set");
                 return;
             }
+
+            if (string.IsNullOrEmpty(slotId)) {
+                SaveFailed.Invoke(null, "Invalid slotId");
+                return;
+            }
             
             var data = new SaveSlotData {
+                slotId = slotId,
                 version = Application.version,
                 sceneName = SceneLoader.Instance.CurrentContentScene,
                 objectStates = SaveRegistry.CaptureAll()
             };
 
-            if (slotId != null) 
-                data.slotId = slotId;
+            (SaveProfile updatedProfile, string message) = repository.SaveData(ActiveProfile.id, data, displayName, isAutoSave);
 
-            (bool success, string reason) = repository.Save(ActiveProfile.id, data, displayName, isAutoSave);
-
-            if (success) {
+            if (updatedProfile != null) {
+                ActiveProfile = updatedProfile;
                 Debug.Log("Saved Successfully !");
                 SaveCompleted?.Invoke(slotId);
             }
             else {
-                Debug.Log("Failed to Save: " + reason);
-                SaveFailed.Invoke(slotId, reason);
+                Debug.Log("Failed to Save: " + message);
+                SaveFailed.Invoke(slotId, message);
             }
                 
         }      
