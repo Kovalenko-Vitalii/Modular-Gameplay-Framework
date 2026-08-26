@@ -17,8 +17,7 @@ public class ResumeGameButton : MonoBehaviour {
         button.interactable = SaveService.Instance.CanResume();
         button.onClick.AddListener(OnResumeClicked);
 
-        SaveService.Instance.SaveCompleted += HandleSaveChanged;
-        SaveService.Instance.LoadFailed += HandleLoadFailed;
+        SaveService.Instance.ProfilesChanged += HandleSaveChanged;
     }
 
     private void OnDestroy() {
@@ -26,13 +25,11 @@ public class ResumeGameButton : MonoBehaviour {
             button.onClick.RemoveListener(OnResumeClicked);
 
         if (SaveService.Instance != null) {
-            SaveService.Instance.SaveCompleted -= HandleSaveChanged;
-            SaveService.Instance.LoadFailed -= HandleLoadFailed;
+            SaveService.Instance.ProfilesChanged -= HandleSaveChanged;
         }
     }
 
     private void OnResumeClicked() => GameFlowController.Instance.ResumeGame();
 
-    private void HandleSaveChanged(string slotId) => button.interactable = SaveService.Instance.CanResume();
-    private void HandleLoadFailed(string profileId, string reason) => button.interactable = SaveService.Instance.CanResume();
+    private void HandleSaveChanged() => button.interactable = SaveService.Instance.CanResume();
 }

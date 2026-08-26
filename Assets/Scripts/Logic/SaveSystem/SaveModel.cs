@@ -16,6 +16,10 @@ public class SaveProfile {
     public List<SaveSlotMeta> manualSaves = new();
 
     public bool HasAnySave => !string.IsNullOrEmpty(autoSave?.slotId) || manualSaves.Count > 0;
+    
+    /// <summary>
+    /// Returns id of the latest slot in profile
+    /// </summary>
     public SaveSlotMeta Latest() {
         var latest = autoSave;
 
@@ -26,7 +30,8 @@ public class SaveProfile {
 
         return latest;
     }
-    public (SaveProfile, string message, string evictedSlotId) SaveData(SaveSlotData data, bool isAutoSave, SaveConfig config) {
+
+    public (SaveProfile, string message, string evictedSlotId) UpdateMeta(SaveSlotData data, bool isAutoSave, SaveConfig config) {
         string evictedSlotId = null;
 
         try {

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Profiling;
 
-namespace SaveSystem
-{
+namespace SaveSystem {
     /// <summary>
     /// Provides basic operations with save data.
     /// </summary>
@@ -122,11 +120,14 @@ namespace SaveSystem
         /// <summary>
         /// Deletes profile with all related data.
         /// </summary>
-        public void DeleteProfile(string profileId) {
+        public bool DeleteProfile(string profileId) {
             var path = ProfileFolder(profileId);
 
-            if (Directory.Exists(path))
+            if (Directory.Exists(path)) {
                 Directory.Delete(path, recursive: true);
+                return true;
+            }
+            return false;
         }
         
         /// <summary>
@@ -159,7 +160,7 @@ namespace SaveSystem
             if (string.IsNullOrEmpty(data.slotId))
                 return (null, "Slot ID cannot be null or empty.");
 
-            (SaveProfile updatedProfile, string message, string evictedSlotId) = profile.SaveData(data, isAutoSave, saveConfig);
+            (SaveProfile updatedProfile, string message, string evictedSlotId) = profile.UpdateMeta(data, isAutoSave, saveConfig);
 
             if (updatedProfile != null) {
                 if (evictedSlotId != null)
