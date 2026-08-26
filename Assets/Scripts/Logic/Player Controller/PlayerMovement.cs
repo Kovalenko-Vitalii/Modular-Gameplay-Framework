@@ -4,7 +4,7 @@ using static UnityEngine.CullingGroup;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(CharacterController))]
-public sealed class PlayerMovement : MonoBehaviour, IPlayerTick
+public sealed class PlayerMovement : MonoBehaviour, ITick
 {
     [Header("Walking")]
     [SerializeField, Min(0f)] private float walkSpeed = 4f;
@@ -166,7 +166,7 @@ public sealed class PlayerMovement : MonoBehaviour, IPlayerTick
         SetActionEnabled(sprintAction, true);
         SetActionEnabled(crouchAction, true);
 
-        PlayerTickSystem.Instance?.Register(this);
+        TickSystem.Instance?.Register(this);
 
         GameStateManager.ModeChanged += OnStateChanged;
     }
@@ -178,7 +178,7 @@ public sealed class PlayerMovement : MonoBehaviour, IPlayerTick
         SetActionEnabled(sprintAction, false);
         SetActionEnabled(crouchAction, false);
 
-        PlayerTickSystem.Instance?.Unregister(this);
+        TickSystem.Instance?.Unregister(this);
 
         GameStateManager.ModeChanged -= OnStateChanged;
     }

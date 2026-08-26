@@ -24,7 +24,6 @@ public class FPSCounter : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         bool saved = PlayerPrefs.GetInt(PREF_KEY, 0) == 1;
         SetEnabled(saved);

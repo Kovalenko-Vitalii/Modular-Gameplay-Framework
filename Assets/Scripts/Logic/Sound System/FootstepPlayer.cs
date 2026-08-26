@@ -5,7 +5,7 @@ using UnityEngine;
 // </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(AudioSource))]
-public sealed class FootstepPlayer : MonoBehaviour, IPlayerTick
+public sealed class FootstepPlayer : MonoBehaviour, ITick
 {
     [Header("Links")]
     [SerializeField] private PlayerMovement movement;
@@ -52,8 +52,7 @@ public sealed class FootstepPlayer : MonoBehaviour, IPlayerTick
         if (controller == null)
             controller = GetComponent<CharacterController>();
 
-        if (surfaceResolver == null)
-            surfaceResolver = GetComponent<SurfaceResolver>();
+        surfaceResolver = SurfaceResolver.Instance;
 
         if (source == null)
             source = GetComponent<AudioSource>();
@@ -63,7 +62,7 @@ public sealed class FootstepPlayer : MonoBehaviour, IPlayerTick
 
     private void OnEnable()
     {
-        PlayerTickSystem.Instance?.Register(this);
+        TickSystem.Instance?.Register(this);
 
         if (movement != null)
         {
@@ -74,7 +73,7 @@ public sealed class FootstepPlayer : MonoBehaviour, IPlayerTick
 
     private void OnDisable()
     {
-        PlayerTickSystem.Instance?.Unregister(this);
+        TickSystem.Instance?.Unregister(this);
 
         if (movement != null)
             movement.Jumped -= PlayJump;

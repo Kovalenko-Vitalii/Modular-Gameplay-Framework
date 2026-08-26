@@ -8,7 +8,7 @@ public class SurfaceDatabase : ScriptableObject
     [SerializeField] private SurfaceType defaultSurface = SurfaceType.Grass;
 
     [Header("Surfaces")]
-    [SerializeField] private SurfaceEntry[] surfaces;
+    [SerializeField] private SurfaceEntry[] surfaces; // !!! move it to a dictionary !!!
 
     [Header("Terrain")]
     [SerializeField] private TerrainLayerSurface[] terrainLayerSurfaces;

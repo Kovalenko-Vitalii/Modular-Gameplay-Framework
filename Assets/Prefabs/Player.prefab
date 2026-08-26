@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4174491228012291882}
   m_Layer: 1
   m_Name: HeadPosition
-  m_TagString: Untagged
+  m_TagString: HeadPosition
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
