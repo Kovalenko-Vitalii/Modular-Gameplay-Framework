@@ -5,8 +5,7 @@ using UnityEngine;
 /// Handles registration with SaveRegistry automatically, so individual saveables
 /// don't need to remember to call Register/Deregister themselves.
 /// </summary>
-public abstract class SaveableBehaviour : MonoBehaviour, ISaveable
-{
+public abstract class SaveableBehaviour : MonoBehaviour, ISaveable {
     public abstract string saveId { get; }
 
     protected virtual void Awake() => SaveRegistry.Register(this);

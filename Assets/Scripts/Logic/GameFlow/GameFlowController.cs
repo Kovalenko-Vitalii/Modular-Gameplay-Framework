@@ -42,7 +42,7 @@ public class GameFlowController : MonoBehaviour {
     }
 
     public void StartGame(string profileId) {  
-        string sceneName = SaveService.Instance.StartExisingGame(profileId);
+        string sceneName = SaveService.Instance.StartExistingGame(profileId);
         if (sceneName == null) return;
         RequestLoad(sceneName, GameMode.Gameplay);
     }

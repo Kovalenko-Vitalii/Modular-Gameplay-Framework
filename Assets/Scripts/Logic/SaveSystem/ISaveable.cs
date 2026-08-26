@@ -4,8 +4,7 @@
 /// !!! Recommended to use SaveableBehaviour or a similar base class to handle registration automatically. !!!
 /// 
 /// </summary>
-public interface ISaveable
-{
+public interface ISaveable {
     string saveId { get; }
     object CaptureState();
     void RestoreState(object state);

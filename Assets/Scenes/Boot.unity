@@ -703,7 +703,7 @@ GameObject:
   - component: {fileID: 1223033301}
   - component: {fileID: 1223033302}
   m_Layer: 0
-  m_Name: SaveManager
+  m_Name: SaveService
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -736,7 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753c976f742f87b4687d423699a6499c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveSystem.SaveManager
-  saveFolderName: Saves
+  config: {fileID: 11400000, guid: c25a78c54b1f4ec49911b00fb9d968b7, type: 2}
 --- !u!1 &1630152615
 GameObject:
   m_ObjectHideFlags: 0

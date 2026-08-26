@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace SaveSystem
 {
@@ -15,26 +16,23 @@ namespace SaveSystem
         private string ProfileIndexPath(string profileId) => Path.Combine(ProfileFolder(profileId), "index.json");
         private string ProfileSlotsFolder(string profileId) => Path.Combine(ProfileFolder(profileId), "Slots");
         private string SlotPath(string profileId, string slotId) => Path.Combine(ProfileSlotsFolder(profileId), slotId + ".json");
-
-
-        const string TAG = "SaveRepository";
         
         public void EnsureFolder() => SaveFileIO.EnsureFolder(SavesFolder);
 
         /// <summary>
         /// Returns profile by specified profileId.
         /// </summary>
-        public SaveProfile GetProfile(string profileId) => SaveFileIO.GetProfile(ProfileIndexPath(profileId));
+        public SaveProfile GetProfile(string profileId) => SaveFileIO.GetProfile(ProfileIndexPath(profileId)).saveProfile;
 
         /// <summary>
         /// Returns dataSlot by specified slotId and profileId
         /// </summary>
-        public SaveSlotData GetData(string profileId, string slotId) => SaveFileIO.GetSlotData(SlotPath(profileId, slotId));
+        public SaveSlotData GetData(string profileId, string slotId) => SaveFileIO.GetSlotData(SlotPath(profileId, slotId)).slotData;
 
         /// <summary>
         /// Returns latest save saveSlotId and it`s profileId.
         /// </summary>
-        public (string, string) GetLatestSaveInfo() {
+        public (string latestProfileId, string latest, string message) GetLatestSaveInfo() {
             SaveProfile latestProfile = null;
 
             foreach (var profile in ListProfiles()) {
@@ -45,35 +43,32 @@ namespace SaveSystem
                     latestProfile = profile;
             }
 
-            if (latestProfile == null) {
-                GameLog.Warning(TAG, "ContinueLatestGame: no profile has any saves yet.");
-                return (null, null);
-            }
+            if (latestProfile == null) 
+                return (null, null, "No latest profile found.");
+            
+            (string latestSlotId, string msg) = GetLatestSlotId(latestProfile.id);
 
-            string latestSlotId = GetLatestSlotId(latestProfile.id);
-
-            return (latestProfile.id, latestSlotId);
+            return (latestProfile.id, latestSlotId, msg);
         }
 
         /// <summary>
         /// Returns latest slot within specified Id.
         /// </summary>
-        public string GetLatestSlotId(string profileId) {
-            var profile = SaveFileIO.GetProfile(ProfileIndexPath(profileId));
+        public (string latestSlotId, string message) GetLatestSlotId(string profileId) {
+            var response = SaveFileIO.GetProfile(ProfileIndexPath(profileId));
 
-            if (string.IsNullOrEmpty(profile.id)) {
-                GameLog.Error(TAG, $"ContinueProfile: profile '{profileId}' not found.");
-                return null;
-            }
+            if (response.saveProfile == null)
+                return (null, $"Profile '{profileId}' not found.");
 
-            SaveSlotMeta latest = profile.Latest();
+            if (string.IsNullOrEmpty(response.saveProfile.id)) 
+                return (null, $"Profile '{profileId}' not found.");        
+   
+            SaveSlotMeta latest = response.saveProfile.Latest();
 
-            if (string.IsNullOrEmpty(latest?.slotId)) {
-                GameLog.Warning(TAG, $"ContinueProfile: profile '{profileId}' has no saves yet.");
-                return null;
-            }
+            if (string.IsNullOrEmpty(latest?.slotId)) 
+                return (null, $"Profile '{profileId}' has no saves yet.");
 
-            return latest.slotId;
+            return (latest.slotId, "Succesfully found latest slot");
         }
 
         /// <summary>
@@ -90,13 +85,12 @@ namespace SaveSystem
                 if (!File.Exists(indexPath))
                     continue;
 
-                var profile = SaveFileIO.GetProfile(indexPath);
-                if (string.IsNullOrEmpty(profile.id)) {
-                    GameLog.Warning(TAG, $"Skipping unreadable/corrupt profile folder '{profileId}'.");
-                    continue;
-                }
+                var response = SaveFileIO.GetProfile(indexPath);
 
-                result.Add(profile);
+                if (string.IsNullOrEmpty(response.saveProfile.id)) 
+                    continue;
+                
+                result.Add(response.saveProfile);
             }
 
             return result;
@@ -105,7 +99,10 @@ namespace SaveSystem
         /// <summary>
         /// Creates and activates a new save profile.
         /// </summary>
-        public SaveProfile CreateProfile(string displayName) {
+        public (SaveProfile profile, string message) CreateProfile(string displayName, SaveConfig config) {
+            if (config != null && config.maxProfles > 0 && ListProfiles().Count >= config.maxProfles)
+                return (null, $"Profile limit reached");
+
             var profileId = Guid.NewGuid().ToString("N");
             var now = DateTime.UtcNow.Ticks;
 
@@ -119,8 +116,7 @@ namespace SaveSystem
             SaveFileIO.EnsureFolder(ProfileFolder(profileId));
             SaveFileIO.WriteProfile(ProfileIndexPath(profileId), profile);
 
-            GameLog.Log(TAG, $"Created profile '{profileId}' ('{displayName}')");
-            return profile;
+            return (profile, "Profile successfully created");
         }
 
         /// <summary>
@@ -131,8 +127,6 @@ namespace SaveSystem
 
             if (Directory.Exists(path))
                 Directory.Delete(path, recursive: true);
-
-            GameLog.Log(TAG, $"Deleted profile '{profileId}'");
         }
         
         /// <summary>
@@ -140,23 +134,23 @@ namespace SaveSystem
         /// </summary>
         public SaveProfile DeleteData(string profileId, string slotId) {
             var profilePath = ProfileIndexPath(profileId);
-            var profile = SaveFileIO.GetProfile(profilePath);
-            var meta = profile.manualSaves.FirstOrDefault(m => m.slotId == slotId);
+            var result = SaveFileIO.GetProfile(profilePath);
+            var meta = result.saveProfile.manualSaves.FirstOrDefault(m => m.slotId == slotId);
 
             if (meta == null)
                 return null;
 
-            SaveFileIO.DeleteSlot(SlotPath(profileId, slotId));
-            profile.manualSaves.Remove(meta);
-            SaveFileIO.WriteProfile(profilePath, profile);
+            SaveFileIO.DeleteFile(SlotPath(profileId, slotId));
+            result.saveProfile.manualSaves.Remove(meta);
+            SaveFileIO.WriteProfile(profilePath, result.saveProfile);
 
-            return profile;
+            return result.saveProfile;
         }
 
         /// <summary>
-        /// 
+        ///   
         /// </summary>
-        public (SaveProfile, string) SaveData(string profileId, SaveSlotData data, string displayName, bool isAutoSave) {
+        public (SaveProfile, string) SaveData(string profileId, SaveSlotData data, string displayName, bool isAutoSave, SaveConfig saveConfig) {
             SaveProfile profile = GetProfile(profileId);
 
             if (profile == null)
@@ -165,12 +159,14 @@ namespace SaveSystem
             if (string.IsNullOrEmpty(data.slotId))
                 return (null, "Slot ID cannot be null or empty.");
 
-            SaveFileIO.WriteSlotData(SlotPath(profileId, data.slotId), data);
-
-            (SaveProfile updatedProfile, string message) = profile.SaveData(data, isAutoSave);
+            (SaveProfile updatedProfile, string message, string evictedSlotId) = profile.SaveData(data, isAutoSave, saveConfig);
 
             if (updatedProfile != null) {
+                if (evictedSlotId != null)
+                    SaveFileIO.DeleteFile(SlotPath(profileId, evictedSlotId));
+                
                 SaveFileIO.WriteProfile(ProfileIndexPath(profileId), updatedProfile);
+                SaveFileIO.WriteSlotData(SlotPath(profileId, data.slotId), data);
                 return (updatedProfile, message);
             } else 
                 return (null, message);   

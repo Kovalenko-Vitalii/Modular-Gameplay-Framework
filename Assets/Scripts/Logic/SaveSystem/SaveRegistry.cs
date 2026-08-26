@@ -116,6 +116,10 @@ public static class SaveRegistry {
             saveable.ResetToDefaultState();
     }
 
-    private static string DescribeSource(ISaveable saveable) =>
-        saveable is UnityEngine.Object unityObj ? unityObj.name : saveable.GetType().Name;
+    private static string DescribeSource(ISaveable saveable) {
+        if (saveable is UnityEngine.Object unityObj)
+            return unityObj.name;
+
+        return saveable.GetType().Name;
+    }
 }

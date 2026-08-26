@@ -1,7 +1,6 @@
 using SaveSystem;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 /// <summary>
@@ -19,34 +18,41 @@ public class SaveProfile {
     public bool HasAnySave => !string.IsNullOrEmpty(autoSave?.slotId) || manualSaves.Count > 0;
     public SaveSlotMeta Latest() {
         var latest = autoSave;
+
         foreach (var meta in manualSaves) {
             if (string.IsNullOrEmpty(latest?.slotId) || meta.updatedUtcTicks > latest.updatedUtcTicks)
                 latest = meta;
         }
 
-        if (latest != null)
-            return latest;
-
-        return null;
+        return latest;
     }
-    public (SaveProfile, string) SaveData(SaveSlotData data, bool isAutoSave) {
-        try {   
+    public (SaveProfile, string message, string evictedSlotId) SaveData(SaveSlotData data, bool isAutoSave, SaveConfig config) {
+        string evictedSlotId = null;
+
+        try {
             var nowTicks = DateTime.UtcNow.Ticks;
+
             if (isAutoSave) {
-                autoSave ??= new SaveSlotMeta
-                {
+                autoSave ??= new SaveSlotMeta {
                     slotId = data.slotId,
                     createdUtcTicks = nowTicks
                 };
                 autoSave.slotId = data.slotId;
                 autoSave.displayName = displayName;
                 autoSave.updatedUtcTicks = nowTicks;
-            }
-            else
-            {
+            } else {
                 var meta = manualSaves.FirstOrDefault(m => m.slotId == data.slotId);
-                if (meta == null)
-                {
+
+                if (meta == null) {
+                    if (config != null && config.maxManualSaves > 0 && manualSaves.Count >= config.maxManualSaves) {
+                        if (config.limitPolicy == SlotLimitPolicy.RejectNew)
+                            return (null, $"Manual save limit reached ({config.maxManualSaves}).", null);
+
+                        var oldest = manualSaves.OrderBy(m => m.updatedUtcTicks).First();
+                        evictedSlotId = oldest.slotId;
+                        manualSaves.Remove(oldest);
+                    }
+
                     meta = new SaveSlotMeta { slotId = data.slotId, createdUtcTicks = nowTicks };
                     manualSaves.Add(meta);
                 }
@@ -57,9 +63,9 @@ public class SaveProfile {
                 meta.updatedUtcTicks = nowTicks;
             }
         } catch (Exception ex) {
-                return (null, "Error, could not save: " + ex.Message);
+                return (null, "Error, could not save: " + ex.Message, null);
         }
-        return (this, "Successfully saved !");
+        return (this, "Successfully saved !", evictedSlotId);
     }
 }
 

@@ -8,13 +8,13 @@ namespace SaveSystem {
     public class SaveService : MonoBehaviour {
         public static SaveService Instance { get; private set; }
 
+        [SerializeField] SaveConfig config;
         private SaveRepository repository = new SaveRepository();
 
         public SaveProfile ActiveProfile { get; private set; }
         public SaveSlotData PendingLoadData { get; private set; } // save data loaded to memory but hasn't been applied yet
 
-        public bool HasAutoSave => !string.IsNullOrEmpty(ActiveProfile?.autoSave?.slotId);
-        public bool CanContinue() => repository.ListProfiles().Any(profile => !string.IsNullOrEmpty(profile.autoSave?.slotId) || profile.manualSaves.Count > 0);
+        public bool CanResume() => repository.ListProfiles().Any(profile => profile.HasAnySave);
         
         public event Action ProfilesChanged;
         public event Action<string> SaveCompleted;        // slotId
@@ -45,7 +45,7 @@ namespace SaveSystem {
         /// Prepares save service for new game being created.
         /// </summary>
         public void StartNewGame(string displayName) {
-            SaveProfile newProfile = repository.CreateProfile(displayName);
+            SaveProfile newProfile = repository.CreateProfile(displayName, config).profile;
 
             ActiveProfile = newProfile;
             PendingLoadData = null;
@@ -54,12 +54,12 @@ namespace SaveSystem {
         /// <summary>
         /// Prepares save service for loading new game.
         /// </summary>
-        public string StartExisingGame(string profileId) {
-            string latestSlotId = repository.GetLatestSlotId(profileId);
+        public string StartExistingGame(string profileId) {
+            string latestSlotId = repository.GetLatestSlotId(profileId).latestSlotId;
             var data = repository.GetData(profileId, latestSlotId);
 
             if (data == null) {
-                LoadFailed.Invoke(null, "Invalid data");
+                LoadFailed?.Invoke(null, "Invalid data");
                 return null;
             }
 
@@ -71,17 +71,17 @@ namespace SaveSystem {
         /// Finds latest saveSlot out of all profiles and prepares to load it.
         /// </summary>
         public string Resume() {
-            (string latestProfileId, string latestSlotId) = repository.GetLatestSaveInfo();
+            (string latestProfileId, string latestSlotId, string message) = repository.GetLatestSaveInfo();
 
-            if (latestProfileId == null || latestSlotId == null){
-                LoadFailed.Invoke(null, "Invalid data");
+            if (latestProfileId == null || latestSlotId == null) {
+                LoadFailed?.Invoke(null, "Invalid data");
                 return null;
             }
 
             var data = repository.GetData(latestProfileId, latestSlotId);
 
             if (data == null) {
-                LoadFailed.Invoke(null, "Invalid data");
+                LoadFailed?.Invoke(null, "Invalid data");
                 return null;
             }
 
@@ -141,57 +141,56 @@ namespace SaveSystem {
 
         /// <summary>
         /// Saves current game state to a auto-save slot in active profile.
-        /// </summary> !!!
-        public void AutoSave() => SaveToActiveProfile("autosave", "Auto Save", isAutoSave: true);
+        /// </summary> 
+        public void AutoSave(string sceneName) => SaveToActiveProfile("autosave", "Auto Save", sceneName,  isAutoSave: true);
 
         /// <summary>
         /// Create a new manual save slot in active profile.  
         /// Then save current game state to created slot in active profile. Return new slotId or null if failed. 
         /// </summary>
-        public void NewManualSave(string displayName) => SaveToActiveProfile(Guid.NewGuid().ToString("N"), displayName, isAutoSave: false);
+        public void NewManualSave(string displayName, string sceneName) => SaveToActiveProfile(Guid.NewGuid().ToString("N"), displayName, sceneName, isAutoSave: false);
 
         /// <summary>
         /// Overwrites manual save in active profile.
         /// </summary>
-        public void OverwriteManual(string slotId, string displayName) => SaveToActiveProfile(slotId, displayName, isAutoSave: false);
+        public void OverwriteManual(string slotId, string displayName, string sceneName) => SaveToActiveProfile(slotId, displayName, sceneName, isAutoSave: false);
         
         /// <summary>
         /// 
         /// </summary>
-        private void SaveToActiveProfile(string slotId, string displayName, bool isAutoSave) {
+        private void SaveToActiveProfile(string slotId, string displayName, string sceneName, bool isAutoSave) {
             if (ActiveProfile == null) {
-                SaveFailed.Invoke(null, "No Active profile set");
+                SaveFailed?.Invoke(null, "No Active profile set");
                 return;
             }
 
             if (string.IsNullOrEmpty(slotId)) {
-                SaveFailed.Invoke(null, "Invalid slotId");
+                SaveFailed?.Invoke(null, "Invalid slotId");
                 return;
             }
             
             var data = new SaveSlotData {
                 slotId = slotId,
                 version = Application.version,
-                sceneName = SceneLoader.Instance.CurrentContentScene,
+                sceneName = sceneName,
                 objectStates = SaveRegistry.CaptureAll()
             };
 
-            (SaveProfile updatedProfile, string message) = repository.SaveData(ActiveProfile.id, data, displayName, isAutoSave);
+            (SaveProfile updatedProfile, string message) = repository.SaveData(ActiveProfile.id, data, displayName, isAutoSave, config);
 
             if (updatedProfile != null) {
                 ActiveProfile = updatedProfile;
                 Debug.Log("Saved Successfully !");
                 SaveCompleted?.Invoke(slotId);
-            }
-            else {
+            } else {
                 Debug.Log("Failed to Save: " + message);
-                SaveFailed.Invoke(slotId, message);
+                SaveFailed?.Invoke(slotId, message);
             }
                 
         }      
 
         /// <summary>
-        /// Deletes a manual save from any profile, active or not.
+        /// Deletes a sprcified manual save from active profile
         /// </summary>
         public void DeleteManualSave(string slotId) {
             var newProfile =  repository.DeleteData(ActiveProfile.id, slotId);

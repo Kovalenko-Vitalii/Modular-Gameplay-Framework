@@ -9,51 +9,37 @@ namespace SaveSystem {
     /// or power loss mid-write can't leave a corrupt slot or index on disk.
     /// </summary>
     public static class SaveFileIO {
-        public static void EnsureFolder(string folderPath) {
-            Directory.CreateDirectory(folderPath);
+        public static void EnsureFolder(string folderPath) => Directory.CreateDirectory(folderPath);
+
+        public static (SaveProfile saveProfile, string message) GetProfile(string profilePath) {
+            var result = ReadJson<SaveProfile>(profilePath);
+
+            if (result.data == null)
+                return result;
+
+            if (string.IsNullOrEmpty(result.data.id))
+                return (null, $"Invalid save profile at '{profilePath}': profile ID is missing.");
+
+            return result;
         }
 
-        /// <summary>
-        /// Returns SaveProfile located at specified path.
-        /// If nothing found returns null.
-        /// </summary>
-        public static SaveProfile GetProfile(string profilePath) {
-            if (!File.Exists(profilePath))
-                return null;
+        public static (SaveSlotData slotData, string message) GetSlotData(string slotDataPath) {
+            var result = ReadJson<SaveSlotData>(slotDataPath);
 
-            try {
-                var json = File.ReadAllText(profilePath);
-                return JsonUtility.FromJson<SaveProfile>(json) ?? null;
-            }
-            catch (Exception ex) {
-                Debug.LogError($"[SaveFileIO] Failed to read index at '{profilePath}': {ex.Message}");
-                return null;
-            }
+            if (result.data == null)
+                return result;
+
+            if (string.IsNullOrEmpty(result.data.slotId))
+                return (null, $"Invalid save slot at '{slotDataPath}': slot ID is missing.");
+
+            return result;
         }
 
         public static void WriteProfile(string profilePath, SaveProfile profile) =>  AtomicWrite(profilePath, JsonUtility.ToJson(profile, true));
 
-        /// <summary>
-        /// Returns SaveSlotData located at specified path.
-        /// If nothing found returns null.
-        /// </summary>
-        public static SaveSlotData GetSlotData(string slotDataPath) {
-            if (!File.Exists(slotDataPath))
-                return null;
-
-            try {
-                var json = File.ReadAllText(slotDataPath);
-                return JsonUtility.FromJson<SaveSlotData>(json);
-            }
-            catch (Exception ex) {
-                Debug.LogError($"[SaveFileIO] Failed to read slot at '{slotDataPath}': {ex.Message}");
-                return null;
-            }
-        }
-
         public static void WriteSlotData(string slotDataPath, SaveSlotData data) => AtomicWrite(slotDataPath, JsonUtility.ToJson(data, true)); 
 
-        public static void DeleteSlot(string slotPath) {
+        public static void DeleteFile(string slotPath) {
             if (File.Exists(slotPath))
                 File.Delete(slotPath);
         }
@@ -74,6 +60,24 @@ namespace SaveSystem {
                 File.Replace(tmpPath, path, destinationBackupFileName: null);
             else
                 File.Move(tmpPath, path);
+        }
+
+        private static (T data, string message) ReadJson<T>(string path) {
+            if (!File.Exists(path))
+                return (default, $"File does not exist at path: '{path}'");
+
+            try {
+                string json = File.ReadAllText(path);
+                T data = JsonUtility.FromJson<T>(json);
+
+                if (data == null)
+                    return (default, $"Failed to deserialize data at '{path}'.");
+
+                return (data, "Successfully read data");
+            }
+            catch (Exception ex) {
+                return (default, $"[SaveFileIO] Failed to read '{path}': {ex.Message}");
+            }
         }
     }
 }
