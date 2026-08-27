@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoadSaveProfile : MonoBehaviour {
+public class SaveToManual : MonoBehaviour {
     [SerializeField] ScrollRect scrollRect;
     [SerializeField] GameObject rowPrefab;
 
-    readonly List<GameObject> spawnedSlots = new();
+    readonly List<GameObject> spawnedUISlots = new();
 
     void Start() {
         if (SaveService.Instance == null) {
@@ -35,31 +35,31 @@ public class LoadSaveProfile : MonoBehaviour {
     }
     void OnDestroy() { 
         if (SaveService.Instance != null) 
-            SaveService.Instance.ProfilesChanged -= Refresh; 
+            SaveService.Instance.ProfilesChanged -= Refresh;
     }
 
     void Refresh() {
-        foreach (var slot in spawnedSlots)
+        foreach (var slot in spawnedUISlots)
             Destroy(slot);
 
-        spawnedSlots.Clear();
+        spawnedUISlots.Clear();
 
-        foreach (var saveProfile in SaveService.Instance.GetAllProfiles()) {
+        foreach (var saveSlot in SaveService.Instance.GetAllSlotsFromActive()) {
             var instance = Instantiate(rowPrefab, scrollRect.content);
-            spawnedSlots.Add(instance);
+            spawnedUISlots.Add(instance);
 
-            Action loadFunction = () => {
-                GameFlowController.Instance.StartGame(saveProfile.id);
+            Action saveFunction = () => {
+                SaveService.Instance.OverwriteManual(saveSlot.id, saveSlot.displayName, SceneLoader.Instance.CurrentContentScene);
             };
 
             Action deleteFunction = () => {
-                SaveService.Instance.DeleteProfile(saveProfile.id);
+                SaveService.Instance.DeleteManualSave(saveSlot.id);
             };
 
             if (instance.TryGetComponent(out ProfileSlotUI slotUI))
-                slotUI.Initialize(saveProfile.displayName, loadFunction, deleteFunction, "Load", "Delete");
+                slotUI.Initialize(saveSlot.displayName, saveFunction, deleteFunction, "Save", "Delete");
             else
-                Debug.LogWarning($"profilePrefab '{rowPrefab.name}' has no ProfileSlotUI component.");
+                Debug.LogWarning($"Row Prefab '{rowPrefab.name}' has no ProfileSlotUI component.");
         }
     }
 }

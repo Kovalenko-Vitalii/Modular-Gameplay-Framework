@@ -10,7 +10,7 @@ namespace SaveSystem {
         RejectNew,
         OverwriteOlest
     }
-
+        
     [CreateAssetMenu(menuName = "SaveSystem/SaveConfig")]
     public class SaveConfig : ScriptableObject {
         /// <summary>

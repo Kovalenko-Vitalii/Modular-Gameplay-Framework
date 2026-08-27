@@ -14,13 +14,13 @@ namespace SaveSystem {
         public static SaveService Instance { get; private set; }
 
         [SerializeField] SaveConfig config;
-        private SaveRepository repository = new SaveRepository();
 
         public SaveProfile ActiveProfile { get; private set; }
         public SaveSlotData PendingLoadData { get; private set; } // save data loaded to memory but hasn't been applied yet
+        public Action SlotsChanged { get; internal set; }
 
         /// <summary>True when any profile contains at least one save slot.</summary>
-        public bool CanResume() => repository.ListProfiles().Any(profile => profile.HasAnySave);
+        public bool CanResume() => Saves.GetAllProfiles().Any(profile => profile.HasAnySave);
 
         /// <summary>Raised when profiles or their metadata change (UI can refresh).</summary>
         public event Action ProfilesChanged;
@@ -33,7 +33,7 @@ namespace SaveSystem {
             }
 
             Instance = this;
-            repository.EnsureFolder();
+            Saves.EnsureFolder();
             Debug.Log("Initialized");
         }
 
@@ -45,14 +45,13 @@ namespace SaveSystem {
         
         /// <summary>
         /// Create a new profile for a fresh game, set it active and notify listeners.
-        /// </summary>
+        /// </summary> v
         public void StartNewGame(string displayName) {
-            var response = repository.CreateProfile(displayName, config);
+            if (!H.ValidateString(displayName)) return;
 
-            if (response.profile == null) {
-                Debug.Log($"Couldn`t create profile for new game: '{response.message}' ");
-                return;
-            }
+            var response = Saves.CreateProfile(displayName, config);
+
+            if (!H.ValidateProfile(response.profile)) { Debug.Log($"Couldn`t create profile for new game: '{response.message}' "); return; }
             
             ActiveProfile = response.profile;
             ProfilesChanged?.Invoke();
@@ -62,16 +61,18 @@ namespace SaveSystem {
         /// <summary>
         /// Prepare to load the most recent slot for the given profile. Returns the
         /// scene name to load or null on failure.
-        /// </summary>
-        public string StartExistingGame(string profileId) {
-            string latestSlotId = repository.GetLatestSlotId(profileId).latestSlotId;
-            var data = repository.GetData(profileId, latestSlotId);
+        /// </summary> v
+        public string StartLatestFrom(string profileId) {
+            if (!H.ValidateString(profileId)) return null; 
+                
+            string latestSlotId = Saves.GetLatestSlotId(profileId);
+            
+            if (!H.ValidateString(latestSlotId)) return null;
 
-            if (data == null || string.IsNullOrEmpty(data.slotId)) {
-                Debug.Log("Invalid data");
-                return null;
-            }
+            var data = Saves.GetData(profileId, latestSlotId);
 
+            if (!H.ValidateData(data)) return null;
+                
             PreparePendingData(profileId, latestSlotId);
             return data.sceneName;
         }
@@ -79,23 +80,34 @@ namespace SaveSystem {
         /// <summary>
         /// Locate the latest save across all profiles and stage it for loading.
         /// Returns the scene name to load or null on failure.
-        /// </summary>
-        public string Resume() {
-            (string latestProfileId, string latestSlotId, string message) = repository.GetLatestSaveInfo();
+        /// </summary> v
+        public string StartLatestGlobal() {
+            (string latestProfileId, string latestSlotId) = Saves.GetLatestProfile();
 
-            if (latestProfileId == null || latestSlotId == null) {
-                Debug.Log("Invalid data");
-                return null;
-            }
+            if (!H.ValidateString(latestProfileId)) return null; 
+            if (!H.ValidateString(latestSlotId)) return null;
 
-            var data = repository.GetData(latestProfileId, latestSlotId);
+            var data = Saves.GetData(latestProfileId, latestSlotId);
 
-            if (data == null) {
-                Debug.Log("Invalid data");
-                return null;
-            }
+            if (!H.ValidateData(data)) return null; 
 
             PreparePendingData(latestProfileId, latestSlotId);
+            return data.sceneName;
+        }
+
+        /// <summary>
+        /// Prepate to load any save. 
+        /// Returns the scene name to load or null on failure.
+        /// </summary> v
+        public string StartFrom(string profileId, string slotId) {
+            if (!H.ValidateString(profileId)) return null; 
+            if (!H.ValidateString(slotId)) return null; 
+
+            var data = Saves.GetData(profileId, slotId);
+
+            if (!H.ValidateData(data)) return null; 
+
+            PreparePendingData(profileId, slotId);
             return data.sceneName;
         }
 
@@ -104,24 +116,16 @@ namespace SaveSystem {
         /// Does not apply data to the scene; caller must call ApplyPendingData afterwards.
         /// </summary>
         public void PreparePendingData(string profileId, string slotId) {
-            if (PendingLoadData != null) {
-                Debug.Log("LoadSlot ignored: SaveManager is busy");
-                return;
-            }
+            if (PendingLoadData != null) { Debug.Log("LoadSlot ignored: SaveManager is busy"); return; }
+            if (!H.ValidateString(profileId) || !H.ValidateString(slotId)) return;
 
-            SaveProfile profile = repository.GetProfile(profileId);
+            SaveProfile profile = Saves.GetProfile(profileId);
 
-            if (profile == null) {
-                Debug.Log($"LoadSlot('{profileId}'/'{slotId}') failed: profile file missing or unreadable");
-                return;
-            }
+            if (!H.ValidateProfile(profile)) return;
+               
+            SaveSlotData slotData = Saves.GetData(profileId, slotId);
 
-            SaveSlotData slotData = repository.GetData(profileId, slotId);
-
-            if (slotData == null) {
-                Debug.Log($"LoadSlot('{profileId}'/'{slotId}') failed: slot file missing or unreadable");
-                return;
-            }
+            if (!H.ValidateData(slotData)) return;
 
             ActiveProfile = profile;
             PendingLoadData = slotData;
@@ -133,15 +137,14 @@ namespace SaveSystem {
         public void ApplyPendingData() {
             SaveRegistry.ResetAllToDefaults(); // in case new game started.
 
-            if (PendingLoadData == null) 
-                return;    
+            if (!H.ValidateData(PendingLoadData)) return;
                 
             var data = PendingLoadData;
             PendingLoadData = null;
 
             SaveRegistry.RestoreAll(data.objectStates);
 
-            Debug.Log($"LoadSlot('{data.slotId}') complete, scene='{data.sceneName}'");
+            Debug.Log($"LoadSlot('{data.id}') complete'");
             return;
         }
 
@@ -161,59 +164,70 @@ namespace SaveSystem {
         /// ActiveProfile is updated; on failure a message is logged.
         /// </summary>
         private void SaveToActiveProfile(string slotId, string displayName, string sceneName, bool isAutoSave) {
-            if (ActiveProfile == null) {
-                Debug.Log("No Active profile set");
-                return;
-            }
-
-            if (string.IsNullOrEmpty(slotId)) {
-                Debug.Log("Invalid slotId");
-                return;
-            }
-            
+            if (PendingLoadData != null) { Debug.Log("Save ignored: a load is pending"); return; }
+            if (!H.ValidateProfile(ActiveProfile)) return;
+            if (!H.ValidateString(slotId)) return;
+                
             var data = new SaveSlotData {
-                slotId = slotId,
+                id = slotId,
                 version = Application.version,
                 sceneName = sceneName,
                 objectStates = SaveRegistry.CaptureAll()
             };
 
-            (SaveProfile updatedProfile, string message) = repository.SaveData(ActiveProfile.id, data, displayName, isAutoSave, config);
+            SaveProfile updatedProfile = Saves.SaveData(ActiveProfile.id, data, displayName, isAutoSave, config);
 
-            if (updatedProfile != null) {
+            if (H.ValidateProfile(updatedProfile)) {
                 ActiveProfile = updatedProfile;
+                ProfilesChanged?.Invoke();
                 Debug.Log("Saved Successfully !");
             } else 
-                Debug.Log("Failed to Save: " + message);    
+                Debug.Log("Failed to Save");    
         }      
 
         /// <summary>
         /// Remove a manual save slot from the active profile and update ActiveProfile when successful.
         /// </summary>
         public void DeleteManualSave(string slotId) {
-            if (ActiveProfile == null || string.IsNullOrEmpty(ActiveProfile.id))
-                return;
+            if (!H.ValidateProfile(ActiveProfile)) return;
+            if (!H.ValidateString(slotId)) return;
 
-            var newProfile =  repository.DeleteData(ActiveProfile.id, slotId);
+            var newProfile = Saves.DeleteData(ActiveProfile.id, slotId);
 
-            if (newProfile == null) 
-                return;
+            if (!H.ValidateProfile(newProfile)) return;
 
              ActiveProfile = newProfile;
+             ProfilesChanged?.Invoke();
         }
 
-        /// <summary>Delete the profile and its files from disk. Logs the outcome.</summary>
+        /// <summary>
+        /// Delete the profile and its files from disk. Logs the outcome.
+        /// </summary>
         public void DeleteProfile(string profileId) {
-            bool response = repository.DeleteProfile(profileId);
-            if (response)
+            if (!H.ValidateString(profileId)) return;
+
+            bool deleted = Saves.DeleteProfile(profileId);
+
+            if (deleted) {
+                if (ActiveProfile?.id == profileId) ActiveProfile = null;
+                ProfilesChanged?.Invoke();
                 Debug.Log($"Profile with id: '{profileId}' is deleted");
-            else
-                Debug.Log($"Couldn`t delete rofile with id: '{profileId}'");
+            }
+            else Debug.Log($"Couldn`t delete rofile with id: '{profileId}'");
+               
         }
 
-        /// <summary>Return all profiles known to the repository (cached on disk).</summary>
+        /// <summary>
+        /// Return all profiles known to the repository (cached on disk).
+        /// </summary>
         public List<SaveProfile> GetAllProfiles() {
-            return repository.ListProfiles();
+            return Saves.GetAllProfiles();
         }
+
+        public List<SaveSlotMeta> GetAllSlotsFromActive() {
+            if (!H.ValidateProfile(ActiveProfile)) return new List<SaveSlotMeta>();
+            return Saves.GetAllData(ActiveProfile.id);
+        }
+
     }
 }

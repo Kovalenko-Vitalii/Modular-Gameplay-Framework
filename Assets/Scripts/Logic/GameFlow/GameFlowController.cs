@@ -15,6 +15,7 @@ public class GameFlowController : MonoBehaviour {
     private GameMode pendingMode;
     private bool hasPendingLoad;
 
+    private bool isNewGame;
     [SerializeField] string menuSceneName; // !!! THIS IS BAD APPROACH !!!
 
     private void Start() => Boot();
@@ -39,16 +40,23 @@ public class GameFlowController : MonoBehaviour {
         if (string.IsNullOrEmpty(newGameScene)) return;
         SaveService.Instance.StartNewGame(profileName);
         RequestLoad(newGameScene, GameMode.Gameplay);
+        isNewGame = true;
     }
 
     public void StartGame(string profileId) {  
-        string sceneName = SaveService.Instance.StartExistingGame(profileId);
+        string sceneName = SaveService.Instance.StartLatestFrom(profileId);
+        if (sceneName == null) return;
+        RequestLoad(sceneName, GameMode.Gameplay);
+    }
+
+    public void StartManual(string profileId, string slotId) {
+        string sceneName = SaveService.Instance.StartFrom(profileId, slotId);
         if (sceneName == null) return;
         RequestLoad(sceneName, GameMode.Gameplay);
     }
 
     public void ResumeGame() { 
-        string sceneName = SaveService.Instance.Resume();
+        string sceneName = SaveService.Instance.StartLatestGlobal();
         if (sceneName == null) return;
         RequestLoad(sceneName, GameMode.Gameplay);
     }
@@ -79,6 +87,10 @@ public class GameFlowController : MonoBehaviour {
         hasPendingLoad = false;
         SaveService.Instance.ApplyPendingData();
         GameStateManager.Instance.SetMode(pendingMode);
+
+        if (isNewGame)     
+            SaveService.Instance.AutoSave(loadedSceneName);
+        
         GameLog.Log(TAG, $"Content loaded for '{loadedSceneName}', mode set to {pendingMode}");
     }
 }

@@ -14,31 +14,23 @@ namespace SaveSystem {
         /// <summary>
         /// Read and validate a save profile. Returns (null,message) on error.
         /// </summary>
-        public static (SaveProfile saveProfile, string message) GetProfile(string profilePath) {
-            var result = ReadJson<SaveProfile>(profilePath);
+        public static SaveProfile GetProfile(string profilePath) {
+            var result = ReadJson<SaveProfile>(profilePath).item;
 
-            if (result.data == null)
-                return result;
-
-            if (string.IsNullOrEmpty(result.data.id))
-                return (null, $"Invalid save profile at '{profilePath}': profile ID is missing.");
-
+            if (!H.ValidateProfile(result)) return null;
+                
             return result;
         }
 
         /// <summary>
         /// Read and validate slot data. Returns (null,message) on error.
         /// </summary>
-        public static (SaveSlotData slotData, string message) GetSlotData(string slotDataPath) {
-            var result = ReadJson<SaveSlotData>(slotDataPath);
+        public static SaveSlotData GetSlotData(string slotDataPath) {
+            var data = ReadJson<SaveSlotData>(slotDataPath).item;
 
-            if (result.data == null)
-                return result;
-
-            if (string.IsNullOrEmpty(result.data.slotId))
-                return (null, $"Invalid save slot at '{slotDataPath}': slot ID is missing.");
-
-            return result;
+            if (!H.ValidateData(data)) return null;
+               
+            return data;
         }
 
         /// <summary>Serialize profile to JSON and persist atomically.</summary>
@@ -59,7 +51,7 @@ namespace SaveSystem {
         /// </summary>
         private static void AtomicWrite(string path, string contents) {
             var dir = Path.GetDirectoryName(path);
-            if (!string.IsNullOrEmpty(dir))
+            if (H.ValidateString(dir))
                 Directory.CreateDirectory(dir);
 
             var tmpPath = path + ".tmp";
@@ -74,7 +66,7 @@ namespace SaveSystem {
         /// <summary>
         /// Read JSON from disk and deserialize to T. Returns (default, message) on failure.
         /// </summary>
-        private static (T data, string message) ReadJson<T>(string path) {
+        private static (T item, string msg) ReadJson<T>(string path) {
             if (!File.Exists(path))
                 return (default, $"File does not exist at path: '{path}'");
 
@@ -88,7 +80,7 @@ namespace SaveSystem {
                 return (data, "Successfully read data");
             }
             catch (Exception ex) {
-                return (default, $"[SaveFileIO] Failed to read '{path}': {ex.Message}");
+                return (default, $"Failed to read '{path}': {ex.Message}");
             }
         }
     }
