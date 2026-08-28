@@ -16,16 +16,10 @@ namespace SaveSystem {
         [SerializeField] SaveConfig config;
 
         public SaveProfile ActiveProfile { get; private set; }
-        public SaveSlotData PendingLoadData { get; private set; } // save data loaded to memory but hasn't been applied yet
-        public Action SlotsChanged { get; internal set; }
+        public SaveSlotData PendingLoadData { get; private set; }
 
-        /// <summary>True when any profile contains at least one save slot.</summary>
-        public bool CanResume() => Saves.GetAllProfiles().Any(profile => profile.HasAnySave);
-
-        /// <summary>Raised when profiles or their metadata change (UI can refresh).</summary>
         public event Action ProfilesChanged;
 
-        /// <summary>Initialize singleton instance and ensure repository folder exists.</summary>
         private void Awake() {
             if (Instance != null && Instance != this) { 
                 Destroy(gameObject);
@@ -37,95 +31,74 @@ namespace SaveSystem {
             Debug.Log("Initialized");
         }
 
-        /// ================================
-        /// ========== PUBLIC API ==========
-        /// ================================
-
-        ///  --- LOADING SAVE METHODS ----
-        
-        /// <summary>
-        /// Create a new profile for a fresh game, set it active and notify listeners.
-        /// </summary> v
+        #region Load Operations
+        /// <summary> Prepares SaveService to load new game. </summary>
         public void StartNewGame(string displayName) {
-            if (!H.ValidateString(displayName)) return;
+            if (string.IsNullOrEmpty(displayName)) return; 
 
-            var response = Saves.CreateProfile(displayName, config);
-
-            if (!H.ValidateProfile(response.profile)) { Debug.Log($"Couldn`t create profile for new game: '{response.message}' "); return; }
+            var newProfile = Saves.CreateProfile(displayName, config);
+            if (!newProfile.IsValid()) return; 
             
-            ActiveProfile = response.profile;
+            ActiveProfile = newProfile;
             ProfilesChanged?.Invoke();
             PendingLoadData = null;
         }
 
-        /// <summary>
-        /// Prepare to load the most recent slot for the given profile. Returns the
-        /// scene name to load or null on failure.
-        /// </summary> v
+        /// <summary> Prepares SaveService to load latest save from selected profile.
+        /// <returns> Scene name of latest save. </returns>
         public string StartLatestFrom(string profileId) {
-            if (!H.ValidateString(profileId)) return null; 
+            if (string.IsNullOrEmpty(profileId)) return null; 
                 
-            string latestSlotId = Saves.GetLatestMeta(profileId);
-            
-            if (!H.ValidateString(latestSlotId)) return null;
-
-            var data = Saves.GetData(profileId, latestSlotId);
-
-            if (!H.ValidateData(data)) return null;
+            var latestMeta = Saves.GetLatestMeta(profileId);
+            if (!latestMeta.IsValid() || string.IsNullOrEmpty(latestMeta.sceneName)) return null;
                 
-            PreparePendingData(profileId, latestSlotId);
-            return data.sceneName;
+            PreparePendingData(profileId, latestMeta.id);
+            return latestMeta.sceneName;
         }
 
-        /// <summary>
-        /// Locate the latest save across all profiles and stage it for loading.
-        /// Returns the scene name to load or null on failure.
-        /// </summary> v
+        /// <summary> Prepares SaveService to load latest save from all profiles. </summary> 
+        /// <returns> Scene name of latest save. </returns> 
         public string StartLatestGlobal() {
-            (string latestProfileId, string latestSlotId) = Saves.GetLatestProfile();
+            SaveProfile latestProfile = Saves.GetLatestProfile();
+            if (!latestProfile.IsValid()) return null;
 
-            if (!H.ValidateString(latestProfileId)) return null; 
-            if (!H.ValidateString(latestSlotId)) return null;
+            SaveSlotMeta latestMeta = Saves.GetLatestMeta(latestProfile.id);
+            if (!latestMeta.IsValid()) return null;
 
-            var data = Saves.GetData(latestProfileId, latestSlotId);
+            PreparePendingData(latestProfile.id, latestMeta.id);
+            return latestMeta.sceneName;
+        }
 
-            if (!H.ValidateData(data)) return null; 
+        /// <summary> Prepares SaveService to load any save. </summary>
+        /// <returns> Scene name of latest save. </returns>  
+        public string StartFrom(string profileId, string saveId) {
+            if (string.IsNullOrEmpty(profileId) || string.IsNullOrEmpty(saveId)) return null;
 
-            PreparePendingData(latestProfileId, latestSlotId);
+            var profile = Saves.GetProfile(profileId);
+            if (!profile.IsValid()) return null;
+ 
+            var data = Saves.GetData(profileId, saveId);
+            if (!data.IsValid()) return null; 
+
+            PreparePendingData(profileId, saveId);
             return data.sceneName;
         }
 
-        /// <summary>
-        /// Prepate to load any save. 
-        /// Returns the scene name to load or null on failure.
-        /// </summary> v
-        public string StartFrom(string profileId, string slotId) {
-            if (!H.ValidateString(profileId)) return null; 
-            if (!H.ValidateString(slotId)) return null; 
-
-            var data = Saves.GetData(profileId, slotId);
-
-            if (!H.ValidateData(data)) return null; 
-
-            PreparePendingData(profileId, slotId);
-            return data.sceneName;
-        }
+        /// Write load options here =>
 
         /// <summary>
-        /// Load and validate the profile and slot files then store them in PendingLoadData.
+        /// Prepares SaveService to load specified save data in specified profile.
         /// Does not apply data to the scene; caller must call ApplyPendingData afterwards.
         /// </summary>
-        public void PreparePendingData(string profileId, string slotId) {
+        private void PreparePendingData(string profileId, string saveId) {
             if (PendingLoadData != null) { Debug.Log("LoadSlot ignored: SaveManager is busy"); return; }
-            if (!H.ValidateString(profileId) || !H.ValidateString(slotId)) return;
+            if (string.IsNullOrEmpty(profileId) || string.IsNullOrEmpty(saveId)) return;
 
             SaveProfile profile = Saves.GetProfile(profileId);
-
-            if (!H.ValidateProfile(profile)) return;
+            if (profile.IsValid()) return;
                
-            SaveSlotData slotData = Saves.GetData(profileId, slotId);
-
-            if (!H.ValidateData(slotData)) return;
+            SaveSlotData slotData = Saves.GetData(profileId, saveId);
+            if (slotData.IsValid()) return;
 
             ActiveProfile = profile;
             PendingLoadData = slotData;
@@ -135,9 +108,9 @@ namespace SaveSystem {
         /// Apply staged save data to the current scene: reset registry then restore object states.
         /// </summary>
         public void ApplyPendingData() {
-            SaveRegistry.ResetAllToDefaults(); // in case new game started.
+            SaveRegistry.ResetAllToDefaults(); // in case new game started. !!!
 
-            if (!H.ValidateData(PendingLoadData)) return;
+            if (!PendingLoadData.IsValid()) return;
                 
             var data = PendingLoadData;
             PendingLoadData = null;
@@ -147,29 +120,29 @@ namespace SaveSystem {
             Debug.Log($"LoadSlot('{data.id}') complete'");
             return;
         }
+        #endregion
 
-        /// --- SAVE OPERATIONS ---
-
-        /// <summary>Save current game state to the active profile's auto-save slot.</summary>
+        #region Save Operations
+        /// <summary> Save current game state to the active profile's auto-save slot. </summary>
         public void AutoSave(string sceneName) => SaveToActiveProfile("autosave", "Auto Save", sceneName,  isAutoSave: true);
 
-        /// <summary>Create a new manual save slot and persist current state to it.</summary>
+        /// <summary> Create a new manual save slot and persist current state to it.</summary>
         public void NewManualSave(string displayName, string sceneName) => SaveToActiveProfile(Guid.NewGuid().ToString("N"), displayName, sceneName, isAutoSave: false);
 
         /// <summary>Overwrite an existing manual save slot with the current state.</summary>
-        public void OverwriteManual(string slotId, string displayName, string sceneName) => SaveToActiveProfile(slotId, displayName, sceneName, isAutoSave: false);
+        public void OverwriteManual(string saveId, string displayName, string sceneName) => SaveToActiveProfile(saveId, displayName, sceneName, isAutoSave: false);
         
         /// <summary>
         /// Capture current object states and persist them via the repository. On success
         /// ActiveProfile is updated; on failure a message is logged.
         /// </summary>
-        private void SaveToActiveProfile(string slotId, string displayName, string sceneName, bool isAutoSave) {
+        private void SaveToActiveProfile(string saveId, string displayName, string sceneName, bool isAutoSave) {
             if (PendingLoadData != null) { Debug.Log("Save ignored: a load is pending"); return; }
-            if (!H.ValidateProfile(ActiveProfile)) return;
-            if (!H.ValidateString(slotId)) return;
+            if (!ActiveProfile.IsValid()) return;
+            if (string.IsNullOrEmpty(saveId)) return;
                 
             var data = new SaveSlotData {
-                id = slotId,
+                id = saveId,
                 version = Application.version,
                 sceneName = sceneName,
                 objectStates = SaveRegistry.CaptureAll()
@@ -177,57 +150,55 @@ namespace SaveSystem {
 
             SaveProfile updatedProfile = Saves.SaveData(ActiveProfile.id, data, displayName, isAutoSave, config);
 
-            if (H.ValidateProfile(updatedProfile)) {
+            if (updatedProfile.IsValid()) {
                 ActiveProfile = updatedProfile;
                 ProfilesChanged?.Invoke();
                 Debug.Log("Saved Successfully !");
             } else 
                 Debug.Log("Failed to Save");    
-        }      
+        }
+        #endregion
 
-        /// <summary>
-        /// Remove a manual save slot from the active profile and update ActiveProfile when successful.
-        /// </summary>
-        public void DeleteManualSave(string slotId) {
-            if (!H.ValidateProfile(ActiveProfile)) return;
-            if (!H.ValidateString(slotId)) return;
+        #region Other Operations
+        /// <summary> Remove a manual save slot from the active profile and update ActiveProfile when successful. </summary>
+        public void DeleteManualSave(string saveId) {
+            if (!ActiveProfile.IsValid()) return;
+            if (string.IsNullOrEmpty(saveId)) return;
 
-            var newProfile = Saves.DeleteData(ActiveProfile.id, slotId);
-
-            if (!H.ValidateProfile(newProfile)) return;
+            var newProfile = Saves.DeleteData(ActiveProfile.id, saveId);
+            if (!newProfile.IsValid()) return;
 
              ActiveProfile = newProfile;
              ProfilesChanged?.Invoke();
         }
 
-        /// <summary>
-        /// Delete the profile and its files from disk. Logs the outcome.
-        /// </summary>
+        /// <summary> Delete the profile and its files from disk. Logs the outcome. </summary>
         public void DeleteProfile(string profileId) {
-            if (!H.ValidateString(profileId)) return;
+            if (!string.IsNullOrEmpty(profileId)) return;
 
-            bool deleted = Saves.DeleteProfile(profileId);
+            Saves.DeleteProfile(profileId);
 
+            /*
             if (deleted) {
                 if (ActiveProfile?.id == profileId) ActiveProfile = null;
                 ProfilesChanged?.Invoke();
                 Debug.Log($"Profile with id: '{profileId}' is deleted");
             }
             else Debug.Log($"Couldn`t delete rofile with id: '{profileId}'");
-               
+            */
         }
 
-        /// <summary>
-        /// Return all profiles known to the repository (cached on disk).
-        /// </summary>
+        /// <summary> Return all profiles known to the repository (cached on disk). </summary>
         public List<SaveProfile> GetAllProfiles() {
             return Saves.GetAllProfiles();
         }
 
         public List<SaveSlotMeta> GetAllSlotsFromActive() {
-            if (!H.ValidateProfile(ActiveProfile)) return new List<SaveSlotMeta>();
+            if (!ActiveProfile.IsValid()) return new List<SaveSlotMeta>();
             return Saves.GetAllMeta(ActiveProfile.id);
         }
 
+        public bool CanResume() => Saves.GetAllProfiles().Any(profile => profile.HasAnySave);
+        #endregion
     }
 }

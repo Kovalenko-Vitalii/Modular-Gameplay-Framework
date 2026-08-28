@@ -5,9 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace SaveSystem {
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <summary> API for save profile, meta and data management. </summary>
     public static class Saves {
         public static void EnsureFolder() => SaveFileIO.EnsureFolder(SavesFolder);
 
@@ -116,7 +114,7 @@ namespace SaveSystem {
             if (!profile.IsValid()) return null;
             if (!profile.IsValid()) return null;
                
-            (SaveProfile updatedProfile, string message, string evictedSlotId) = profile.UpdateMeta(data, displayName, isAutoSave, saveConfig);
+            (SaveProfile updatedProfile, string evictedSlotId) = profile.UpdateMeta(data, displayName, isAutoSave, saveConfig);
 
             if (updatedProfile.IsValid()) {
                 if (!string.IsNullOrEmpty(evictedSlotId))

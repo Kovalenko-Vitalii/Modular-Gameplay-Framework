@@ -17,7 +17,7 @@ namespace SaveSystem {
         public static SaveProfile GetProfile(string profilePath) {
             var result = ReadJson<SaveProfile>(profilePath).item;
 
-            if (!H.ValidateProfile(result)) return null;
+            if (!result.IsValid()) return null;
                 
             return result;
         }
@@ -28,7 +28,7 @@ namespace SaveSystem {
         public static SaveSlotData GetSlotData(string slotDataPath) {
             var data = ReadJson<SaveSlotData>(slotDataPath).item;
 
-            if (!H.ValidateData(data)) return null;
+            if (!data.IsValid()) return null;
                
             return data;
         }
@@ -51,7 +51,7 @@ namespace SaveSystem {
         /// </summary>
         private static void AtomicWrite(string path, string contents) {
             var dir = Path.GetDirectoryName(path);
-            if (H.ValidateString(dir))
+            if (!string.IsNullOrEmpty(dir))
                 Directory.CreateDirectory(dir);
 
             var tmpPath = path + ".tmp";
