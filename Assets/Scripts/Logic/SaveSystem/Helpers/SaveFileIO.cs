@@ -25,8 +25,8 @@ namespace SaveSystem {
         /// <summary>
         /// Read and validate slot data. Returns (null,message) on error.
         /// </summary>
-        public static SaveSlotData GetSlotData(string slotDataPath) {
-            var data = ReadJson<SaveSlotData>(slotDataPath).item;
+        public static SaveData GetSlotData(string slotDataPath) {
+            var data = ReadJson<SaveData>(slotDataPath).item;
 
             if (!data.IsValid()) return null;
                
@@ -37,7 +37,7 @@ namespace SaveSystem {
         public static void WriteProfile(string profilePath, SaveProfile profile) =>  AtomicWrite(profilePath, JsonUtility.ToJson(profile, true));
 
         /// <summary>Serialize slot data to JSON and persist atomically.</summary>
-        public static void WriteSlotData(string slotDataPath, SaveSlotData data) => AtomicWrite(slotDataPath, JsonUtility.ToJson(data, true)); 
+        public static void WriteSlotData(string slotDataPath, SaveData data) => AtomicWrite(slotDataPath, JsonUtility.ToJson(data, true)); 
 
         /// <summary>Delete the file if it exists. No-op when missing.</summary>
         public static void DeleteFile(string slotPath) {

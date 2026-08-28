@@ -84,7 +84,7 @@ public class GameFlowController : MonoBehaviour {
         if (loadedSceneName != pendingSceneName) return;
             
         hasPendingLoad = false;
-        SaveService.Instance.ApplyPendingData();
+        SaveService.Instance.ApplyPendingData(loadedSceneName);
         GameStateManager.Instance.SetMode(pendingMode);
 
         if (isNewGame) {

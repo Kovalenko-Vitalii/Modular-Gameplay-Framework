@@ -87,7 +87,7 @@ namespace SaveSystem {
 
         #region Data Operations
         /// <summary> v </summary>
-        public static SaveSlotData GetData(string profileId, string saveId) => SaveFileIO.GetSlotData(SavePath(profileId, saveId));
+        public static SaveData GetData(string profileId, string saveId) => SaveFileIO.GetSlotData(SavePath(profileId, saveId));
 
         /// <summary> v </summary>
         public static SaveProfile DeleteData(string profileId, string saveId) {
@@ -107,7 +107,7 @@ namespace SaveSystem {
         }
 
         /// <summary> </summary>
-        public static SaveProfile SaveData(string profileId, SaveSlotData data, string displayName, bool isAutoSave, SaveConfig saveConfig) {
+        public static SaveProfile SaveData(string profileId, SaveData data, string displayName, bool isAutoSave, SaveConfig saveConfig) {
             SaveProfile profile = GetProfile(profileId);
             if (!profile.IsValid()) return null;
                
@@ -129,11 +129,11 @@ namespace SaveSystem {
 
         #region Meta Operations
         /// <summary> v </summary>
-        public static List<SaveSlotMeta> GetAllMeta(string profileId) {
+        public static List<SaveMeta> GetAllMeta(string profileId) {
             var profile = SaveFileIO.GetProfile(ProfilePath(profileId));
             if (!profile.IsValid()) return null;
    
-            var result = new List<SaveSlotMeta>();
+            var result = new List<SaveMeta>();
 
             foreach (var meta in profile.manualSaves) {
                 if (meta.IsValid())
@@ -144,11 +144,11 @@ namespace SaveSystem {
         }
 
         /// <summary> </summary>
-        public static SaveSlotMeta GetLatestMeta(string profileId) {
+        public static SaveMeta GetLatestMeta(string profileId) {
             var profile = SaveFileIO.GetProfile(ProfilePath(profileId));
             if (!profile.IsValid()) return null;       
    
-            SaveSlotMeta latest = profile.Latest();
+            SaveMeta latest = profile.Latest();
             if (!profile.IsValid()) return null;
 
             return latest;

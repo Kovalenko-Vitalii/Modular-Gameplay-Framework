@@ -7,67 +7,63 @@ namespace SaveSystem {
     /// Central registry of active ISaveable objects, plus methods to capture,
     /// restore and reset their state.
     /// </summary>
-    public static class SaveRegistry
-    {
+    public static class SaveRegistry {
         private static readonly Dictionary<string, ISaveable> saveablesById = new();
+        private static readonly Dictionary<string, string> scenesById = new();
 
         /// <summary>
         /// Registers a saveable object. Called automatically by SaveableBehaviour.Awake()
         /// Warns and ignores the new instance if its saveId is already registered.
         /// </summary>
-        public static void Register(ISaveable saveable)
-        {
-            if (string.IsNullOrWhiteSpace(saveable.saveId))
-            {
+        public static void Register(ISaveable saveable) {
+            if (string.IsNullOrWhiteSpace(saveable.saveId)) {
                 Debug.LogWarning($"Ignoring ISaveable with null/empty saveId on '{DescribeSource(saveable)}'.");
                 return;
             }
 
-            if (saveablesById.TryGetValue(saveable.saveId, out var existing) && !ReferenceEquals(existing, saveable))
-            {
+            if (saveablesById.TryGetValue(saveable.saveId, out var existing) && !ReferenceEquals(existing, saveable)) {
                 Debug.LogWarning($"Duplicate SaveId '{saveable.saveId}' on '{DescribeSource(saveable)}'. " +
                                   "Keeping the already-registered instance; this one will not be saved/restored.");
                 return;
             }
 
+            string scene = (saveable as MonoBehaviour)?.gameObject.scene.name;
             saveablesById[saveable.saveId] = saveable;
+            scenesById[saveable.saveId] = scene;
         }
 
         /// <summary>
         /// Deregisters a saveable object. Called automatically by SaveableBehaviour.OnDestroy.
         /// </summary>
-        public static void Deregister(ISaveable saveable)
-        {
+        public static void Deregister(ISaveable saveable) {
             if (string.IsNullOrWhiteSpace(saveable.saveId))
                 return;
 
-            if (saveablesById.TryGetValue(saveable.saveId, out var existing) && ReferenceEquals(existing, saveable))
+            if (saveablesById.TryGetValue(saveable.saveId, out var existing) && ReferenceEquals(existing, saveable)) {
                 saveablesById.Remove(saveable.saveId);
+                scenesById.Remove(saveable.saveId);
+            } 
         }
 
         /// <summary>
         /// Resets all registered saveables to default, then restores state from savedEntries.
         /// Objects not present in the save, or entries with no matching object, are left/skipped.
         /// </summary>
-        public static List<ObjectStateEntry> CaptureAll()
-        {
+        public static List<ObjectStateEntry> CaptureAll() {
             var entries = new List<ObjectStateEntry>();
 
-            foreach (var saveable in saveablesById.Values)
-            {
+            foreach (var saveable in saveablesById.Values) {
                 var state = saveable.CaptureState();
                 if (state == null)
                     continue;
 
-                if (!SaveTypeRegistry.TryGetKey(state.GetType(), out var typeKey))
-                {
+                if (!SaveTypeRegistry.TryGetKey(state.GetType(), out var typeKey)) {
                     Debug.LogError($"State type '{state.GetType().Name}' from saveId='{saveable.saveId}' has no [SaveState] key. " +
                                     "Add [SaveState(\"...\")] to the state class. Skipping.");
                     continue;
                 }
 
-                entries.Add(new ObjectStateEntry
-                {
+                entries.Add(new ObjectStateEntry {
                     id = saveable.saveId,
                     type = typeKey,
                     json = JsonUtility.ToJson(state)
