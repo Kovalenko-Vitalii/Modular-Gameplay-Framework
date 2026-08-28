@@ -95,10 +95,10 @@ namespace SaveSystem {
             if (string.IsNullOrEmpty(profileId) || string.IsNullOrEmpty(saveId)) return;
 
             SaveProfile profile = Saves.GetProfile(profileId);
-            if (profile.IsValid()) return;
+            if (!profile.IsValid()) return;
                
             SaveSlotData slotData = Saves.GetData(profileId, saveId);
-            if (slotData.IsValid()) return;
+            if (!slotData.IsValid()) return;
 
             ActiveProfile = profile;
             PendingLoadData = slotData;
@@ -174,7 +174,7 @@ namespace SaveSystem {
 
         /// <summary> Delete the profile and its files from disk. Logs the outcome. </summary>
         public void DeleteProfile(string profileId) {
-            if (!string.IsNullOrEmpty(profileId)) return;
+            if (string.IsNullOrEmpty(profileId)) return;
 
             Saves.DeleteProfile(profileId);
 

@@ -1501,8 +1501,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1197782721}
-  - {fileID: 514287704}
   - {fileID: 4503480020753413091}
+  - {fileID: 514287704}
   - {fileID: 1848043397}
   m_Father: {fileID: 3319396439389452705}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1880,9 +1880,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1223033300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 753c976f742f87b4687d423699a6499c, type: 3}
+  m_Script: {fileID: 11500000, guid: 89212a729d967414890fe020fc1b74a4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SaveSystem.SaveManager
+  m_EditorClassIdentifier: Assembly-CSharp::SaveSystem.SaveService
   config: {fileID: 11400000, guid: c25a78c54b1f4ec49911b00fb9d968b7, type: 2}
 --- !u!1 &1254600985
 GameObject:
@@ -11212,7 +11212,7 @@ GameObject:
   - component: {fileID: 3497540349756727729}
   - component: {fileID: 8496549872234764615}
   m_Layer: 0
-  m_Name: SaveRow
+  m_Name: AutoSave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

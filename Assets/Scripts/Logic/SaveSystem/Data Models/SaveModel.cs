@@ -24,7 +24,7 @@ namespace SaveSystem {
             if (autoSave.IsValid()) latest = autoSave;
                
             foreach (var meta in manualSaves) {
-                if (meta.IsValid() && meta.updatedUtcTicks > latest.updatedUtcTicks)
+                if (meta.IsValid() && (latest == null || meta.updatedUtcTicks > latest.updatedUtcTicks))
                     latest = meta;
             }
 
@@ -49,10 +49,8 @@ namespace SaveSystem {
                 } else  {
                     var meta = manualSaves.FirstOrDefault(m => m.id == data.id);
 
-                    if (meta == null)
-                    {
-                        if (config != null && config.maxManualSaves > 0 && manualSaves.Count >= config.maxManualSaves)
-                        {
+                    if (meta == null) {
+                        if (config != null && config.maxManualSaves > 0 && manualSaves.Count >= config.maxManualSaves) {
                             if (config.limitPolicy == SlotLimitPolicy.RejectNew)
                                 return (null, null);
 
@@ -71,9 +69,8 @@ namespace SaveSystem {
                     meta.updatedUtcTicks = nowTicks;
                 }
             }
-            catch (Exception ex) {
-                throw ex;
-            }
+            catch { throw; }
+               
             return (this, evictedSlotId);
         }
     }

@@ -1,6 +1,5 @@
 using SaveSystem;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 /// <summary>
 /// Highest point in game flow hierarchy. 
@@ -15,7 +14,7 @@ public class GameFlowController : MonoBehaviour {
     private GameMode pendingMode;
     private bool hasPendingLoad;
 
-    private bool isNewGame;
+    private bool isNewGame = false;
     [SerializeField] string menuSceneName; // !!! THIS IS BAD APPROACH !!!
 
     private void Start() => Boot();
@@ -88,8 +87,11 @@ public class GameFlowController : MonoBehaviour {
         SaveService.Instance.ApplyPendingData();
         GameStateManager.Instance.SetMode(pendingMode);
 
-        if (isNewGame)     
+        if (isNewGame) {
             SaveService.Instance.AutoSave(loadedSceneName);
+            isNewGame = false;
+        }
+            
         
         GameLog.Log(TAG, $"Content loaded for '{loadedSceneName}', mode set to {pendingMode}");
     }

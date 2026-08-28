@@ -49,7 +49,7 @@ namespace SaveSystem {
             foreach (var profile in GetAllProfiles()) {
                 if (!profile.HasAnySave) continue;
                    
-                if (profile.IsValid() || profile.updatedUtcTicks > latestProfile.updatedUtcTicks)
+                if (latestProfile == null || profile.updatedUtcTicks > latestProfile.updatedUtcTicks)
                     latestProfile = profile;
             }
 
@@ -92,13 +92,12 @@ namespace SaveSystem {
         /// <summary> v </summary>
         public static SaveProfile DeleteData(string profileId, string saveId) {
             var profilePath = ProfilePath(profileId);
-            var profile = SaveFileIO.GetProfile(profilePath);
 
+            var profile = SaveFileIO.GetProfile(profilePath);
             if (!profile.IsValid()) return null;
 
             var meta = profile.manualSaves.FirstOrDefault(m => m.id == saveId);
-
-            if (!profile.IsValid()) return null;
+            if (!meta.IsValid()) return null;
 
             SaveFileIO.DeleteFile(SavePath(profileId, saveId));
             profile.manualSaves.Remove(meta);
@@ -110,8 +109,6 @@ namespace SaveSystem {
         /// <summary> </summary>
         public static SaveProfile SaveData(string profileId, SaveSlotData data, string displayName, bool isAutoSave, SaveConfig saveConfig) {
             SaveProfile profile = GetProfile(profileId);
-
-            if (!profile.IsValid()) return null;
             if (!profile.IsValid()) return null;
                
             (SaveProfile updatedProfile, string evictedSlotId) = profile.UpdateMeta(data, displayName, isAutoSave, saveConfig);
