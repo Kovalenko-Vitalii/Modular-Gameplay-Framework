@@ -68,7 +68,7 @@ namespace SaveSystem {
 
                 entries.Add(new ObjectStateEntry
                 {
-                    saveId = saveable.saveId,
+                    id = saveable.saveId,
                     type = typeKey,
                     json = JsonUtility.ToJson(state)
                 });
@@ -90,15 +90,15 @@ namespace SaveSystem {
 
             foreach (var entry in savedEntries)
             {
-                if (string.IsNullOrWhiteSpace(entry.saveId))
+                if (string.IsNullOrWhiteSpace(entry.id))
                     continue;
 
-                if (!saveablesById.TryGetValue(entry.saveId, out var target))
+                if (!saveablesById.TryGetValue(entry.id, out var target))
                     continue; // object don`t exist in the current scene - nothing to restore onto
 
                 if (!SaveTypeRegistry.TryGetType(entry.type, out var stateType))
                 {
-                    Debug.LogWarning($"Unknown save state type '{entry.type}' for saveId='{entry.saveId}'. " +
+                    Debug.LogWarning($"Unknown save state type '{entry.type}' for saveId='{entry.id}'. " +
                                       "The type may have been renamed or removed. Skipping this entry.");
                     continue;
                 }
@@ -110,13 +110,13 @@ namespace SaveSystem {
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"Failed to deserialize save state for saveId='{entry.saveId}', type='{entry.type}': {ex.Message}");
+                    Debug.LogError($"Failed to deserialize save state for saveId='{entry.id}', type='{entry.type}': {ex.Message}");
                     continue;
                 }
 
                 if (state == null)
                 {
-                    Debug.LogWarning($"Deserialized null state for saveId='{entry.saveId}', type='{entry.type}'. Skipping.");
+                    Debug.LogWarning($"Deserialized null state for saveId='{entry.id}', type='{entry.type}'. Skipping.");
                     continue;
                 }
 

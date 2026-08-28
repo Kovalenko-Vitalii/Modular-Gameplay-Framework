@@ -65,7 +65,7 @@ namespace SaveSystem {
         public string StartLatestFrom(string profileId) {
             if (!H.ValidateString(profileId)) return null; 
                 
-            string latestSlotId = Saves.GetLatestSlotId(profileId);
+            string latestSlotId = Saves.GetLatestMeta(profileId);
             
             if (!H.ValidateString(latestSlotId)) return null;
 
@@ -226,7 +226,7 @@ namespace SaveSystem {
 
         public List<SaveSlotMeta> GetAllSlotsFromActive() {
             if (!H.ValidateProfile(ActiveProfile)) return new List<SaveSlotMeta>();
-            return Saves.GetAllData(ActiveProfile.id);
+            return Saves.GetAllMeta(ActiveProfile.id);
         }
 
     }

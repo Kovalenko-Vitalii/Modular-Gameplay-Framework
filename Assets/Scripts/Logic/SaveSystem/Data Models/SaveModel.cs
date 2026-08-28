@@ -7,8 +7,7 @@ namespace SaveSystem {
     /// Data model for a save profile, which contains an auto-save and a list of manual saves.
     /// </summary>
     [Serializable]
-    public class SaveProfile
-    {
+    public class SaveProfile : IIdentifiable{
         public string id;
         public string displayName;
         public long createdUtcTicks;
@@ -16,17 +15,15 @@ namespace SaveSystem {
         public SaveSlotMeta autoSave = new();
         public List<SaveSlotMeta> manualSaves = new();
 
+        string IIdentifiable.Id => id;
+
         public bool HasAnySave => !string.IsNullOrEmpty(autoSave?.id) || manualSaves.Count > 0;
 
-        /// <summary>
-        /// Returns id of the latest slot in profile
-        /// </summary>
-        public SaveSlotMeta Latest()
-        {
+        /// <summary> Returns meta of the latest save in profile. </summary>
+        public SaveSlotMeta Latest() {
             var latest = autoSave;
 
-            foreach (var meta in manualSaves)
-            {
+            foreach (var meta in manualSaves) {
                 if (string.IsNullOrEmpty(latest?.id) || meta.updatedUtcTicks > latest.updatedUtcTicks)
                     latest = meta;
             }
@@ -34,12 +31,10 @@ namespace SaveSystem {
             return latest;
         }
 
-        public (SaveProfile, string message, string evictedSlotId) UpdateMeta(SaveSlotData data, string displayName, bool isAutoSave, SaveConfig config)
-        {
+        public (SaveProfile, string message, string evictedSlotId) UpdateMeta(SaveSlotData data, string displayName, bool isAutoSave, SaveConfig config) {
             string evictedSlotId = null;
 
-            try
-            {
+            try {
                 var nowTicks = DateTime.UtcNow.Ticks;
 
                 if (isAutoSave)
@@ -91,34 +86,38 @@ namespace SaveSystem {
     /// Meta data for a save.
     /// </summary>
     [Serializable]
-    public class SaveSlotMeta
-    {
+    public class SaveSlotMeta : IIdentifiable {
         public string id;
         public string displayName;
         public long createdUtcTicks;
         public long updatedUtcTicks;
+
+        string IIdentifiable.Id => id;
     }
 
     /// <summary>
     /// Data model for a save.
     /// </summary>
     [Serializable]
-    public class SaveSlotData
-    {
+    public class SaveSlotData : IIdentifiable {
         public string id;
         public string version;
         public string sceneName;
         public List<ObjectStateEntry> objectStates = new();
+
+        string IIdentifiable.Id => id;
     }
 
     /// <summary>
     /// Data model for a saveable object state entry.
     /// </summary>
     [Serializable]
-    public class ObjectStateEntry
+    public class ObjectStateEntry : IIdentifiable
     {
-        public string saveId;
+        public string id;
         public string type;
         public string json;
+
+        string IIdentifiable.Id => id;
     }
 }

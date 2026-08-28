@@ -6,156 +6,160 @@ using UnityEngine;
 
 namespace SaveSystem {
     /// <summary>
-    /// Provides basic operations with save data.
+    /// 
     /// </summary>
     public static class Saves {
-        private static string SavesFolder => Path.Combine(Application.persistentDataPath, "Saves");
-        private static string ProfileFolder(string profileId) => Path.Combine(SavesFolder, profileId);
-        private static string ProfileIndexPath(string profileId) => Path.Combine(ProfileFolder(profileId), "index.json");
-        private static string ProfileSlotsFolder(string profileId) => Path.Combine(ProfileFolder(profileId), "Slots");
-        private static string SlotPath(string profileId, string slotId) => Path.Combine(ProfileSlotsFolder(profileId), slotId + ".json");
-        
         public static void EnsureFolder() => SaveFileIO.EnsureFolder(SavesFolder);
 
+        #region Paths
+        private static string SavesFolder => Path.Combine(Application.persistentDataPath, "Saves");
+        private static string ProfileFolderPath(string profileId) => Path.Combine(SavesFolder, profileId);
+        private static string ProfilePath(string profileId) => Path.Combine(ProfileFolderPath(profileId), "profile.json");
+        private static string SavesFolderPath(string profileId) => Path.Combine(ProfileFolderPath(profileId), "Slots");
+        private static string SavePath(string profileId, string slotId) => Path.Combine(SavesFolderPath(profileId), slotId + ".json");
+        #endregion
 
-        /// ==PROFILE=============================================================================================================================
-        public static SaveProfile GetProfile(string profileId) => SaveFileIO.GetProfile(ProfileIndexPath(profileId));
+        #region Profile Operations
+        /// <summary> v </summary>
+        public static SaveProfile GetProfile(string profileId) => SaveFileIO.GetProfile(ProfilePath(profileId));
+
+        /// <summary> v </summary>
         public static List<SaveProfile> GetAllProfiles() {
-            SaveFileIO.EnsureFolder(SavesFolder);
+            EnsureFolder();
             var result = new List<SaveProfile>();
 
             foreach (var dir in Directory.GetDirectories(SavesFolder)) {
                 var profileId = Path.GetFileName(dir);
-                var indexPath = ProfileIndexPath(profileId);
+                var profilePath = ProfilePath(profileId);
 
-                if (!File.Exists(indexPath)) continue;
+                if (!File.Exists(profilePath)) continue;
                     
-                var response = SaveFileIO.GetProfile(indexPath);
+                var profile = SaveFileIO.GetProfile(profilePath);
 
-                if (!H.ValidateProfile(response)) continue;
+                if (!profile.IsValid()) continue;
                     
-                result.Add(response);
+                result.Add(profile);
             }
 
             return result;
         }
-        public static (string latestProfileId, string latest) GetLatestProfile() {
+
+        /// <summary> v </summary>
+        public static SaveProfile GetLatestProfile() {
             SaveProfile latestProfile = null;
 
             foreach (var profile in GetAllProfiles()) {
-                if (!profile.HasAnySave)
-                    continue;
-
-                if (latestProfile == null || profile.updatedUtcTicks > latestProfile.updatedUtcTicks)
+                if (!profile.HasAnySave) continue;
+                   
+                if (profile.IsValid() || profile.updatedUtcTicks > latestProfile.updatedUtcTicks)
                     latestProfile = profile;
             }
 
-            if (latestProfile == null) 
-                return (null, null);
-            
-            string latestSlotId = GetLatestSlotId(latestProfile.id);
-
-            return (latestProfile.id, latestSlotId);
+            return latestProfile;
         }
-        public static (SaveProfile profile, string message) CreateProfile(string displayName, SaveConfig config) {
-            if (config != null && config.maxProfles > 0 && GetAllProfiles().Count >= config.maxProfles)
-                return (null, $"Profile limit reached");
 
-            var profileId = Guid.NewGuid().ToString("N");
-            var now = DateTime.UtcNow.Ticks;
+        /// <summary> vv </summary>
+        public static SaveProfile CreateProfile(string displayName, SaveConfig config) {
+            if (config != null && config.maxProfles > 0 && GetAllProfiles().Count >= config.maxProfles)
+                return null; // maybe move somewhere
 
             var profile = new SaveProfile {
-                id = profileId,
+                id = Guid.NewGuid().ToString("N"),
                 displayName = displayName,
-                createdUtcTicks = now,
-                updatedUtcTicks = now
+                createdUtcTicks = DateTime.UtcNow.Ticks,
+                updatedUtcTicks = DateTime.UtcNow.Ticks
             };
 
-            SaveFileIO.EnsureFolder(ProfileFolder(profileId));
-            SaveFileIO.WriteProfile(ProfileIndexPath(profileId), profile);
+            SaveFileIO.EnsureFolder(ProfileFolderPath(profile.id));
+            SaveFileIO.WriteProfile(ProfilePath(profile.id), profile);
 
-            return (profile, "Profile successfully created");
+            return profile;
         }
-        public static bool DeleteProfile(string profileId) {
-            var path = ProfileFolder(profileId);
 
-            if (Directory.Exists(path)) {
-                Directory.Delete(path, recursive: true);
-                return true;
-            }
-            return false;
+        /// <summary> v </summary>
+        public static void DeleteProfile(string profileId) {
+            if (string.IsNullOrEmpty(profileId)) return;
+
+            var path = ProfileFolderPath(profileId);
+            SaveFileIO.DeleteFile(path);
         }
 
         /// Write other profile functions here =>
+        #endregion
 
-        /// =======================================================================================================================================
-        public static SaveSlotData GetData(string profileId, string saveId) => SaveFileIO.GetSlotData(SlotPath(profileId, saveId));
-        public static List<SaveSlotMeta> GetAllData(string profileId) {
-            var profile = SaveFileIO.GetProfile(ProfileIndexPath(profileId));
+        #region Data Operations
+        /// <summary> v </summary>
+        public static SaveSlotData GetData(string profileId, string saveId) => SaveFileIO.GetSlotData(SavePath(profileId, saveId));
 
-            if (!H.ValidateProfile(profile)) return null;
-   
-            var result = new List<SaveSlotMeta>();
-
-            foreach (var meta in profile.manualSaves) {
-                if (H.ValidateMeta(meta))
-                    result.Add(meta);
-            }
-
-            return result;
-        }
-        public static string GetLatestSlotId(string profileId) {
-            var profile = SaveFileIO.GetProfile(ProfileIndexPath(profileId));
-
-            if (!H.ValidateProfile(profile)) return null;       
-   
-            SaveSlotMeta latest = profile.Latest();
-
-            if (!H.ValidateString(latest?.id)) return null;
-
-
-            return latest.id;
-        }
-
-
-        
-
-        
-        
-        public static SaveProfile DeleteData(string profileId, string slotId) {
-            var profilePath = ProfileIndexPath(profileId);
+        /// <summary> v </summary>
+        public static SaveProfile DeleteData(string profileId, string saveId) {
+            var profilePath = ProfilePath(profileId);
             var profile = SaveFileIO.GetProfile(profilePath);
 
-            if (!H.ValidateProfile(profile)) return null;
+            if (!profile.IsValid()) return null;
 
-            var meta = profile.manualSaves.FirstOrDefault(m => m.id == slotId);
+            var meta = profile.manualSaves.FirstOrDefault(m => m.id == saveId);
 
-            if (!H.ValidateMeta(meta)) return null;
+            if (!profile.IsValid()) return null;
 
-            SaveFileIO.DeleteFile(SlotPath(profileId, slotId));
+            SaveFileIO.DeleteFile(SavePath(profileId, saveId));
             profile.manualSaves.Remove(meta);
             SaveFileIO.WriteProfile(profilePath, profile);
 
             return profile;
         }
 
+        /// <summary> </summary>
         public static SaveProfile SaveData(string profileId, SaveSlotData data, string displayName, bool isAutoSave, SaveConfig saveConfig) {
             SaveProfile profile = GetProfile(profileId);
 
-            if (!H.ValidateProfile(profile)) return null;
-            if (!H.ValidateData(data)) return null;
+            if (!profile.IsValid()) return null;
+            if (!profile.IsValid()) return null;
                
             (SaveProfile updatedProfile, string message, string evictedSlotId) = profile.UpdateMeta(data, displayName, isAutoSave, saveConfig);
 
-            if (updatedProfile != null) {
-                if (evictedSlotId != null)
-                    SaveFileIO.DeleteFile(SlotPath(profileId, evictedSlotId));
+            if (updatedProfile.IsValid()) {
+                if (!string.IsNullOrEmpty(evictedSlotId))
+                    SaveFileIO.DeleteFile(SavePath(profileId, evictedSlotId)); // since updated profile already dont have removed meta, just delete folder
                 
-                SaveFileIO.WriteProfile(ProfileIndexPath(profileId), updatedProfile);
-                SaveFileIO.WriteSlotData(SlotPath(profileId, data.id), data);
+                SaveFileIO.WriteProfile(ProfilePath(profileId), updatedProfile);
+                SaveFileIO.WriteSlotData(SavePath(profileId, data.id), data);
                 return updatedProfile;
             } else 
                 return null;   
         }
+
+        /// Write other data functions here =>
+        #endregion
+
+        #region Meta Operations
+        /// <summary> v </summary>
+        public static List<SaveSlotMeta> GetAllMeta(string profileId) {
+            var profile = SaveFileIO.GetProfile(ProfilePath(profileId));
+            if (!profile.IsValid()) return null;
+   
+            var result = new List<SaveSlotMeta>();
+
+            foreach (var meta in profile.manualSaves) {
+                if (meta.IsValid())
+                    result.Add(meta);
+            }
+
+            return result;
+        }
+
+        /// <summary> </summary>
+        public static SaveSlotMeta GetLatestMeta(string profileId) {
+            var profile = SaveFileIO.GetProfile(ProfilePath(profileId));
+            if (!profile.IsValid()) return null;       
+   
+            SaveSlotMeta latest = profile.Latest();
+            if (!profile.IsValid()) return null;
+
+            return latest;
+        }
+
+        /// Write other meta functions here =>
+        #endregion
     }
 }

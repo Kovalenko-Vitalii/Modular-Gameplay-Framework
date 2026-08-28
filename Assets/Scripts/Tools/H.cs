@@ -29,7 +29,7 @@ public static class H {
         }
 
         public static bool ValidateString(string id) {
-            if (id == null || string.IsNullOrEmpty(id)) {
+            if (string.IsNullOrEmpty(id)) {
                 Debug.LogError($"Invalid id: '{id}'");
                 return false;
             }
