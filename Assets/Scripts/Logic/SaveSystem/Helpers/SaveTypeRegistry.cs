@@ -10,43 +10,32 @@ namespace SaveSystem {
     /// format stays stable as long as the key itself doesn't change.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public sealed class SaveStateAttribute : Attribute
-    {
+    public sealed class SaveStateAttribute : Attribute {
         public string Key { get; }
         public SaveStateAttribute(string key) => Key = key;
     }
 
-    /// <summary>
-    /// Maps [SaveState] keys to Types (and back), built once via reflection over
-    /// loaded assemblies.
-    /// </summary>
-    public static class SaveTypeRegistry
-    {
+    /// <summary> Maps SaveState keys to Types, built once via reflection over loaded assemblies. </summary>
+    public static class SaveTypeRegistry {
         private static readonly Dictionary<string, Type> keyToType = new();
         private static readonly Dictionary<Type, string> typeToKey = new();
 
-        static SaveTypeRegistry()
-        {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
+        static SaveTypeRegistry() {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
                 Type[] types;
-                try
-                {
+                try {
                     types = assembly.GetTypes();
                 }
-                catch (ReflectionTypeLoadException ex)
-                {
+                catch (ReflectionTypeLoadException ex) {
                     types = Array.FindAll(ex.Types, t => t != null);
                 }
 
-                foreach (var type in types)
-                {
+                foreach (var type in types) {
                     var attr = type.GetCustomAttribute<SaveStateAttribute>();
                     if (attr == null)
                         continue;
 
-                    if (keyToType.TryGetValue(attr.Key, out var existingType))
-                    {
+                    if (keyToType.TryGetValue(attr.Key, out var existingType)) {
                         Debug.LogError($"Duplicate [SaveState] key '{attr.Key}' on {type.FullName} and {existingType.FullName}. Keys must be unique.");
                         continue;
                     }

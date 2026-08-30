@@ -7,17 +7,15 @@ using UnityEngine;
 /// </summary>
 [DefaultExecutionOrder(-1000)]
 public class GameFlowController : MonoBehaviour {
-    private const string TAG = "GameFlowController";
     public static GameFlowController Instance { get; private set; }
 
     private string pendingSceneName;
     private GameMode pendingMode;
     private bool hasPendingLoad;
-
     private bool isNewGame = false;
-    [SerializeField] string menuSceneName; // !!! THIS IS BAD APPROACH !!!
+    [SerializeField] string menuSceneName; // !!!
 
-    private void Start() => Boot();
+    private void Start() => GoToMainMenu();
      
     private void Awake() {
         if (Instance != null && Instance != this) { 
@@ -27,7 +25,7 @@ public class GameFlowController : MonoBehaviour {
         
         Instance = this;
         SceneLoader.Instance.ContentLoaded += HandleContentLoaded;
-        GameLog.Log(TAG, "Initialized");
+        Debug.Log("Initialized");
     }
 
     private void OnDestroy() {
@@ -35,8 +33,12 @@ public class GameFlowController : MonoBehaviour {
             SceneLoader.Instance.ContentLoaded -= HandleContentLoaded;
     }
 
+    #region API
+    
     public void StartNewGame(string newGameScene, string profileName) {
-        if (string.IsNullOrEmpty(newGameScene)) return;
+        if (string.IsNullOrEmpty(newGameScene)) { Debug.Log($"Invalid scene name: '{newGameScene}'"); return; }
+        if (string.IsNullOrEmpty(profileName)) { Debug.Log($"Invalid profile name: '{profileName}'"); return; }
+
         SaveService.Instance.StartNewGame(profileName);
         RequestLoad(newGameScene, GameMode.Gameplay);
         isNewGame = true;
@@ -44,32 +46,33 @@ public class GameFlowController : MonoBehaviour {
 
     public void StartGame(string profileId) {  
         string sceneName = SaveService.Instance.StartLatestFrom(profileId);
-        if (sceneName == null) return;
+        if (string.IsNullOrEmpty(sceneName)) { Debug.Log($"Invalid scene name, load canceled !"); return; }
         RequestLoad(sceneName, GameMode.Gameplay);
     }
 
     public void StartManual(string profileId, string slotId) {
         string sceneName = SaveService.Instance.StartFrom(profileId, slotId);
-        if (sceneName == null) return;
+        if (string.IsNullOrEmpty(sceneName)) { Debug.Log($"Invalid scene name, load canceled !"); return; }
         RequestLoad(sceneName, GameMode.Gameplay);
     }
 
     public void ResumeGame() { 
         string sceneName = SaveService.Instance.StartLatestGlobal();
-        if (sceneName == null) return;
+        if (string.IsNullOrEmpty(sceneName)) { Debug.Log($"Invalid scene name, load canceled !"); return; }
         RequestLoad(sceneName, GameMode.Gameplay);
     }
 
-    public void ReturnToMenu() => RequestLoad(menuSceneName, GameMode.MainMenu);
+    public void GoToMainMenu() {
+        SaveService.Instance.Clean();
+        RequestLoad(menuSceneName, GameMode.MainMenu);
+    }
 
-    private void Boot() => RequestLoad(menuSceneName, GameMode.MainMenu);
+    #endregion
 
+    #region Private
 
     private void RequestLoad(string targetSceneName, GameMode targetMode) {
-        if (SceneLoader.Instance.IsBusy) {
-            GameLog.Warning(TAG, $"Load of '{targetSceneName}' ignored: SceneLoader busy");
-            return;
-        }
+        if (SceneLoader.Instance.IsBusy) { Debug.LogWarning($"Load of '{targetSceneName}' ignored: SceneLoader busy"); return; }
 
         pendingSceneName = targetSceneName;
         pendingMode = targetMode;
@@ -91,8 +94,9 @@ public class GameFlowController : MonoBehaviour {
             SaveService.Instance.AutoSave(loadedSceneName);
             isNewGame = false;
         }
-            
-        
-        GameLog.Log(TAG, $"Content loaded for '{loadedSceneName}', mode set to {pendingMode}");
+  
+        Debug.Log($"Content loaded for '{loadedSceneName}', mode set to {pendingMode}");
     }
+
+    #endregion
 }

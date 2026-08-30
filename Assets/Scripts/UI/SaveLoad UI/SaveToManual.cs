@@ -49,7 +49,7 @@ public class SaveToManual : MonoBehaviour {
             spawnedUISlots.Add(instance);
 
             Action saveFunction = () => {
-                SaveService.Instance.OverwriteManual(saveSlot.id,  SceneLoader.Instance.CurrentContentScene, saveSlot.displayName);
+                SaveService.Instance.OverwriteSave(saveSlot.id,  SceneLoader.Instance.CurrentContentScene, saveSlot.displayName);
             };
 
             Action deleteFunction = () => {

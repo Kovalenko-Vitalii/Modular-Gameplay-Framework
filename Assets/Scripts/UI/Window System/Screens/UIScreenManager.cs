@@ -44,8 +44,6 @@ public class UIScreenManager : MonoBehaviour
         if (next != null && next != Current) next.Activate();
         Current = next;
 
-        if (targetId.HasValue)
-            GameLog.Log(TAG, "Active screen changed to " + targetId.Value);
         ScreenChanged?.Invoke(targetId ?? default);
     }
 

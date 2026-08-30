@@ -5,8 +5,7 @@ namespace SaveSystem {
     /// Optional base class for MonoBehaviours implementing ISaveable.
     /// Handles registration with SaveRegistry automatically.
     /// </summary>
-    public abstract class SaveableBehaviour : MonoBehaviour, ISaveable
-    {
+    public abstract class SaveableBehaviour : MonoBehaviour, ISaveable {
         public abstract string saveId { get; }
 
         protected virtual void Awake() => SaveRegistry.Register(this);

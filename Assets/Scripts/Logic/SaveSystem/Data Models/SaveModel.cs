@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace SaveSystem {
     /// <summary> Data model for a save profile, contains an auto-save and a list of manual saves. </summary>
@@ -16,6 +17,14 @@ namespace SaveSystem {
 
         string IIdentifiable.Id => id;
 
+        public SaveProfile(string displayName, long updatedUtcTicks) {
+            id = Guid.NewGuid().ToString("N");
+            this.displayName = displayName;
+            createdUtcTicks = DateTime.UtcNow.Ticks;
+            this.updatedUtcTicks = updatedUtcTicks;
+        }
+
+
         public bool HasAnySave => !string.IsNullOrEmpty(autoSave?.id) || manualSaves.Count > 0;
 
         /// <summary> Returns meta of the latest save in profile. </summary>
@@ -28,49 +37,45 @@ namespace SaveSystem {
                     latest = meta;
             }
 
+            if (latest == null) Debug.Log($"There is no latest meta in profile with id: '{id}'");
             return latest;
         }
 
+        /// <returns> Updated profile and evicted slot if exists. </returns>
         public (SaveProfile, string evictedSlotId) UpdateMeta(SaveData data, string displayName, bool isAutoSave, SaveConfig config) {
-            string evictedSlotId = null; // need to make it more readable !!!
+            if (config == null) return (null, null);
+            if (string.IsNullOrEmpty(displayName)) return (null, null);
+            if (!data.IsValid()) return (null, null);
 
-            try {
-                var nowTicks = DateTime.UtcNow.Ticks;
+            string evictedSlotId = null;
+            var nowTicks = DateTime.UtcNow.Ticks;
+            if (isAutoSave){
+                autoSave ??= new SaveMeta { createdUtcTicks = nowTicks};
+                autoSave.id = data.id;
+                autoSave.displayName = displayName;
+                autoSave.activeScene = data.activeScene;
+                autoSave.updatedUtcTicks = nowTicks;
+            } else {
+                var meta = manualSaves.FirstOrDefault(m => m.id == data.id);
 
-                if (isAutoSave)  {
-                    autoSave ??= new SaveMeta {
-                        id = data.id,
-                        createdUtcTicks = nowTicks
-                    };
-                    autoSave.id = data.id;
-                    autoSave.displayName = displayName;
-                    autoSave.activeScene = data.activeScene;
-                    autoSave.updatedUtcTicks = nowTicks;
-                } else  {
-                    var meta = manualSaves.FirstOrDefault(m => m.id == data.id);
+                if (!meta.IsValid()) {
+                    if (!config.CanCreateProfile(manualSaves.Count)) {
+                        if (config.limitPolicy == SlotLimitPolicy.RejectNew)
+                            return (null, null);
 
-                    if (meta == null) {
-                        if (config != null && config.maxManualSaves > 0 && manualSaves.Count >= config.maxManualSaves) {
-                            if (config.limitPolicy == SlotLimitPolicy.RejectNew)
-                                return (null, null);
-
-                            var oldest = manualSaves.OrderBy(m => m.updatedUtcTicks).First();
-                            evictedSlotId = oldest.id;
-                            manualSaves.Remove(oldest);
-                        }
-
-                        meta = new SaveMeta { id = data.id, createdUtcTicks = nowTicks };
-                        manualSaves.Add(meta);
+                        var oldest = manualSaves.OrderBy(m => m.updatedUtcTicks).First();
+                        evictedSlotId = oldest.id;
+                        manualSaves.Remove(oldest);
                     }
 
-                    if (!string.IsNullOrEmpty(displayName))
-                        meta.displayName = displayName;
-
-                    meta.updatedUtcTicks = nowTicks;
+                    meta = new SaveMeta { id = data.id, createdUtcTicks = nowTicks, activeScene = data.activeScene };
+                    manualSaves.Add(meta);
                 }
+
+                meta.displayName = displayName;
+                meta.updatedUtcTicks = nowTicks;
             }
-            catch { throw; }
-               
+
             return (this, evictedSlotId);
         }
     }
@@ -95,18 +100,15 @@ namespace SaveSystem {
         public string activeScene;
         public List<SceneData> scenes = new();
 
-        public SaveData(string version, string activeScene, List<SceneData> scenes) {
-            id = Guid.NewGuid().ToString("N");
-            this.version = version;
-            this.activeScene = activeScene;
-            this.scenes = scenes;
-        }
+        string IIdentifiable.Id => id;
 
         public SaveData(string version, string activeScene) {
             id = Guid.NewGuid().ToString("N");
             this.version = version;
             this.activeScene = activeScene;
         }
+
+        public SceneData GetSceneData(string sceneName) => scenes.FirstOrDefault(e => e.sceneName == sceneName);
 
         /// <summary> Adds new scene data if it is new scene, if scene data with same scene exist - rewrites it. </summary>
         public void AddSceneData(SceneData data) {
@@ -115,13 +117,7 @@ namespace SaveSystem {
                 existing.objectStates = data.objectStates;
             else 
                 scenes.Add(data);
-        }
-
-        public SceneData GetSceneData(string sceneName) {
-            return scenes.FirstOrDefault(e => e.sceneName == sceneName);
-        }
-
-        string IIdentifiable.Id => id;
+        }   
     }
 
     /// <summary> Data model for scene state </summary>
@@ -129,6 +125,11 @@ namespace SaveSystem {
     public class SceneData {
         public string sceneName;
         public List<ObjectStateEntry> objectStates = new();
+
+        public SceneData(string sceneName, List<ObjectStateEntry> objectStates) { 
+            this.sceneName = sceneName;
+            this.objectStates = objectStates;
+        }
     }
 
     /// <summary> Data model for a saveable object state entry. </summary>

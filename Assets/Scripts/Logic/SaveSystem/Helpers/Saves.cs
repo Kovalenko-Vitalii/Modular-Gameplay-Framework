@@ -18,31 +18,32 @@ namespace SaveSystem {
         #endregion
 
         #region Profile Operations
-        /// <summary> v </summary>
-        public static SaveProfile GetProfile(string profileId) => SaveFileIO.GetProfile(ProfilePath(profileId));
+        /// <returns> Profile with selected id, null if not found or operation failed.</returns>
+        public static SaveProfile GetProfile(string profileId) {
+            if (string.IsNullOrEmpty(profileId)) return null;
+            return SaveFileIO.GetProfile(ProfilePath(profileId));
+        }
 
-        /// <summary> v </summary>
+        /// <summary> Returns list of all profiles in saves folder. </summary>
         public static List<SaveProfile> GetAllProfiles() {
-            EnsureFolder();
             var result = new List<SaveProfile>();
 
             foreach (var dir in Directory.GetDirectories(SavesFolder)) {
                 var profileId = Path.GetFileName(dir);
                 var profilePath = ProfilePath(profileId);
-
                 if (!File.Exists(profilePath)) continue;
                     
                 var profile = SaveFileIO.GetProfile(profilePath);
-
                 if (!profile.IsValid()) continue;
                     
                 result.Add(profile);
             }
 
+            if (result.Count == 0) Debug.Log("There are no profiles."); 
             return result;
         }
 
-        /// <summary> v </summary>
+        /// <summary> Returns most recently edited profile. If nothing found returns null. </summary>
         public static SaveProfile GetLatestProfile() {
             SaveProfile latestProfile = null;
 
@@ -53,20 +54,19 @@ namespace SaveSystem {
                     latestProfile = profile;
             }
 
+            if (!latestProfile.IsValid()) { Debug.Log("Could not find latest valid profile !"); return null; }
             return latestProfile;
         }
 
-        /// <summary> vv </summary>
+        /// <summary> Creates new profile according to policy of pasted save config. </summary>
+        /// <returns> Created profile if sucseeded, null if failed. </returns>
         public static SaveProfile CreateProfile(string displayName, SaveConfig config) {
-            if (config != null && config.maxProfles > 0 && GetAllProfiles().Count >= config.maxProfles)
-                return null; // maybe move somewhere
+            if (config == null) return null; 
+            if (string.IsNullOrEmpty(displayName)) return null; 
 
-            var profile = new SaveProfile {
-                id = Guid.NewGuid().ToString("N"),
-                displayName = displayName,
-                createdUtcTicks = DateTime.UtcNow.Ticks,
-                updatedUtcTicks = DateTime.UtcNow.Ticks
-            };
+            if (!config.CanCreateProfile(GetAllProfiles().Count())) { Debug.Log("Could not create profile due to policy."); return null; }
+
+            var profile = new SaveProfile(displayName, DateTime.UtcNow.Ticks); 
 
             SaveFileIO.EnsureFolder(ProfileFolderPath(profile.id));
             SaveFileIO.WriteProfile(ProfilePath(profile.id), profile);
@@ -76,23 +76,31 @@ namespace SaveSystem {
 
         /// <summary> v </summary>
         public static void DeleteProfile(string profileId) {
-            if (string.IsNullOrEmpty(profileId)) return;
+            if (string.IsNullOrEmpty(profileId)) return; 
 
             var path = ProfileFolderPath(profileId);
-            SaveFileIO.DeleteFile(path);
+            SaveFileIO.DeleteFolder(path);
         }
 
         /// Write other profile functions here =>
         #endregion
 
         #region Data Operations
-        /// <summary> v </summary>
-        public static SaveData GetData(string profileId, string saveId) => SaveFileIO.GetSlotData(SavePath(profileId, saveId));
+        /// <returns> SaveData of selected profile and save. </returns>
+        public static SaveData GetData(string profileId, string saveId) { 
+            if (string.IsNullOrEmpty(profileId)) return null; 
+            if (string.IsNullOrEmpty(saveId)) return null; 
 
-        /// <summary> v </summary>
+            return SaveFileIO.GetSaveData(SavePath(profileId, saveId));
+        } 
+
+        /// <summary> Deletes data in profile, and its folder. </summary>
+        /// <returns> Updated profile. </returns>
         public static SaveProfile DeleteData(string profileId, string saveId) {
-            var profilePath = ProfilePath(profileId);
+            if (string.IsNullOrEmpty(profileId)) return null; 
+            if (string.IsNullOrEmpty(saveId)) return null; 
 
+            var profilePath = ProfilePath(profileId);
             var profile = SaveFileIO.GetProfile(profilePath);
             if (!profile.IsValid()) return null;
 
@@ -118,18 +126,21 @@ namespace SaveSystem {
                     SaveFileIO.DeleteFile(SavePath(profileId, evictedSlotId)); // since updated profile already dont have removed meta, just delete folder
                 
                 SaveFileIO.WriteProfile(ProfilePath(profileId), updatedProfile);
-                SaveFileIO.WriteSlotData(SavePath(profileId, data.id), data);
+                SaveFileIO.WriteData(SavePath(profileId, data.id), data);
                 return updatedProfile;
-            } else 
-                return null;   
+            }
+
+            return null;   
         }
 
         /// Write other data functions here =>
         #endregion
 
         #region Meta Operations
-        /// <summary> v </summary>
+        /// <returns> List of all manual meta files from selected profile. </returns>
         public static List<SaveMeta> GetAllMeta(string profileId) {
+            if (string.IsNullOrEmpty(profileId)) return null;
+
             var profile = SaveFileIO.GetProfile(ProfilePath(profileId));
             if (!profile.IsValid()) return null;
    
@@ -140,16 +151,19 @@ namespace SaveSystem {
                     result.Add(meta);
             }
 
+            if (result.Count == 0) Debug.Log("There are no meta in selected file");
             return result;
         }
 
-        /// <summary> </summary>
+        /// <returns> Latest meta file from selected profile. </returns>
         public static SaveMeta GetLatestMeta(string profileId) {
+            if (string.IsNullOrEmpty(profileId)) return null; 
+
             var profile = SaveFileIO.GetProfile(ProfilePath(profileId));
             if (!profile.IsValid()) return null;       
    
             SaveMeta latest = profile.Latest();
-            if (!profile.IsValid()) return null;
+            if (!latest.IsValid()) return null;
 
             return latest;
         }

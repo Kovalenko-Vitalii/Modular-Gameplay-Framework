@@ -8,7 +8,7 @@ public class NewManualSave : MonoBehaviour {
     [SerializeField] Button button;
 
     void Start() {
-        button.onClick.AddListener(() => SaveService.Instance.NewManualSave(Environment.UserName,
+        button.onClick.AddListener(() => SaveService.Instance.NewSave(Environment.UserName,
             SceneLoader.Instance.CurrentContentScene));
     }
 
