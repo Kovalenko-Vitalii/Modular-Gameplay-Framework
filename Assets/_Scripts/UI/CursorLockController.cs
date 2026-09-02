@@ -1,6 +1,7 @@
 using UnityEngine;
+using VContainer;
 
-public sealed class CursorLockController : MonoBehaviour, IService
+public sealed class CursorLockController : MonoBehaviour
 {
     public static CursorLockController Instance { get; private set; }
 
@@ -9,7 +10,12 @@ public sealed class CursorLockController : MonoBehaviour, IService
 
     public bool IsLocked { get; private set; }
 
-    public void Initialize() { }
+    GameStateManager _gameStateManager;
+
+    [Inject]
+    void Construct(GameStateManager gameStateManager) {
+        _gameStateManager = gameStateManager;
+    }
 
     private void Awake()
     {
@@ -24,12 +30,11 @@ public sealed class CursorLockController : MonoBehaviour, IService
 
     private void OnEnable()
     {
-        GameStateManager.PauseChanged += OnPausedChanged;
-        if (GameStateManager.Instance != null)
-            SetLocked(!GameStateManager.Instance.IsPaused);
+        _gameStateManager.PauseChanged += OnPausedChanged;
+        SetLocked(!_gameStateManager.IsPaused);
     }
 
-    private void OnDisable() => GameStateManager.PauseChanged -= OnPausedChanged;
+    private void OnDisable() => _gameStateManager.PauseChanged -= OnPausedChanged;
     private void OnPausedChanged(bool isPaused) => SetLocked(!isPaused);
 
     private void Start()

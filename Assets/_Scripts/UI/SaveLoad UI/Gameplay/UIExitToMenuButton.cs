@@ -1,13 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class UIExitToMenuButton : MonoBehaviour {
     Button button;
+    GameFlowController _gameFlowController;
+
+    [Inject]
+    void Construct(GameFlowController gameFlowController) {
+        _gameFlowController = gameFlowController;
+    }
     private void Awake() {
         button = GetComponent<Button>();
 
-        if (button == null)    
-            Debug.LogWarning("UIExitToMenuButton requires a Button component.", this);
+        if (button == null) Debug.LogWarning("UIExitToMenuButton requires a Button component.", this);  
     }
 
     private void OnEnable() {
@@ -20,7 +26,5 @@ public class UIExitToMenuButton : MonoBehaviour {
             button.onClick.RemoveListener(OnExitToMenuClicked);
     }
 
-    private void OnExitToMenuClicked() {
-        GameFlowController.Instance.GoToMainMenu();
-    }
+    private void OnExitToMenuClicked() => _gameFlowController.GoToMainMenu(); 
 }

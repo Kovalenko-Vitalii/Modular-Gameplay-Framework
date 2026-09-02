@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Device;
+using VContainer;
 
 public enum UIScreenId { Boot, MainMenu, Loading, Gameplay }
 
@@ -15,6 +16,13 @@ public class UIScreenManager : MonoBehaviour
     public UIScreen Current { get; private set; }
     public static event Action<UIScreenId> ScreenChanged;
 
+    GameStateManager _gameStateManager;
+
+    [Inject]
+    void Construct(GameStateManager gameStateManager) {
+        _gameStateManager = gameStateManager;
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -23,14 +31,14 @@ public class UIScreenManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameStateManager.ModeChanged += HandleModeChanged;
+        _gameStateManager.ModeChanged += HandleModeChanged;
         // Apply current mode immediately in case UI initializes after GameStateManager
-        HandleModeChanged(GameStateManager.Instance.CurrentMode);
+        HandleModeChanged(_gameStateManager.CurrentMode);
     }
 
     private void OnDisable()
     {
-        GameStateManager.ModeChanged -= HandleModeChanged;
+        _gameStateManager.ModeChanged -= HandleModeChanged;
     }
 
     private void HandleModeChanged(GameMode mode)

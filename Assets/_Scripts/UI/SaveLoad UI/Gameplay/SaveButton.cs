@@ -1,6 +1,7 @@
 using SaveSystem;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 /// <summary>
 /// Basic UI script to test save functionality.
@@ -10,6 +11,15 @@ using UnityEngine.UI;
 /// </summary>
 public class SaveButton : MonoBehaviour {
     [SerializeField] private Button button;
+
+    SceneLoader _sceneLoader;
+    SaveService _saveService;
+
+    [Inject]
+    void Construct(SceneLoader sceneLoader, SaveService saveService) {
+        _sceneLoader = sceneLoader;
+        _saveService = saveService;
+    }
 
     private void Reset() => button = GetComponent<Button>();
 
@@ -24,6 +34,6 @@ public class SaveButton : MonoBehaviour {
 
     private void HandleClick() {
         button.interactable = false;
-        SaveService.Instance.AutoSave(SceneLoader.Instance.CurrentContentScene);
+        _saveService.AutoSave(_sceneLoader.CurrentContentScene);
     }
 }

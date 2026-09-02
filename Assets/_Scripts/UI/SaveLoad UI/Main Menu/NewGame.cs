@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using SaveSystem;
+using VContainer;
 
 /// <summary>
 /// Basic script to demonstrate ability to create new save profile and run it
@@ -13,6 +14,14 @@ public class NewGame : MonoBehaviour {
     [SerializeField] Button play;
     [SerializeField] TMP_InputField inputField;
 
+    GameFlowController _gameFlowController;
+
+    [Inject]
+    private void Construct(GameFlowController gameFlowController){
+        _gameFlowController = gameFlowController;
+    }
+
+
     private void Start() => play.onClick.AddListener(OnPlayClicked);
         
     void OnPlayClicked() {
@@ -20,6 +29,6 @@ public class NewGame : MonoBehaviour {
         if (string.IsNullOrEmpty(profileName)) 
             return;
 
-        GameFlowController.Instance.StartNewGame("Demonstration", profileName);
+        _gameFlowController.StartNewGame("Demonstration", profileName);
     }
 }

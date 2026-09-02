@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 // <summary>
 // Ticking system that allows manage simulation process
 // </summary>
 [DefaultExecutionOrder(-1000)]
-public class TickSystem : MonoBehaviour, IService
+public class TickSystem : MonoBehaviour
 {
     const string TAG = "PlayerTickSystem";
 
@@ -21,7 +22,12 @@ public class TickSystem : MonoBehaviour, IService
 
     bool isTicking = true;
 
-    public void Initialize() { }
+    GameStateManager _gameStateManager;
+
+    [Inject]
+    void Construct(GameStateManager gameStateManager) {
+        _gameStateManager = gameStateManager;
+    }
 
     void Awake()
     {
@@ -40,12 +46,11 @@ public class TickSystem : MonoBehaviour, IService
     // acceptable level of glue 
     private void OnEnable()
     {
-        GameStateManager.PauseChanged += OnPausedChanged;
-        if (GameStateManager.Instance != null)
-            isTicking = !GameStateManager.Instance.IsPaused;
+        _gameStateManager.PauseChanged += OnPausedChanged;
+        isTicking = !_gameStateManager.IsPaused;
     }
 
-    private void OnDisable() => GameStateManager.PauseChanged -= OnPausedChanged; 
+    private void OnDisable() => _gameStateManager.PauseChanged -= OnPausedChanged; 
 
     private void OnPausedChanged(bool isPaused) =>isTicking = !isPaused;
 

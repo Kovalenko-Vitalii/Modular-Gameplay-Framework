@@ -7,9 +7,8 @@ using UnityEngine.SceneManagement;
 /// Additive scene loading manager.
 /// </summary>
 [DefaultExecutionOrder(-1500)]
-public class SceneLoader : MonoBehaviour, IService {
+public class SceneLoader : MonoBehaviour {
     string TAG = "SceneLoader";
-    public static SceneLoader Instance { get; private set; }
 
     string currentContentScene;
     AsyncOperation activateLoadOperation; // Async operation for paralel loading
@@ -24,18 +23,6 @@ public class SceneLoader : MonoBehaviour, IService {
     /// Loaded scene name.
     /// </summary>
     public event Action<string> ContentLoaded;
-    
-    public void Initialize() { }
-
-    private void Awake() {
-        if (Instance != null && Instance != this) {
-            Destroy(gameObject); 
-            return; 
-        } 
-
-        Instance = this;
-        GameLog.Log(TAG, "Initialized");
-    }
 
     /// <summary>
     /// Load content scene and activate automatically when loaded.

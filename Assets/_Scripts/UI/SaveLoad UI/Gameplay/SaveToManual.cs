@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class SaveToManual : MonoBehaviour {
     [SerializeField] ScrollRect scrollRect;
@@ -10,32 +11,27 @@ public class SaveToManual : MonoBehaviour {
 
     readonly List<GameObject> spawnedUISlots = new();
 
+    SceneLoader _sceneLoader;
+    SaveService _saveService;
+
+    [Inject]
+    void Construct(SceneLoader sceneLoader, SaveService saveService) {
+        _sceneLoader = sceneLoader;
+        _saveService = saveService;
+    }
+
     void Start() {
-        if (SaveService.Instance == null) {
-            Debug.LogError("Could not link to SaveManager!");
-            return;
-        }
-
-        if (scrollRect == null || scrollRect.content == null) {
-            Debug.LogWarning("No ScrollRect (or its Content) assigned!");
-            return;
-        }
-
-        if (rowPrefab == null) {
-            Debug.LogWarning("No profilePrefab assigned!");
-            return;
-        }
+        if (scrollRect == null || scrollRect.content == null) Debug.LogWarning("No ScrollRect (or its Content) assigned!");
+        if (rowPrefab == null) Debug.LogWarning("No profilePrefab assigned!");
 
         Refresh();
     }
 
     void Awake() {
-        if (SaveService.Instance != null)
-            SaveService.Instance.ProfilesChanged += Refresh;
+        _saveService.ProfilesChanged += Refresh;
     }
-    void OnDestroy() { 
-        if (SaveService.Instance != null) 
-            SaveService.Instance.ProfilesChanged -= Refresh;
+    void OnDestroy() {
+        _saveService.ProfilesChanged -= Refresh;
     }
 
     void Refresh() {
@@ -44,16 +40,16 @@ public class SaveToManual : MonoBehaviour {
 
         spawnedUISlots.Clear();
 
-        foreach (var saveSlot in SaveService.Instance.GetAllSlotsFromActive()) {
+        foreach (var saveSlot in _saveService.GetAllSlotsFromActive()) {
             var instance = Instantiate(rowPrefab, scrollRect.content);
             spawnedUISlots.Add(instance);
 
             Action saveFunction = () => {
-                SaveService.Instance.OverwriteSave(saveSlot.id,  SceneLoader.Instance.CurrentContentScene, saveSlot.displayName);
+                _saveService.OverwriteSave(saveSlot.id, _sceneLoader.CurrentContentScene, saveSlot.displayName);
             };
 
             Action deleteFunction = () => {
-                SaveService.Instance.DeleteManualSave(saveSlot.id);
+                _saveService.DeleteManualSave(saveSlot.id);
             };
 
             if (instance.TryGetComponent(out ProfileSlotUI slotUI))

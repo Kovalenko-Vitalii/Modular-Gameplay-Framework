@@ -6,8 +6,7 @@ using UnityEngine;
 /// Global game state provider.
 /// </summary>
 [DefaultExecutionOrder(-2000)] // Initializes before other systems
-public class GameStateManager : MonoBehaviour, IService {
-    public static GameStateManager Instance { get; private set; }
+public class GameStateManager : MonoBehaviour {
     string TAG = "GameStateManager";
 
     [SerializeField] private GameMode[] pausingModes = { 
@@ -21,20 +20,8 @@ public class GameStateManager : MonoBehaviour, IService {
     public GameMode CurrentMode { get; private set; } = GameMode.Boot;
     public bool IsPaused { get; private set; } = false;
 
-    public static event Action<bool> PauseChanged; 
-    public static event Action<GameMode> ModeChanged;
-
-    public void Initialize() { }
-
-    private void Awake() {
-        if (Instance != null && Instance != this) { 
-            Destroy(gameObject); 
-            return; 
-        }
-
-        Instance = this;
-        GameLog.Log(TAG, "Initialized");
-    }
+    public event Action<bool> PauseChanged; 
+    public event Action<GameMode> ModeChanged;
 
     /// --- PUBLIC API ---
 

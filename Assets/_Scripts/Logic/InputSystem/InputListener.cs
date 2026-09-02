@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 
 // !!! MAKE IT DATA DRIVEN SYSTEM LATER !!!
 [DefaultExecutionOrder(-1500)]
-public class InputListener : MonoBehaviour, IService {
+public class InputListener : MonoBehaviour {
     public static InputListener Instance { get; private set; }
     string TAG = "InputListener";
 
@@ -21,8 +21,6 @@ public class InputListener : MonoBehaviour, IService {
 
     private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> performedHandlers = new();
     private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> canceledHandlers = new();
-
-    public void Initialize() { }
 
     private void Awake() {
         if (Instance != null && Instance != this) { 

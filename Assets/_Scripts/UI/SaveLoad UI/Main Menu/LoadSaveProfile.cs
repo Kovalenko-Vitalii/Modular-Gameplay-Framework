@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class LoadSaveProfile : MonoBehaviour {
     [SerializeField] ScrollRect scrollRect;
@@ -10,32 +11,27 @@ public class LoadSaveProfile : MonoBehaviour {
 
     readonly List<GameObject> spawnedSlots = new();
 
+    private GameFlowController _gameFlowController;
+    SaveService _saveService;
+
+    [Inject]
+    private void Construct(GameFlowController gameFlowController, SaveService saveService) {
+        _gameFlowController = gameFlowController;
+        _saveService = saveService;
+    }
+
     void Start() {
-        if (SaveService.Instance == null) {
-            Debug.LogError("Could not link to SaveManager!");
-            return;
-        }
-
-        if (scrollRect == null || scrollRect.content == null) {
-            Debug.LogWarning("No ScrollRect (or its Content) assigned!");
-            return;
-        }
-
-        if (rowPrefab == null) {
-            Debug.LogWarning("No profilePrefab assigned!");
-            return;
-        }
+        if (scrollRect == null || scrollRect.content == null) Debug.LogWarning("No ScrollRect (or its Content) assigned!");     
+        if (rowPrefab == null) Debug.LogWarning("No profilePrefab assigned!");
 
         Refresh();
     }
 
     void Awake() {
-        if (SaveService.Instance != null)
-            SaveService.Instance.ProfilesChanged += Refresh;
+        _saveService.ProfilesChanged += Refresh;
     }
-    void OnDestroy() { 
-        if (SaveService.Instance != null) 
-            SaveService.Instance.ProfilesChanged -= Refresh; 
+    void OnDestroy() {
+        _saveService.ProfilesChanged -= Refresh; 
     }
 
     void Refresh() {
@@ -44,16 +40,16 @@ public class LoadSaveProfile : MonoBehaviour {
 
         spawnedSlots.Clear();
 
-        foreach (var saveProfile in SaveService.Instance.GetAllProfiles()) {
+        foreach (var saveProfile in _saveService.GetAllProfiles()) {
             var instance = Instantiate(rowPrefab, scrollRect.content);
             spawnedSlots.Add(instance);
 
             Action loadFunction = () => {
-                GameFlowController.Instance.StartGame(saveProfile.id);
+                _gameFlowController.StartGame(saveProfile.id);
             };
 
             Action deleteFunction = () => {
-                SaveService.Instance.DeleteProfile(saveProfile.id);
+                _saveService.DeleteProfile(saveProfile.id);
             };
 
             if (instance.TryGetComponent(out ProfileSlotUI slotUI))

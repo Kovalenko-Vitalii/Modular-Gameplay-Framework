@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VContainer;
 using static UnityEngine.CullingGroup;
 
 [DisallowMultipleComponent]
@@ -138,6 +139,13 @@ public sealed class PlayerMovement : MonoBehaviour, ITick
         public float Angle;
     }
 
+    GameStateManager _gameStateManager;
+
+    [Inject]
+    void Construct(GameStateManager gameStateManager) {
+        _gameStateManager = gameStateManager;
+    }
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -168,7 +176,7 @@ public sealed class PlayerMovement : MonoBehaviour, ITick
 
         TickSystem.Instance?.Register(this);
 
-        GameStateManager.ModeChanged += OnStateChanged;
+        _gameStateManager.ModeChanged += OnStateChanged;
     }
 
     private void OnDisable()
@@ -180,7 +188,7 @@ public sealed class PlayerMovement : MonoBehaviour, ITick
 
         TickSystem.Instance?.Unregister(this);
 
-        GameStateManager.ModeChanged -= OnStateChanged;
+        _gameStateManager.ModeChanged -= OnStateChanged;
     }
 
     private void OnStateChanged(GameMode state)

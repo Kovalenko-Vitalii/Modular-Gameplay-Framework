@@ -1,38 +1,40 @@
 using SaveSystem;
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// Highest point in game flow hierarchy. 
 /// Designed to start global flow changes as StartGame, ExitToMenu etc.
 /// </summary>
 [DefaultExecutionOrder(-1000)]
-public class GameFlowController : MonoBehaviour, IService {
-    public static GameFlowController Instance { get; private set; }
-
+public class GameFlowController : MonoBehaviour {
     private string pendingSceneName;
     private GameMode pendingMode;
     private bool hasPendingLoad;
     private bool isNewGame = false;
     [SerializeField] string menuSceneName; // !!!
 
-    public void Initialize() { }
+    GameStateManager _gameStateManager;
+    SceneLoader _sceneLoader;
+    SaveService _saveService;
 
-    private void Start() => GoToMainMenu();
+    [Inject]
+    void Construct(GameStateManager gameStateManager, SceneLoader sceneLoader, SaveService saveService) {
+        _gameStateManager = gameStateManager;
+        _sceneLoader = sceneLoader;
+        _saveService = saveService;
+    }
+
+    private void Start() { 
+        GoToMainMenu(); 
+    }
      
     private void Awake() {
-        if (Instance != null && Instance != this) { 
-            Destroy(gameObject);
-            return; 
-        }
-        
-        Instance = this;
-        SceneLoader.Instance.ContentLoaded += HandleContentLoaded;
-        Debug.Log("Initialized");
+        _sceneLoader.ContentLoaded += HandleContentLoaded;
     }
 
     private void OnDestroy() {
-        if (SceneLoader.Instance != null)
-            SceneLoader.Instance.ContentLoaded -= HandleContentLoaded;
+        _sceneLoader.ContentLoaded -= HandleContentLoaded;
     }
 
     #region API
@@ -41,31 +43,31 @@ public class GameFlowController : MonoBehaviour, IService {
         if (string.IsNullOrEmpty(newGameScene)) { Debug.Log($"Invalid scene name: '{newGameScene}'"); return; }
         if (string.IsNullOrEmpty(profileName)) { Debug.Log($"Invalid profile name: '{profileName}'"); return; }
 
-        SaveService.Instance.StartNewGame(profileName);
+        _saveService.StartNewGame(profileName);
         RequestLoad(newGameScene, GameMode.Gameplay);
         isNewGame = true;
     }
 
     public void StartGame(string profileId) {  
-        string sceneName = SaveService.Instance.StartLatestFrom(profileId);
+        string sceneName = _saveService.StartLatestFrom(profileId);
         if (string.IsNullOrEmpty(sceneName)) { Debug.Log($"Invalid scene name, load canceled !"); return; }
         RequestLoad(sceneName, GameMode.Gameplay);
     }
 
     public void StartManual(string profileId, string slotId) {
-        string sceneName = SaveService.Instance.StartFrom(profileId, slotId);
+        string sceneName = _saveService.StartFrom(profileId, slotId);
         if (string.IsNullOrEmpty(sceneName)) { Debug.Log($"Invalid scene name, load canceled !"); return; }
         RequestLoad(sceneName, GameMode.Gameplay);
     }
 
     public void ResumeGame() { 
-        string sceneName = SaveService.Instance.StartLatestGlobal();
+        string sceneName = _saveService.StartLatestGlobal();
         if (string.IsNullOrEmpty(sceneName)) { Debug.Log($"Invalid scene name, load canceled !"); return; }
         RequestLoad(sceneName, GameMode.Gameplay);
     }
 
     public void GoToMainMenu() {
-        SaveService.Instance.Clean();
+        _saveService.Clean();
         RequestLoad(menuSceneName, GameMode.MainMenu);
     }
 
@@ -74,14 +76,14 @@ public class GameFlowController : MonoBehaviour, IService {
     #region Private
 
     private void RequestLoad(string targetSceneName, GameMode targetMode) {
-        if (SceneLoader.Instance.IsBusy) { Debug.LogWarning($"Load of '{targetSceneName}' ignored: SceneLoader busy"); return; }
+        if (_sceneLoader.IsBusy) { Debug.LogWarning($"Load of '{targetSceneName}' ignored: SceneLoader busy"); return; }
 
         pendingSceneName = targetSceneName;
         pendingMode = targetMode;
         hasPendingLoad = true;
 
-        GameStateManager.Instance.SetMode(GameMode.Loading);
-        SceneLoader.Instance.LoadContent(targetSceneName);
+        _gameStateManager.SetMode(GameMode.Loading);
+        _sceneLoader.LoadContent(targetSceneName);
     }
 
     private void HandleContentLoaded(string loadedSceneName) {
@@ -89,11 +91,11 @@ public class GameFlowController : MonoBehaviour, IService {
         if (loadedSceneName != pendingSceneName) return;
             
         hasPendingLoad = false;
-        SaveService.Instance.ApplyPendingData(loadedSceneName);
-        GameStateManager.Instance.SetMode(pendingMode);
+        _saveService.ApplyPendingData(loadedSceneName);
+        _gameStateManager.SetMode(pendingMode);
 
         if (isNewGame) {
-            SaveService.Instance.AutoSave(loadedSceneName);
+            _saveService.AutoSave(loadedSceneName);
             isNewGame = false;
         }
   

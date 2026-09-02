@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SurfaceResolver : MonoBehaviour, IService
+public class SurfaceResolver : MonoBehaviour
 {
     public static SurfaceResolver Instance { get; private set; }
     [Header("Database")]
@@ -13,8 +13,6 @@ public class SurfaceResolver : MonoBehaviour, IService
 
     private SurfaceType DefaultSurface =>
         database != null ? database.DefaultSurface : SurfaceType.Tile;
-
-    public void Initialize() { }
 
     private void Awake()
     {

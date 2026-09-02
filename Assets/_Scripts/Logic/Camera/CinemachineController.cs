@@ -1,23 +1,28 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using VContainer;
 
-public sealed class CinemachineController : MonoBehaviour
-{
+public sealed class CinemachineController : MonoBehaviour {
     [SerializeField] private CinemachineInputAxisController inputController;
 
-    private void Awake()
-    {
+    GameStateManager _gameStateManager;
+
+    [Inject]
+    void Construct(GameStateManager gameStateManager) {
+        _gameStateManager = gameStateManager;
+    }
+
+    private void Awake() {
         if (inputController == null)
             inputController = GetComponent<CinemachineInputAxisController>();
     }
 
-    private void OnEnable()
-    {
-        GameStateManager.PauseChanged += OnPausedChanged;
-        if (GameStateManager.Instance != null)
-            inputController.enabled = !GameStateManager.Instance.IsPaused;
+    private void OnEnable() {
+        _gameStateManager.PauseChanged += OnPausedChanged;
+        inputController.enabled = !_gameStateManager.IsPaused;
     }
 
-    private void OnDisable() => GameStateManager.PauseChanged -= OnPausedChanged;   
+    private void OnDisable() => _gameStateManager.PauseChanged -= OnPausedChanged;  
+    
     private void OnPausedChanged(bool isPaused) => inputController.enabled = !isPaused;    
 }

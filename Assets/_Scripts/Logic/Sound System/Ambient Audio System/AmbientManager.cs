@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AmbientManager : MonoBehaviour, IService
+public class AmbientManager : MonoBehaviour
 {
     public static AmbientManager Instance { get; private set; }
 
@@ -19,8 +19,6 @@ public class AmbientManager : MonoBehaviour, IService
     // Cached once - Enum.GetValues uses reflection and allocates a new
     // array every call, so this must only ever be paid once, not per-frame.
     private static readonly AmbientLayerId[] AllLayerIds = (AmbientLayerId[])Enum.GetValues(typeof(AmbientLayerId));
-
-    public void Initialize() { }
 
     private void Awake()
     {

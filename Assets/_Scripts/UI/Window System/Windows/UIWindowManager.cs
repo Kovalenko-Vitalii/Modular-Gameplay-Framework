@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using VContainer;
 
 [DefaultExecutionOrder(-1900)]
 public class UIWindowManager : MonoBehaviour {
@@ -21,14 +22,21 @@ public class UIWindowManager : MonoBehaviour {
 
     public void Initialize(UIScreenId ownerScreen) => pauseReason = TAG + "_" + ownerScreen;
 
+    GameStateManager _gameStateManager;
+
+    [Inject]
+    void Construct(GameStateManager gameStateManager) {
+        _gameStateManager = gameStateManager;
+    }
+
     private void OnEnable() {
-        GameStateManager.ModeChanged += HandleGameModeChanged;
+        _gameStateManager.ModeChanged += HandleGameModeChanged;
         InputListener.ActionPressed += HandleActionPressed;
-        HandleGameModeChanged(GameStateManager.Instance.CurrentMode);
+        HandleGameModeChanged(_gameStateManager.CurrentMode);
     }
 
     private void OnDisable() {
-        GameStateManager.ModeChanged -= HandleGameModeChanged;
+        _gameStateManager.ModeChanged -= HandleGameModeChanged;
         InputListener.ActionPressed -= HandleActionPressed;
     }
 
@@ -110,7 +118,7 @@ public class UIWindowManager : MonoBehaviour {
         if (string.IsNullOrEmpty(pauseReason)) 
             return;
         bool shouldPause = stack.Any(w => w.pausesGame);
-        GameStateManager.Instance.SetPauseReason(pauseReason, shouldPause);
+        _gameStateManager.SetPauseReason(pauseReason, shouldPause);
     }
 }
 

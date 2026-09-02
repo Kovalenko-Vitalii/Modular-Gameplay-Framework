@@ -10,9 +10,7 @@ namespace SaveSystem {
     /// loaded slot data in PendingLoadData for later application.
     /// </summary>
     [DefaultExecutionOrder(-1500)]
-    public class SaveService : MonoBehaviour, IService {
-        public static SaveService Instance { get; private set; }
-
+    public class SaveService {
         [SerializeField] private SaveConfig config;
 
         public SaveProfile ActiveProfile { get; private set; }
@@ -22,19 +20,6 @@ namespace SaveSystem {
         public event Action ProfilesChanged;
 
         public bool CanResume() => Saves.GetAllProfiles().Any(profile => profile.HasAnySave);
-
-        public void Initialize() { }
-
-        private void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-            Saves.EnsureFolder();
-            Debug.Log("Initialized");
-        }
 
         #region Load Operations
 
