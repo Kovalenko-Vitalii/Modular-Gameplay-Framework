@@ -7,7 +7,10 @@ public class RootLifetimeScope : LifetimeScope {
         builder.RegisterComponentInHierarchy<GameFlowController>();
         builder.RegisterComponentInHierarchy<GameStateManager>();
         builder.RegisterComponentInHierarchy<SceneLoader>();
+        builder.RegisterComponentInHierarchy<InputListener>();
+        builder.RegisterComponentInHierarchy<SoundManager>();
 
         builder.Register<SaveService>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<CursorLockController>(Lifetime.Singleton);
     }
 }

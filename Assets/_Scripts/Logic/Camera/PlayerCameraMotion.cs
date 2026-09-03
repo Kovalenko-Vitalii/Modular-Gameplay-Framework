@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 // <summary>
 // Class that handles the camera motion for the player, including crouch offset and head bobbing
@@ -30,6 +31,13 @@ public sealed class PlayerCameraMotion : MonoBehaviour, ILateTick
 
     private float _bobTimer;
 
+    TickSystem _tickSystem;
+
+    [Inject]
+    void Construct(TickSystem tickSystem) {
+        _tickSystem = tickSystem;
+    }
+
     private void Awake()
     {
         if (cameraRoot == null)
@@ -46,12 +54,12 @@ public sealed class PlayerCameraMotion : MonoBehaviour, ILateTick
 
     private void OnEnable()
     {
-        TickSystem.Instance?.Register(this);
+        _tickSystem.Register(this);
     }
 
     private void OnDisable()
     {
-        TickSystem.Instance?.Unregister(this);
+        _tickSystem.Unregister(this);
     }
 
     public void LateTick(float dt)

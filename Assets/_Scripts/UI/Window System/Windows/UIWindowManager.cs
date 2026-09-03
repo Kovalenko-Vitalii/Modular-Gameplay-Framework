@@ -20,31 +20,25 @@ public class UIWindowManager : MonoBehaviour {
     public event Action<UIWindowDefinition> WindowOpened;
     public event Action<UIWindowDefinition> WindowClosed;
 
-    public void Initialize(UIScreenId ownerScreen) => pauseReason = TAG + "_" + ownerScreen;
-
     GameStateManager _gameStateManager;
+    InputListener _inputListener;
 
     [Inject]
-    void Construct(GameStateManager gameStateManager) {
+    void Construct(GameStateManager gameStateManager, InputListener inputListener) {
         _gameStateManager = gameStateManager;
+        _inputListener = inputListener;
     }
 
     private void OnEnable() {
         _gameStateManager.ModeChanged += HandleGameModeChanged;
-        InputListener.ActionPressed += HandleActionPressed;
+        _inputListener.ActionPressed += HandleAction;
         HandleGameModeChanged(_gameStateManager.CurrentMode);
     }
 
     private void OnDisable() {
         _gameStateManager.ModeChanged -= HandleGameModeChanged;
-        InputListener.ActionPressed -= HandleActionPressed;
+        _inputListener.ActionPressed -= HandleAction;
     }
-
-    private void HandleActionPressed(InputAction action) {
-        if (UIScreenManager.Instance.Current?.Windows != this) return;
-        HandleAction(action);
-    }
-
 
     private void HandleGameModeChanged(GameMode state) {
         if (state == GameMode.Cutscene || state == GameMode.Loading)

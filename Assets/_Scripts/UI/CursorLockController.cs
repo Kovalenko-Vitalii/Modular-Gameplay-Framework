@@ -1,13 +1,9 @@
+using System;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
-public sealed class CursorLockController : MonoBehaviour
-{
-    public static CursorLockController Instance { get; private set; }
-
-    [SerializeField] private bool lockOnStart = true;
-    [SerializeField] private bool hideCursorWhenLocked = true;
-
+public sealed class CursorLockController : IStartable, IDisposable {
     public bool IsLocked { get; private set; }
 
     GameStateManager _gameStateManager;
@@ -17,50 +13,31 @@ public sealed class CursorLockController : MonoBehaviour
         _gameStateManager = gameStateManager;
     }
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-    }
-
-    private void OnEnable()
-    {
+    public void Start() {
         _gameStateManager.PauseChanged += OnPausedChanged;
         SetLocked(!_gameStateManager.IsPaused);
+        LockCursor();
     }
 
-    private void OnDisable() => _gameStateManager.PauseChanged -= OnPausedChanged;
-    private void OnPausedChanged(bool isPaused) => SetLocked(!isPaused);
-
-    private void Start()
-    {
-        if (lockOnStart)
-            LockCursor();
-        else
-            UnlockCursor();
+    public void Dispose() {
+        _gameStateManager.PauseChanged -= OnPausedChanged;
     }
 
-    public void LockCursor()
-    {
+    private void OnPausedChanged(bool isPaused) => SetLocked(!isPaused); 
+
+    public void LockCursor() {
         IsLocked = true;
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = !hideCursorWhenLocked;
+        Cursor.visible = false;
     }
 
-    public void UnlockCursor()
-    {
+    public void UnlockCursor() {
         IsLocked = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    public void SetLocked(bool locked)
-    {
+    public void SetLocked(bool locked) {
         if (locked)
             LockCursor();
         else

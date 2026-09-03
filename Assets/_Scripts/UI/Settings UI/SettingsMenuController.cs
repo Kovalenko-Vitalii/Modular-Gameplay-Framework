@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VContainer;
 
 public class SettingsMenuController : MonoBehaviour
 {
@@ -7,12 +8,20 @@ public class SettingsMenuController : MonoBehaviour
     [SerializeField] private InputActionAsset inputActions;
 
     private VideoSettingsProvider videoSettings = new();
-    private AudioSettingsProvider audioSetings = new();
+    private AudioSettingsProvider audioSetings;
     private GameSettingsProvider gameSettings = new();
     private ControlsSettingsProvider controlSettings;
 
-    private void Awake()
-    {
+    SoundManager _soundManager;
+
+    [Inject]
+    void Construct(SoundManager soundManager) {
+        _soundManager = soundManager;
+
+        audioSetings = new AudioSettingsProvider(_soundManager);
+    }
+
+    private void Awake() {
         InputRebindPersistence.Load(inputActions);
         controlSettings = new ControlsSettingsProvider(inputActions, () => InputRebindPersistence.Save(inputActions)); // Save the input bindings whenever a rebind occurs
     }

@@ -140,10 +140,12 @@ public sealed class PlayerMovement : MonoBehaviour, ITick
     }
 
     GameStateManager _gameStateManager;
+    TickSystem _tickSystem;
 
     [Inject]
-    void Construct(GameStateManager gameStateManager) {
+    void Construct(GameStateManager gameStateManager, TickSystem tickSystem) {
         _gameStateManager = gameStateManager;
+        _tickSystem = tickSystem;
     }
 
     private void Awake()
@@ -174,7 +176,7 @@ public sealed class PlayerMovement : MonoBehaviour, ITick
         SetActionEnabled(sprintAction, true);
         SetActionEnabled(crouchAction, true);
 
-        TickSystem.Instance?.Register(this);
+        _tickSystem.Register(this);
 
         _gameStateManager.ModeChanged += OnStateChanged;
     }
@@ -186,7 +188,7 @@ public sealed class PlayerMovement : MonoBehaviour, ITick
         SetActionEnabled(sprintAction, false);
         SetActionEnabled(crouchAction, false);
 
-        TickSystem.Instance?.Unregister(this);
+        _tickSystem.Unregister(this);
 
         _gameStateManager.ModeChanged -= OnStateChanged;
     }

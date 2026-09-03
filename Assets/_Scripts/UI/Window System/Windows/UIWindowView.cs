@@ -9,7 +9,7 @@ public class UIWindowView : MonoBehaviour
     [SerializeField] private UnityEvent onShown;
     [SerializeField] private UnityEvent onHidden;
 
-    private UIWindowManager manager;
+    [SerializeField] private UIWindowManager manager;
 
     public string PanelId => definition != null ? definition.Id : null;
     public UIWindowDefinition Definition => definition;

@@ -4,29 +4,34 @@ using UnityEngine;
 // <summary>
 // Provides audio settings for the settings menu, including master volume, UI volume, subtitle volume, and world volume.
 // </summary>
-public class AudioSettingsProvider : ISettingsCategoryProvider
-{
+public class AudioSettingsProvider : ISettingsCategoryProvider {
     public string CategoryName => "Audio";
+
+    SoundManager _soundManager;
+
+    public AudioSettingsProvider(SoundManager soundManager) { 
+        _soundManager = soundManager;
+    }
 
     public List<ISettingRow> BuildSettings()
     {
         return new List<ISettingRow>
         {
             CreateVolumeSetting("Master Volume",
-                () => SoundManager.Instance.MasterVolume,
-                SoundManager.Instance.SetMasterVolume),
+                () => _soundManager.MasterVolume,
+                _soundManager.SetMasterVolume),
 
             CreateVolumeSetting("UI Volume",
-                () => SoundManager.Instance.UIVolume,
-                SoundManager.Instance.SetUIVolume),
+                () => _soundManager.UIVolume,
+                _soundManager.SetUIVolume),
 
             CreateVolumeSetting("Subtitle Volume",
-                () => SoundManager.Instance.SubtitleVolume,
-                SoundManager.Instance.SetSubtitleVolume),
+                () => _soundManager.SubtitleVolume,
+                _soundManager.SetSubtitleVolume),
 
             CreateVolumeSetting("World Volume",
-                () => SoundManager.Instance.WorldVolume,
-                SoundManager.Instance.SetWorldVolume)
+                () =>_soundManager.WorldVolume,
+                _soundManager.SetWorldVolume)
         };
     }
 

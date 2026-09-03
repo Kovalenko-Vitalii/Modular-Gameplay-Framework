@@ -6,11 +6,8 @@ using VContainer;
 // Ticking system that allows manage simulation process
 // </summary>
 [DefaultExecutionOrder(-1000)]
-public class TickSystem : MonoBehaviour
-{
+public class TickSystem : MonoBehaviour {
     const string TAG = "PlayerTickSystem";
-
-    public static TickSystem Instance { get; private set; }
 
     // Lists of registered tickable objects
     readonly List<ITick> ticks = new();
@@ -27,20 +24,6 @@ public class TickSystem : MonoBehaviour
     [Inject]
     void Construct(GameStateManager gameStateManager) {
         _gameStateManager = gameStateManager;
-    }
-
-    void Awake()
-    {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this;
-
-        GameLog.Log(TAG, "Initialized");
-    }
-
-    void OnDestroy()
-    {
-        if (Instance == this)
-            Instance = null;
     }
 
     // acceptable level of glue 

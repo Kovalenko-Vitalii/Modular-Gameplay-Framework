@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 [RequireComponent(typeof(Collider))]
 public class AmbientZone : MonoBehaviour
 {
@@ -9,26 +10,30 @@ public class AmbientZone : MonoBehaviour
     public AmbientProfile Profile => profile;
     public int Priority => priority;
 
+    AmbientManager _ambientManager;
+
+    [Inject]
+    public void Construct(AmbientManager ambientManager) {
+        _ambientManager = ambientManager;
+    }
     private void OnDestroy() {
-        AmbientManager.Instance.UnregisterZone(this);
+        _ambientManager.UnregisterZone(this);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
+    private void OnTriggerEnter(Collider other) {
         if (!other.CompareTag("Player"))
             return;
 
-        AmbientManager.Instance.RegisterZone(this);
+        _ambientManager.RegisterZone(this);
     }
 
 
 
-    private void OnTriggerExit(Collider other)
-    {
+    private void OnTriggerExit(Collider other) {
         if (!other.CompareTag("Player"))
             return;
 
-        AmbientManager.Instance.UnregisterZone(this);
+        _ambientManager.UnregisterZone(this);
     }
 
 

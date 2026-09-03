@@ -1,16 +1,15 @@
 using UnityEngine;
+using VContainer;
 
 // <summary>
 // Class that handles playing footstep sounds based on the player's movement state and surface type
 // </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(AudioSource))]
-public sealed class FootstepPlayer : MonoBehaviour, ITick
-{
+public sealed class FootstepPlayer : MonoBehaviour, ITick {
     [Header("Links")]
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private CharacterController controller;
-    [SerializeField] private SurfaceResolver surfaceResolver;
     [SerializeField] private AudioSource source;
 
     [Header("Step Distance")]
@@ -44,15 +43,21 @@ public sealed class FootstepPlayer : MonoBehaviour, ITick
 
     private AudioClip lastClip;
 
-    private void Awake()
-    {
+    SurfaceResolver _surfaceResolver;
+    TickSystem _tickSystem;
+
+    [Inject]
+    void Construct(SurfaceResolver surfaceResolver, TickSystem tickSystem) {
+        _surfaceResolver = surfaceResolver;
+        _tickSystem = tickSystem;
+    }
+
+    private void Awake() {
         if (movement == null)
             movement = GetComponent<PlayerMovement>();
 
         if (controller == null)
             controller = GetComponent<CharacterController>();
-
-        surfaceResolver = SurfaceResolver.Instance;
 
         if (source == null)
             source = GetComponent<AudioSource>();
@@ -62,7 +67,7 @@ public sealed class FootstepPlayer : MonoBehaviour, ITick
 
     private void OnEnable()
     {
-        TickSystem.Instance?.Register(this);
+        _tickSystem.Register(this);
 
         if (movement != null)
         {
@@ -73,7 +78,7 @@ public sealed class FootstepPlayer : MonoBehaviour, ITick
 
     private void OnDisable()
     {
-        TickSystem.Instance?.Unregister(this);
+        _tickSystem.Unregister(this);
 
         if (movement != null)
             movement.Jumped -= PlayJump;
@@ -81,7 +86,7 @@ public sealed class FootstepPlayer : MonoBehaviour, ITick
 
     public void Tick(float dt)
     {
-        if (movement == null || controller == null || surfaceResolver == null || source == null)
+        if (movement == null || controller == null || source == null)
             return;
 
         HandleLanding();
@@ -195,7 +200,7 @@ public sealed class FootstepPlayer : MonoBehaviour, ITick
 
     private void PlayFootstep()
     {
-        SurfaceEntry surface = surfaceResolver.GetSurfaceBelow(transform.position);
+        SurfaceEntry surface = _surfaceResolver.GetSurfaceBelow(transform.position);
 
         if (surface == null)
             return;
@@ -235,7 +240,7 @@ public sealed class FootstepPlayer : MonoBehaviour, ITick
     private void PlayLanding(float landingSpeed)
     {
         Vector3 groundPosition = GetGroundCheckPosition();
-        SurfaceEntry surface = surfaceResolver.GetSurfaceBelow(groundPosition);
+        SurfaceEntry surface = _surfaceResolver.GetSurfaceBelow(groundPosition);
 
         if (surface == null)
             return;
@@ -256,10 +261,10 @@ public sealed class FootstepPlayer : MonoBehaviour, ITick
 
     private void PlayJump()
     {
-        if (surfaceResolver == null || source == null)
+        if (source == null)
             return;
 
-        SurfaceEntry surface = surfaceResolver.GetSurfaceBelow(transform.position);
+        SurfaceEntry surface = _surfaceResolver.GetSurfaceBelow(transform.position);
 
         if (surface == null)
             return;

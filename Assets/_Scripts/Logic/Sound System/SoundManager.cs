@@ -5,10 +5,7 @@ using VContainer;
 // <summary>
 // Singleton class that manages all audio in the game, including UI, subtitles, and world sounds
 // </summary>
-public class SoundManager : MonoBehaviour
-{
-    public static SoundManager Instance { get; private set; }
-
+public class SoundManager : MonoBehaviour {
     [SerializeField] AudioMixerGroup worldMixerGroup;
 
     private const string MASTER_KEY = "audio_master";
@@ -46,16 +43,7 @@ public class SoundManager : MonoBehaviour
         _gameStateManager = gameStateManager;
     }
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-
+    private void Awake() {
         if (uiSource != null)
             uiSource.ignoreListenerPause = true;
 

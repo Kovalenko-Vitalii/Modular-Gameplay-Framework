@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class AmbientManager : MonoBehaviour
 {
-    public static AmbientManager Instance { get; private set; }
-
     [SerializeField] private AmbientProfile defaultProfile;
     [SerializeField] private AmbientLayer[] layers;
     [SerializeField] private float fadeSpeed = 2f;
@@ -20,20 +18,11 @@ public class AmbientManager : MonoBehaviour
     // array every call, so this must only ever be paid once, not per-frame.
     private static readonly AmbientLayerId[] AllLayerIds = (AmbientLayerId[])Enum.GetValues(typeof(AmbientLayerId));
 
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
+    private void Awake() {
         listener = Camera.main.transform;
         lookup = new();
 
-        foreach (var layer in layers)
-        {
+        foreach (var layer in layers) {
             lookup[layer.id] = layer;
 
             layer.source.loop = true;

@@ -1,8 +1,6 @@
 using UnityEngine;
 
-public class SurfaceResolver : MonoBehaviour
-{
-    public static SurfaceResolver Instance { get; private set; }
+public class SurfaceResolver : MonoBehaviour {
     [Header("Database")]
     [SerializeField] private SurfaceDatabase database;
 
@@ -11,42 +9,27 @@ public class SurfaceResolver : MonoBehaviour
     [SerializeField] private float rayStartHeight = 0.25f;
     [SerializeField] private float rayDistance = 1.5f;
 
-    private SurfaceType DefaultSurface =>
-        database != null ? database.DefaultSurface : SurfaceType.Tile;
+    private SurfaceType DefaultSurface => database != null ? database.DefaultSurface : SurfaceType.Tile;
+      
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-    }   
-
-    public SurfaceEntry GetSurfaceBelow(Vector3 worldPosition)
-    {
+    public SurfaceEntry GetSurfaceBelow(Vector3 worldPosition) {
         SurfaceType surfaceType = ResolveBelow(worldPosition);
         return GetSurface(surfaceType);
     }
 
-    public SurfaceEntry GetSurfaceFromHit(RaycastHit hit)
-    {
+    public SurfaceEntry GetSurfaceFromHit(RaycastHit hit) {
         SurfaceType surfaceType = ResolveFromHit(hit);
         return GetSurface(surfaceType);
     }
 
-    public SurfaceEntry GetSurface(SurfaceType surfaceType)
-    {
+    public SurfaceEntry GetSurface(SurfaceType surfaceType) {
         if (database == null)
             return null;
 
         return database.GetSurface(surfaceType);
     }
 
-    public SurfaceType ResolveBelow(Vector3 worldPosition)
-    {
+    public SurfaceType ResolveBelow(Vector3 worldPosition) {
         Vector3 origin = worldPosition + Vector3.up * rayStartHeight;
 
         bool hasHit = Physics.Raycast(

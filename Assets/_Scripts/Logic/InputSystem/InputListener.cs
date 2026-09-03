@@ -11,26 +11,13 @@ using UnityEngine.InputSystem;
 // !!! MAKE IT DATA DRIVEN SYSTEM LATER !!!
 [DefaultExecutionOrder(-1500)]
 public class InputListener : MonoBehaviour {
-    public static InputListener Instance { get; private set; }
-    string TAG = "InputListener";
-
     [SerializeField] private List<ListenedAction> actions;
 
-    public static event Action<InputAction> ActionPressed;
-    public static event Action<InputAction> ActionReleased;
+    public event Action<InputAction> ActionPressed;
+    public event Action<InputAction> ActionReleased;
 
     private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> performedHandlers = new();
     private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> canceledHandlers = new();
-
-    private void Awake() {
-        if (Instance != null && Instance != this) { 
-            Destroy(gameObject); 
-            return; 
-        }
-        Instance = this;
-
-        GameLog.Log(TAG, "Initialized");
-    }
 
     private void OnEnable() {
         foreach (var entry in actions) {
