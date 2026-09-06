@@ -34,6 +34,6 @@ public class SaveButton : MonoBehaviour {
 
     private void HandleClick() {
         button.interactable = false;
-        _saveService.AutoSave(_sceneLoader.CurrentContentScene);
+        _saveService.AutoSave(_sceneLoader.GetLoadedLevel());
     }
 }

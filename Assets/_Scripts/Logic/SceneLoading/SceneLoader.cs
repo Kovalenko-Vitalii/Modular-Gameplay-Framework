@@ -1,127 +1,111 @@
+using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Additive scene loading manager.
-/// </summary>
-[DefaultExecutionOrder(-1500)]
-public class SceneLoader : MonoBehaviour {
+public class SceneLoader : IDisposable{
     string TAG = "SceneLoader";
 
-    string currentContentScene;
-    AsyncOperation activateLoadOperation; // Async operation for paralel loading
-    private bool isBusy;
+    readonly SortedDictionary<SceneType, string> _loadedScenes = new();
+    readonly CancellationTokenSource _lifetimeCts = new();
 
-    public string CurrentContentScene => currentContentScene;
+    bool isBusy;
+
     public float Progress { get; private set; } = 0f;
     public bool IsBusy => isBusy;
-    public bool IsLoading => activateLoadOperation != null && !activateLoadOperation.isDone; // Shows if scene loading at the moment
 
-    /// <summary>
-    /// Loaded scene name.
-    /// </summary>
-    public event Action<string> ContentLoaded;
+    public event Action<SceneType, string> SceneLoaded;
 
-    /// <summary>
-    /// Load content scene and activate automatically when loaded.
-    /// </summary>
-    public Coroutine LoadContent(string sceneName) {
-        if (isBusy) {
-            GameLog.Warning(TAG, $"LoadContent ignored: already busy");
-            return null;
-        }
+    public void Dispose() {
+        _lifetimeCts.Cancel();
+        _lifetimeCts.Dispose();
+    }
 
-        if (currentContentScene == sceneName) { // early exit
+    #region Public API
+    /// <returns> Name of the scene loaded in the specified slot. </returns>
+    public string GetLoaded(SceneType sceneType) {
+        if (_loadedScenes.TryGetValue(sceneType, out var name)) 
+            return name;
+        return null;
+    }
+    
+    public string GetLoadedLevel() => GetLoaded(SceneType.Level);
+
+    public UniTask<bool> LoadShell(string sceneName) => Load(SceneType.Shell, sceneName);
+
+    public UniTask<bool> LoadLevel(string sceneName) => Load(SceneType.Level, sceneName);
+        
+    #endregion
+
+    #region Private
+    /// <summary> Loads scene into specified slot. </summary>
+    /// <returns> Success of the operation. </returns>
+    async public UniTask<bool> Load(SceneType slot, string sceneName) {
+        if (isBusy) { GameLog.Warning(TAG, $"Load({slot}, '{sceneName}') ignored: already busy"); return false; }
+
+        if (GetLoaded(slot) == sceneName) { // early exit
             var scene = SceneManager.GetSceneByName(sceneName);
 
             if (scene.IsValid() && scene.isLoaded) {
                 SceneManager.SetActiveScene(scene);
                 Progress = 1f;
-                ContentLoaded?.Invoke(sceneName);
-                return null;
+                SceneLoaded?.Invoke(slot, sceneName);
+                return true;
             }
         }
-        
-        GameLog.Log(TAG, $"LoadContent('{sceneName}') initiated ");
 
-        Progress = 0f; // Resetting load progress
+        var token = _lifetimeCts.Token;
+
         isBusy = true;
-
-        activateLoadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive); // Adding loading process to async and activate it        
-        activateLoadOperation.allowSceneActivation = true;
-
-        return StartCoroutine(FinishSwapRoutine(sceneName));
-    }
-
-    /// <summary>
-    /// Save as LoadContent but user can choose when to finally load scene
-    /// </summary>
-    public AsyncOperation LoadContentAsync(string sceneName, bool allowSceneActivation) {
-        if (isBusy) {
-            GameLog.Warning(TAG, $"LoadContentAsync ignored: already busy");
-            return activateLoadOperation;
-        }
-
-        if (currentContentScene == sceneName) {
-            var s = SceneManager.GetSceneByName(sceneName);
-
-            if (s.IsValid() && s.isLoaded) {
-                SceneManager.SetActiveScene(s);
-                Progress = 1f;
-                ContentLoaded?.Invoke(sceneName);
-                return null;
-            }
-        }
-
-        GameLog.Log(TAG, $"AsyncLoadContent('{sceneName}') initiated ");
-
         Progress = 0f;
-        isBusy = true;
 
-        activateLoadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        activateLoadOperation.allowSceneActivation = allowSceneActivation;
+        try {
+            var deeperSlots = _loadedScenes.Keys.Where(key => key > slot)
+                                                .OrderByDescending(key => key)
+                                                .ToList();
+            foreach (var key in deeperSlots)
+                await UnloadSlot(key, token);
 
-        StartCoroutine(FinishSwapRoutine(sceneName));
-        return activateLoadOperation;
+            string previousInSameSlot = GetLoaded(slot);
+
+            var operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            if (operation == null) { GameLog.Error(TAG, $"Scene '{sceneName}' not found in Build Settings."); return false; }
+
+            while (!operation.isDone) {
+                float raw = operation.progress;
+                Progress = Mathf.Clamp01(raw < 0.9f ? raw / 0.9f : 1f);
+                await UniTask.Yield(PlayerLoopTiming.Update, token);
+            }
+
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName)); // Set the newly loaded scene as active
+
+            if (!string.IsNullOrEmpty(previousInSameSlot) && previousInSameSlot != sceneName) 
+                await SceneManager.UnloadSceneAsync(previousInSameSlot).ToUniTask(cancellationToken: token);
+            
+            _loadedScenes[slot] = sceneName;
+            Progress = 1f;
+
+            SceneLoaded?.Invoke(slot, sceneName);
+            return true;
+        } finally {
+            isBusy = false;
+        }
     }
 
-    /// <summary>
-    /// This method used to wait for scene load and than switch it with current one
-    /// </summary>
-    private IEnumerator FinishSwapRoutine(string sceneName) {
-        var operation = activateLoadOperation;
+    async UniTask UnloadSlot(SceneType slot, CancellationToken ct) {
+        if (!_loadedScenes.TryGetValue(slot, out var name) || string.IsNullOrEmpty(name))
+            return;
 
-        while (operation != null && !operation.isDone) { // Waiting till loads
-            float raw = operation.progress;
-            Progress = Mathf.Clamp01(raw < 0.9f ? raw / 0.9f : 1f);
-            yield return null;
-        }
-
-        GameLog.Log(TAG, $"FinishSwapRoutine BEGIN target='{sceneName}' prev='{currentContentScene}'");
-
-        var loadedScene = SceneManager.GetSceneByName(sceneName); // Making this scene active
-
-        if (loadedScene.IsValid()) { // Validating new scene
-            SceneManager.SetActiveScene(loadedScene);
-            GameLog.Log(TAG, $"SetActiveScene '{sceneName}'");
-        }
-        else
-            GameLog.Error(TAG, $"Loaded scene '{sceneName}' is NOT valid");
-
-        if (!string.IsNullOrEmpty(currentContentScene) && currentContentScene != sceneName) { // Unloading previous scene
-            GameLog.Log(TAG, $"Unloading previous content '{currentContentScene}'");
-            yield return SceneManager.UnloadSceneAsync(currentContentScene);
-        }
-
-        currentContentScene = sceneName; // Setting loaded scene as current, updating progress
-
-        Progress = 1f;
-        activateLoadOperation = null;
-        isBusy = false;
-        ContentLoaded?.Invoke(sceneName);
-
-        GameLog.Log(TAG, $"FinishSwapRoutine END currentContent='{currentContentScene}' activeScene='{SceneManager.GetActiveScene().name}'");
+        await SceneManager.UnloadSceneAsync(name).ToUniTask(cancellationToken: ct);
+        _loadedScenes.Remove(slot);
     }
+    #endregion
+}
+
+public enum SceneType {
+    Shell,
+    Level
 }

@@ -20,7 +20,7 @@ public class NewManualSave : MonoBehaviour {
 
     void Start() {
         button.onClick.AddListener(() => _saveService.NewSave(Environment.UserName,
-        _sceneLoader.CurrentContentScene));
+        _sceneLoader.GetLoadedLevel()));
     }
 
     public static string GetTimeAgo(long updatedUtcTicks) {

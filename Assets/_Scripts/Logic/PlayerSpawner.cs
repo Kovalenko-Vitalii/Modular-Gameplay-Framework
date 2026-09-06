@@ -1,6 +1,8 @@
 using SaveSystem;
 using System;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 /// <summary>
 /// Spawns the player prefab into the scene and is the sole authority on where
@@ -25,9 +27,15 @@ public class PlayerSpawner : SaveableBehaviour
     /// </summary>
     public event Action<GameObject> PlayerSpawned;
 
-    protected override void Awake()
-    {
-        base.Awake(); // registers this with SaveRegistry
+    IObjectResolver _resolver;
+
+    [Inject]
+    public void Construct(IObjectResolver resolver) {
+        _resolver = resolver;
+    }
+
+    [Inject]
+    private void Initialize() {
         SpawnDefault();
     }
 
@@ -35,8 +43,7 @@ public class PlayerSpawner : SaveableBehaviour
     /// Instantiates the player prefab at the default spawn pose if it hasn't
     /// been spawned yet.
     /// </summary>
-    private void SpawnDefault()
-    {
+    private void SpawnDefault() {
         if (PlayerInstance != null)
             return;
 
@@ -46,7 +53,13 @@ public class PlayerSpawner : SaveableBehaviour
         }
 
         var (pos, rot) = DefaultPose();
-        PlayerInstance = Instantiate(playerPrefab, pos, rot); // spawning player at def pose, but it will be overwritten by RestoreState() if needed
+
+        PlayerInstance = _resolver.Instantiate(
+            playerPrefab,
+            pos,
+            rot
+        );
+
         PlayerSpawned?.Invoke(PlayerInstance);
     }
 

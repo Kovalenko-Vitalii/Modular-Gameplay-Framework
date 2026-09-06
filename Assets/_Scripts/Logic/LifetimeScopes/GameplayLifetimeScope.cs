@@ -7,6 +7,8 @@ public class GameplayLifetimeScope : LifetimeScope {
         builder.RegisterComponentInHierarchy<SurfaceResolver>();
         builder.RegisterComponentInHierarchy<TickSystem>();
 
-        builder.RegisterComponentInHierarchy<AmbientZone>();
+        builder.RegisterComponentInHierarchy<UIWindowManager>();
+        builder.RegisterComponentInHierarchy<LoadSaveSlot>();
+        builder.RegisterComponentInHierarchy<SaveToManual>();
     }
 }
