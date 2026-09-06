@@ -11,7 +11,7 @@ public class UIWindowManager : MonoBehaviour {
     [SerializeField] private UIActionBinding[] bindings;
     [SerializeField] private UIWindowDefinition defaultWindow;
 
-    private string pauseReason;
+    private string pauseReason = "UI";
     private readonly List<UIWindowDefinition> stack = new();
 
     public IReadOnlyList<UIWindowDefinition> Stack => stack;

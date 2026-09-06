@@ -38,8 +38,6 @@ namespace SaveSystem {
                     
                 result.Add(profile);
             }
-
-            if (result.Count == 0) Debug.Log("There are no profiles."); 
             return result;
         }
 

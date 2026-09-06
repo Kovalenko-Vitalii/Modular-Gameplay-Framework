@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using VContainer;
 
 namespace SaveSystem {
     /// <summary>
@@ -9,15 +10,19 @@ namespace SaveSystem {
     /// Orchestrates repository access, maintains the active profile, and stages
     /// loaded slot data in PendingLoadData for later application.
     /// </summary>
-    [DefaultExecutionOrder(-1500)]
     public class SaveService {
-        [SerializeField] private SaveConfig config;
+        private SaveConfig _config;
 
         public SaveProfile ActiveProfile { get; private set; }
 
-        private SaveData PendingLoadData { get; set; }
+        private SaveData _pendingLoadData { get; set; }
 
         public event Action ProfilesChanged;
+
+        [Inject]
+        public SaveService(SaveConfig config) {
+            _config = config;
+        }
 
         public bool CanResume() => Saves.GetAllProfiles().Any(profile => profile.HasAnySave);
 
@@ -27,12 +32,13 @@ namespace SaveSystem {
         public void StartNewGame(string displayName) {
             if (string.IsNullOrEmpty(displayName)) return;
 
-            var newProfile = Saves.CreateProfile(displayName, config);
-            if (!newProfile.IsValid()) return;
+            var newProfile = Saves.CreateProfile(displayName, _config);
+            if (!newProfile.IsValid()) { Debug.Log("Failed to create new profile."); return; }
 
             ActiveProfile = newProfile;
+            Debug.Log($"New profile created: '{ActiveProfile.displayName}'");
             ProfilesChanged?.Invoke();
-            PendingLoadData = null;
+            _pendingLoadData = null;
         }
 
         /// <summary> Prepares SaveService to load latest save from selected profile.
@@ -81,7 +87,7 @@ namespace SaveSystem {
         /// Does not apply data to the scene; caller must call ApplyPendingData afterward.
         /// </summary>
         private void PreparePendingData(string profileId, string saveId) {
-            if (PendingLoadData != null) { Debug.Log("LoadSlot ignored: SaveService is busy"); return; }
+            if (_pendingLoadData != null) { Debug.Log("LoadSlot ignored: SaveService is busy"); return; }
 
             if (string.IsNullOrEmpty(profileId) || string.IsNullOrEmpty(saveId)) return;
 
@@ -92,17 +98,17 @@ namespace SaveSystem {
             if (!slotData.IsValid()) return;
 
             ActiveProfile = profile;
-            PendingLoadData = slotData;
+            _pendingLoadData = slotData;
         }
 
         /// <summary>
         /// Apply staged save data to the current scene: reset registry then restore object states.
         /// </summary>
         public void ApplyPendingData(string sceneName) {
-            if (!PendingLoadData.IsValid()) return;
+            if (!_pendingLoadData.IsValid()) return;
 
-            var data = PendingLoadData;
-            PendingLoadData = null;
+            var data = _pendingLoadData;
+            _pendingLoadData = null;
 
             var sceneData = data.GetSceneData(sceneName);
             if (sceneData == null) return;
@@ -116,7 +122,7 @@ namespace SaveSystem {
         public void Clean() {
             SaveRegistry.ResetAllToDefaults();
             ActiveProfile = null;
-            PendingLoadData = null;
+            _pendingLoadData = null;
         }
 
         #endregion
@@ -214,7 +220,7 @@ namespace SaveSystem {
         }
 
         private void UpdateProfile(SaveData data, string displayName, bool isAutoSave) {
-            var updatedProfile = Saves.SaveData(ActiveProfile.id, data, displayName, isAutoSave, config);
+            var updatedProfile = Saves.SaveData(ActiveProfile.id, data, displayName, isAutoSave, _config);
 
             if (updatedProfile.IsValid()) {
                 ActiveProfile = updatedProfile;
@@ -225,7 +231,7 @@ namespace SaveSystem {
         }
 
         private bool CanSave() {
-            if (PendingLoadData != null) { Debug.Log("Save ignored: a load is pending"); return false; }
+            if (_pendingLoadData != null) { Debug.Log("Save ignored: a load is pending"); return false; }
             if (!ActiveProfile.IsValid()) { Debug.Log("Active profile not set, can not operate on it."); return false; }
             return true;
         }

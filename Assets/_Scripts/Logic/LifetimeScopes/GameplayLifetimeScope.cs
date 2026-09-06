@@ -10,5 +10,11 @@ public class GameplayLifetimeScope : LifetimeScope {
         builder.RegisterComponentInHierarchy<UIWindowManager>();
         builder.RegisterComponentInHierarchy<LoadSaveSlot>();
         builder.RegisterComponentInHierarchy<SaveToManual>();
+        builder.RegisterComponentInHierarchy<UIExitToMenuButton>();
+        builder.RegisterComponentInHierarchy<NewManualSave>();
+        builder.RegisterComponentInHierarchy<LoadAutoSave>();
+        builder.RegisterComponentInHierarchy<SettingsMenuController>();
+
+        builder.Register<GameplayStateController>(Lifetime.Singleton);
     }
 }

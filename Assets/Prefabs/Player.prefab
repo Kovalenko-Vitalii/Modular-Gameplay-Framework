@@ -185,7 +185,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FootstepPlayer
   movement: {fileID: 6528816833989848942}
   controller: {fileID: 1599832966131815275}
-  surfaceResolver: {fileID: 0}
   source: {fileID: 251763613735897408}
   walkStepDistance: 1.8
   sprintStepDistance: 2.1
@@ -214,7 +213,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 8707474009331300373, guid: 8d134db13d627374e89f3bcbc63d76d2, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

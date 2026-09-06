@@ -17,19 +17,7 @@ public class NewManualSave : MonoBehaviour {
         _saveService = saveService;
     }
 
-
     void Start() {
-        button.onClick.AddListener(() => _saveService.NewSave(Environment.UserName,
-        _sceneLoader.GetLoadedLevel()));
-    }
-
-    public static string GetTimeAgo(long updatedUtcTicks) {
-        DateTime updated = new DateTime(updatedUtcTicks, DateTimeKind.Utc);
-        TimeSpan elapsed = DateTime.UtcNow - updated;
-
-        if (elapsed.TotalHours < 1)
-            return $"{(int)elapsed.TotalMinutes} minutes ago";
-
-        return $"{(int)elapsed.TotalHours} hours ago";
+        button.onClick.AddListener(() => _saveService.NewSave(Environment.UserName, _sceneLoader.GetLoadedLevel()));
     }
 }

@@ -1,8 +1,7 @@
 using UnityEngine;
 using VContainer;
 [RequireComponent(typeof(Collider))]
-public class AmbientZone : MonoBehaviour
-{
+public class AmbientZone : MonoBehaviour {
     [SerializeField] AmbientProfile profile;
     [SerializeField] int priority;
     [SerializeField] float blendDistance = 5f;
@@ -16,6 +15,7 @@ public class AmbientZone : MonoBehaviour
     public void Construct(AmbientManager ambientManager) {
         _ambientManager = ambientManager;
     }
+
     private void OnDestroy() {
         _ambientManager.UnregisterZone(this);
     }
@@ -27,8 +27,6 @@ public class AmbientZone : MonoBehaviour
         _ambientManager.RegisterZone(this);
     }
 
-
-
     private void OnTriggerExit(Collider other) {
         if (!other.CompareTag("Player"))
             return;
@@ -36,10 +34,7 @@ public class AmbientZone : MonoBehaviour
         _ambientManager.UnregisterZone(this);
     }
 
-
-
-    public float GetInfluence(Vector3 position)
-    {
+    public float GetInfluence(Vector3 position) {
         if (blendDistance <= 0)
             return 1;
 

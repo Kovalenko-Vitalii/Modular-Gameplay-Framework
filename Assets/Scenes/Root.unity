@@ -195,7 +195,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 711401512}
-  - {fileID: 1124770977}
   - {fileID: 1715465410}
   - {fileID: 1890804813}
   m_Father: {fileID: 0}
@@ -249,51 +248,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1124770976
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1124770977}
-  - component: {fileID: 1124770978}
-  m_Layer: 0
-  m_Name: GameStateManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1124770977
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1124770976}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 49.01164, y: 0.42746, z: -12.132319}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 806736809}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1124770978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1124770976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10d1b789cc0289d40ba523a97094d836, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameStateManager
-  pausingModes: 010000000200000004000000
 --- !u!1 &1630152615
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,6 +411,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  saveConfig: {fileID: 11400000, guid: c25a78c54b1f4ec49911b00fb9d968b7, type: 2}
 --- !u!4 &1871126287
 Transform:
   m_ObjectHideFlags: 0
@@ -516,7 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a543df1cc0a4985489b7c8577a1105bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
-  worldMixerGroup: {fileID: 0}
+  worldMixerGroup: {fileID: 24300002, guid: 8d134db13d627374e89f3bcbc63d76d2, type: 2}
   audioMixer: {fileID: 24100000, guid: 8d134db13d627374e89f3bcbc63d76d2, type: 2}
   uiSource: {fileID: 753962576775857511}
   subtitleSource: {fileID: 0}
@@ -1499,7 +1454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.042419434, y: -1.1383057}
+  m_AnchoredPosition: {x: -0.04248047, y: -1.1383057}
   m_SizeDelta: {x: 3.0791016, y: 3.9174805}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1660057539 &9223372036854775807

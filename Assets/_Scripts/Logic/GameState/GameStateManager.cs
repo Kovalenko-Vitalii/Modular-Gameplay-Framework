@@ -5,8 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Global game state provider.
 /// </summary>
-[DefaultExecutionOrder(-2000)] // Initializes before other systems
-public class GameStateManager : MonoBehaviour {
+public class GameStateManager {
     string TAG = "GameStateManager";
 
     [SerializeField] private GameMode[] pausingModes = { 
