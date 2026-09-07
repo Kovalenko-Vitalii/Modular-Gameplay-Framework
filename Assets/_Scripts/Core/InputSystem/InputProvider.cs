@@ -1,22 +1,21 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-// <summary>
-// Layer of abstractio over Unity Input System
-// Allows other systems listen to input actions without knowing about the underlying input system
-// </summary>
-public class InputListener : MonoBehaviour, IInputListener {
-    [SerializeField] private List<ListenedAction> actions;
+/// <summary>
+/// Layer of abstraction over Unity Input System
+/// Allows other systems to listen to input actions without knowing about the underlying input system
+/// </summary>
+public class InputProvider : MonoBehaviour, IInputProvider {
+    [SerializeField] List<ListenedAction> actions;
 
     public event Action<InputAction> Pressed;
     public event Action<InputAction> Released;
 
-    private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> performedHandlers = new();
-    private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> canceledHandlers = new();
+    readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> performedHandlers = new();
+    readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> canceledHandlers = new();
 
-    private void OnEnable() {
+    void OnEnable() {
         foreach (var entry in actions) {
             if (entry.action == null || entry.action.action == null)
                 continue;
@@ -35,7 +34,7 @@ public class InputListener : MonoBehaviour, IInputListener {
         }
     }
 
-    private void OnDisable() {
+    void OnDisable() {
         foreach (var entry in actions) {
             if (entry.action == null || entry.action.action == null)
                 continue;

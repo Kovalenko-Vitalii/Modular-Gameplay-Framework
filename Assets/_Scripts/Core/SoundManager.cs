@@ -51,8 +51,7 @@ public class SoundManager : MonoBehaviour {
     }
 
 
-    private void OnEnable()
-    {
+    private void OnEnable() {
         _pauseService.PauseChanged += OnPausedChanged;
         SetAudioPaused(_pauseService.IsPaused); 
     }

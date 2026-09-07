@@ -6,8 +6,8 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader {
-    string TAG = "SceneLoader";
+public class SceneLoadService {
+    string TAG = "SceneLoadService";
 
     readonly SortedDictionary<SceneType, string> _loadedScenes = new();
     readonly CancellationTokenSource _lifetimeCts = new();

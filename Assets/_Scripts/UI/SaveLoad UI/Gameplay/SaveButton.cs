@@ -12,12 +12,12 @@ using VContainer;
 public class SaveButton : MonoBehaviour {
     [SerializeField] private Button button;
 
-    SceneLoader _sceneLoader;
+    SceneLoadService _sceneLoadService;
     SaveService _saveService;
 
     [Inject]
-    void Construct(SceneLoader sceneLoader, SaveService saveService) {
-        _sceneLoader = sceneLoader;
+    void Construct(SceneLoadService sceneLoadService, SaveService saveService) {
+        _sceneLoadService = sceneLoadService;
         _saveService = saveService;
     }
 
@@ -34,6 +34,6 @@ public class SaveButton : MonoBehaviour {
 
     private void HandleClick() {
         button.interactable = false;
-        _saveService.AutoSave(_sceneLoader.GetLoadedLevel());
+        _saveService.AutoSave(_sceneLoadService.GetLoadedLevel());
     }
 }

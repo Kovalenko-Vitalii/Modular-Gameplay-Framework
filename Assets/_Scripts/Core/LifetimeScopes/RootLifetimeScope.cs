@@ -9,13 +9,13 @@ public class RootLifetimeScope : LifetimeScope {
 
     protected override void Configure(IContainerBuilder builder) {
         /// Register global systems
-        builder.RegisterEntryPoint<GameFlowController>(Lifetime.Singleton).As<IGameFlowController>();
+        builder.RegisterEntryPoint<GameFlowOrchestrator>(Lifetime.Singleton).As<IGameFlowOrchestrator>();
         builder.RegisterEntryPoint<CursorLockController>(Lifetime.Singleton); /// !!!
         builder.Register<PauseService>(Lifetime.Singleton);
         builder.Register<GameModeProvider>(Lifetime.Singleton);
-        builder.Register<SceneLoader>(Lifetime.Singleton);
+        builder.Register<SceneLoadService>(Lifetime.Singleton);
         builder.Register<SaveService>(Lifetime.Singleton);
-        builder.RegisterComponentInHierarchy<InputListener>().As<IInputListener>();
+        builder.RegisterComponentInHierarchy<InputProvider>().As<IInputProvider>();
         builder.RegisterComponentInHierarchy<SoundManager>();
 
         /// Register UI panels 

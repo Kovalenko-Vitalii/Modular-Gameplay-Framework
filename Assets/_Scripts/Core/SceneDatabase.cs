@@ -1,7 +1,7 @@
 using System;
-using UnityEditor;
 using UnityEngine;
 
+// temporary solution !!!
 [CreateAssetMenu(menuName = "Game/Core/Scene Database")]
 public class SceneDatabase : ScriptableObject {
     public SceneRecord MainMenuSchell;

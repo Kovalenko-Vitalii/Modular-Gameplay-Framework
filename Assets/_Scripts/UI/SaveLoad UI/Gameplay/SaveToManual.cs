@@ -11,12 +11,12 @@ public class SaveToManual : MonoBehaviour {
 
     readonly List<GameObject> spawnedUISlots = new();
 
-    SceneLoader _sceneLoader;
+    SceneLoadService _sceneLoadService;
     SaveService _saveService;
 
     [Inject]
-    void Construct(SceneLoader sceneLoader, SaveService saveService) {
-        _sceneLoader = sceneLoader;
+    void Construct(SceneLoadService sceneLoadService, SaveService saveService) {
+        _sceneLoadService = sceneLoadService;
         _saveService = saveService;
     }
 
@@ -27,12 +27,8 @@ public class SaveToManual : MonoBehaviour {
         Refresh();
     }
 
-    void Awake() {
-        _saveService.ProfilesChanged += Refresh;
-    }
-    void OnDestroy() {
-        _saveService.ProfilesChanged -= Refresh;
-    }
+    void Awake() => _saveService.ProfilesChanged += Refresh;
+    void OnDestroy() => _saveService.ProfilesChanged -= Refresh;
 
     void Refresh() {
         foreach (var slot in spawnedUISlots)
@@ -45,7 +41,7 @@ public class SaveToManual : MonoBehaviour {
             spawnedUISlots.Add(instance);
 
             Action saveFunction = () => {
-                _saveService.OverwriteSave(saveSlot.id, _sceneLoader.GetLoadedLevel(), saveSlot.displayName);
+                _saveService.OverwriteSave(saveSlot.id, _sceneLoadService.GetLoadedLevel(), saveSlot.displayName);
             };
 
             Action deleteFunction = () => {

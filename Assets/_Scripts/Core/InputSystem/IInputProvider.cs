@@ -1,6 +1,6 @@
 using System;
 
-public interface IInputListener {
+public interface IInputProvider {
     event Action<InputAction> Pressed;
     event Action<InputAction> Released;
 }

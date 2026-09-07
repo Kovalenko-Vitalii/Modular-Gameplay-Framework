@@ -18,20 +18,20 @@ public class UIWindowManager : MonoBehaviour {
     public event Action<UIWindowDefinition> WindowClosed;
 
     PauseService _pauseService;
-    IInputListener _inputListener;
+    IInputProvider _inputProvider;
 
     [Inject]
-    void Construct(PauseService pauseService, IInputListener inputListener) {
+    void Construct(PauseService pauseService, IInputProvider inputProvider) {
         _pauseService = pauseService;
-        _inputListener = inputListener;
+        _inputProvider = inputProvider;
     }
 
     private void OnEnable() {
-        _inputListener.Pressed += HandleAction;
+        _inputProvider.Pressed += HandleAction;
     }
 
     private void OnDisable() {
-        _inputListener.Pressed -= HandleAction;
+        _inputProvider.Pressed -= HandleAction;
     }
 
     public void OpenDefaults() {

@@ -8,16 +8,16 @@ using VContainer;
 public class NewManualSave : MonoBehaviour {
     [SerializeField] Button button;
 
-    SceneLoader _sceneLoader;
+    SceneLoadService _sceneLoadService;
     SaveService _saveService;
 
     [Inject]
-    void Construct(SceneLoader sceneLoader, SaveService saveService) {
-        _sceneLoader = sceneLoader;
+    void Construct(SceneLoadService sceneLoadService, SaveService saveService) {
+        _sceneLoadService = sceneLoadService;
         _saveService = saveService;
     }
 
     void Start() {
-        button.onClick.AddListener(() => _saveService.NewSave(Environment.UserName, _sceneLoader.GetLoadedLevel()));
+        button.onClick.AddListener(() => _saveService.NewSave(Environment.UserName, _sceneLoadService.GetLoadedLevel()));
     }
 }

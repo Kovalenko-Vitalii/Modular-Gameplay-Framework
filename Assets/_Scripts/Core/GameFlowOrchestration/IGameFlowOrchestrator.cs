@@ -1,6 +1,4 @@
-using UnityEngine;
-
-public interface IGameFlowController {
+public interface IGameFlowOrchestrator {
     void StartNewGame(string newGameScene, string profileName) { }
     void StartLatestSaveFrom(string profileId) { }
     void StartAutoSaveFromActive() { }

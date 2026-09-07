@@ -11,11 +11,11 @@ public class LoadSaveProfile : MonoBehaviour {
 
     readonly List<GameObject> spawnedSlots = new();
 
-    private IGameFlowController _gameFlowController;
+    private IGameFlowOrchestrator _gameFlowController;
     SaveService _saveService;
 
     [Inject]
-    private void Construct(IGameFlowController gameFlowController, SaveService saveService) {
+    private void Construct(IGameFlowOrchestrator gameFlowController, SaveService saveService) {
         _gameFlowController = gameFlowController;
         _saveService = saveService;
     }

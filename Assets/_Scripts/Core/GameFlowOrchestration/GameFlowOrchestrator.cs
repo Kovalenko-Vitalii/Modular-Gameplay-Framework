@@ -8,23 +8,23 @@ using VContainer.Unity;
 /// Highest point in game flow hierarchy. 
 /// Designed to start global flow changes as StartGame, ExitToMenu etc.
 /// </summary>
-public class GameFlowController : IGameFlowController, IInitializable {
+public class GameFlowOrchestrator : IGameFlowOrchestrator, IInitializable {
     bool isNewGame = false;
     string _menuShellName;
     string _gameplayShellName;
 
     SceneDatabase _sceneDatabase;
     GameModeProvider _gameModeProvider;
-    SceneLoader _sceneLoader;
+    SceneLoadService _sceneLoadService;
     SaveService _saveService;
 
     [Inject]
-    public GameFlowController(SceneDatabase sceneDatabase) => _sceneDatabase = sceneDatabase;
+    public GameFlowOrchestrator(SceneDatabase sceneDatabase) => _sceneDatabase = sceneDatabase;
 
     [Inject]
-    void Construct(GameModeProvider gameModeProvider, SceneLoader sceneLoader, SaveService saveService) {
+    void Construct(GameModeProvider gameModeProvider, SceneLoadService sceneLoadService, SaveService saveService) {
         _gameModeProvider = gameModeProvider;
-        _sceneLoader = sceneLoader;
+        _sceneLoadService = sceneLoadService;
         _saveService = saveService;
 
         _menuShellName = _sceneDatabase.MainMenuSchell.sceneName;
@@ -86,17 +86,17 @@ public class GameFlowController : IGameFlowController, IInitializable {
     #region Private
 
     async UniTaskVoid StartGameplay(string levelSceneName) {
-        if (_sceneLoader.IsBusy) { Debug.LogWarning($"Start gameplay '{levelSceneName}' ignored: busy"); return; }
+        if (_sceneLoadService.IsBusy) { Debug.LogWarning($"Start gameplay '{levelSceneName}' ignored: busy"); return; }
 
         _gameModeProvider.SetMode(GameMode.Loading);
 
-        if (!await _sceneLoader.LoadShell(_gameplayShellName)) {
+        if (!await _sceneLoadService.LoadShell(_gameplayShellName)) {
             Debug.LogError($"Failed to load gameplay shell '{_gameplayShellName}'");
             _gameModeProvider.SetMode(GameMode.MainMenu);
             return;
         }
 
-        if (!await _sceneLoader.LoadLevel(levelSceneName)) {
+        if (!await _sceneLoadService.LoadLevel(levelSceneName)) {
             Debug.LogError($"Failed to load level '{levelSceneName}'");
             _gameModeProvider.SetMode(GameMode.MainMenu);
             return;
@@ -115,7 +115,7 @@ public class GameFlowController : IGameFlowController, IInitializable {
         _saveService.Clean();
         _gameModeProvider.SetMode(GameMode.Loading);
 
-        if (!await _sceneLoader.LoadShell(_menuShellName)) { Debug.LogError($"Failed to load menu '{_menuShellName}'"); return; }
+        if (!await _sceneLoadService.LoadShell(_menuShellName)) { Debug.LogError($"Failed to load menu '{_menuShellName}'"); return; }
 
         _gameModeProvider.SetMode(GameMode.MainMenu);
     }
