@@ -17,7 +17,6 @@ public class SettingsMenuController : MonoBehaviour
     [Inject]
     void Construct(SoundManager soundManager) {
         _soundManager = soundManager;
-
         audioSetings = new AudioSettingsProvider(_soundManager);
     }
 

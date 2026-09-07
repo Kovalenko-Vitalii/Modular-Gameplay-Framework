@@ -12,14 +12,10 @@ public class AmbientZone : MonoBehaviour {
     AmbientManager _ambientManager;
 
     [Inject]
-    public void Construct(AmbientManager ambientManager) {
-        _ambientManager = ambientManager;
-    }
-
-    private void OnDestroy() {
-        _ambientManager.UnregisterZone(this);
-    }
-
+    public void Construct(AmbientManager ambientManager) => _ambientManager = ambientManager;
+       
+    private void OnDestroy() => _ambientManager.UnregisterZone(this);
+        
     private void OnTriggerEnter(Collider other) {
         if (!other.CompareTag("Player"))
             return;

@@ -14,10 +14,10 @@ public class NewGame : MonoBehaviour {
     [SerializeField] Button play;
     [SerializeField] TMP_InputField inputField;
 
-    GameFlowController _gameFlowController;
+    IGameFlowController _gameFlowController;
 
     [Inject]
-    private void Construct(GameFlowController gameFlowController){
+    private void Construct(IGameFlowController gameFlowController){
         _gameFlowController = gameFlowController;
     }
 

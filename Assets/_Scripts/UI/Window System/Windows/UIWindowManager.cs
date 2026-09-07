@@ -4,10 +4,7 @@ using System.Linq;
 using UnityEngine;
 using VContainer;
 
-[DefaultExecutionOrder(-1900)]
 public class UIWindowManager : MonoBehaviour {
-    private const string TAG = "UIWindowManager";
-
     [SerializeField] private UIActionBinding[] bindings;
     [SerializeField] private UIWindowDefinition defaultWindow;
 
@@ -21,27 +18,27 @@ public class UIWindowManager : MonoBehaviour {
     public event Action<UIWindowDefinition> WindowClosed;
 
     GameStateManager _gameStateManager;
-    InputListener _inputListener;
+    IInputListener _inputListener;
 
     [Inject]
-    void Construct(GameStateManager gameStateManager, InputListener inputListener) {
+    void Construct(GameStateManager gameStateManager, IInputListener inputListener) {
         _gameStateManager = gameStateManager;
         _inputListener = inputListener;
     }
 
     private void OnEnable() {
         _gameStateManager.ModeChanged += HandleGameModeChanged;
-        _inputListener.ActionPressed += HandleAction;
+        _inputListener.Pressed += HandleAction;
         HandleGameModeChanged(_gameStateManager.CurrentMode);
     }
 
     private void OnDisable() {
         _gameStateManager.ModeChanged -= HandleGameModeChanged;
-        _inputListener.ActionPressed -= HandleAction;
+        _inputListener.Pressed -= HandleAction;
     }
 
     private void HandleGameModeChanged(GameMode state) {
-        if (state == GameMode.Cutscene || state == GameMode.Loading)
+        if (state == GameMode.Loading)
             CloseAll();
     }
 

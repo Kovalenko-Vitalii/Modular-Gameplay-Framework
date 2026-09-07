@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7da4d02a6702b4d49af14386ea7f37f4, type: 3}
-  m_Name: SaveConfig1
+  m_Name: SaveConfig
   m_EditorClassIdentifier: Assembly-CSharp::SaveSystem.SaveConfig
   maxProfles: 0
   maxManualSaves: 0

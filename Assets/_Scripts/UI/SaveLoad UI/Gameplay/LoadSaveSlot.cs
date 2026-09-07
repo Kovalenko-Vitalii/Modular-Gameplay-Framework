@@ -11,11 +11,11 @@ public class LoadSaveSlot : MonoBehaviour {
 
     readonly List<GameObject> spawnedUISlots = new();
 
-    GameFlowController _gameFlowController;
+    IGameFlowController _gameFlowController;
     SaveService _saveService;
 
     [Inject]
-    private void Construct(GameFlowController gameFlowController, SaveService saveService) {
+    private void Construct(IGameFlowController gameFlowController, SaveService saveService) {
         _gameFlowController = gameFlowController;
         _saveService = saveService;
     }
@@ -45,7 +45,7 @@ public class LoadSaveSlot : MonoBehaviour {
             spawnedUISlots.Add(instance);
 
             Action loadFunction = () => {
-                _gameFlowController.StartManual(_saveService.ActiveProfile.id, saveSlot.id);
+                _gameFlowController.StartFromActive(saveSlot.id);
             };
 
             Action deleteFunction = () => {

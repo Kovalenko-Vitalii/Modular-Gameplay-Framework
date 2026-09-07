@@ -8,11 +8,11 @@ public class ResumeGameButton : MonoBehaviour {
 
     private void Awake() => button = GetComponent<Button>();
 
-    GameFlowController _gameFlowController;
+    IGameFlowController _gameFlowController;
     SaveService _saveService;
 
     [Inject]
-    private void Construct(GameFlowController gameFlowController, SaveService saveService) {
+    private void Construct(IGameFlowController gameFlowController, SaveService saveService) {
         _gameFlowController = gameFlowController;
         _saveService = saveService;
     }

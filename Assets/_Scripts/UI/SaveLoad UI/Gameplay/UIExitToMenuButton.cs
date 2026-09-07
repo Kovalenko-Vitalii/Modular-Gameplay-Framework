@@ -4,10 +4,10 @@ using VContainer;
 
 public class UIExitToMenuButton : MonoBehaviour {
     Button button;
-    GameFlowController _gameFlowController;
+    IGameFlowController _gameFlowController;
 
     [Inject]
-    void Construct(GameFlowController gameFlowController) {
+    void Construct(IGameFlowController gameFlowController) {
         _gameFlowController = gameFlowController;
     }
     private void Awake() {

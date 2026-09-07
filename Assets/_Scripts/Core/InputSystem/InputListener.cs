@@ -7,14 +7,11 @@ using UnityEngine.InputSystem;
 // Layer of abstractio over Unity Input System
 // Allows other systems listen to input actions without knowing about the underlying input system
 // </summary>
-
-// !!! MAKE IT DATA DRIVEN SYSTEM LATER !!!
-[DefaultExecutionOrder(-1500)]
-public class InputListener : MonoBehaviour {
+public class InputListener : MonoBehaviour, IInputListener {
     [SerializeField] private List<ListenedAction> actions;
 
-    public event Action<InputAction> ActionPressed;
-    public event Action<InputAction> ActionReleased;
+    public event Action<InputAction> Pressed;
+    public event Action<InputAction> Released;
 
     private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> performedHandlers = new();
     private readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> canceledHandlers = new();
@@ -26,8 +23,8 @@ public class InputListener : MonoBehaviour {
 
             InputAction id = entry.id;
 
-            Action<UnityEngine.InputSystem.InputAction.CallbackContext> onPerformed = _ => ActionPressed?.Invoke(id);
-            Action<UnityEngine.InputSystem.InputAction.CallbackContext> onCanceled = _ => ActionReleased?.Invoke(id);
+            Action<UnityEngine.InputSystem.InputAction.CallbackContext> onPerformed = _ => Pressed?.Invoke(id);
+            Action<UnityEngine.InputSystem.InputAction.CallbackContext> onCanceled = _ => Released?.Invoke(id);
 
             performedHandlers[id] = onPerformed;
             canceledHandlers[id] = onCanceled;

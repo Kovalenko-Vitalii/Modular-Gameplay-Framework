@@ -16,7 +16,6 @@ public sealed class CursorLockController : IStartable, IDisposable {
     public void Start() {
         _gameStateManager.PauseChanged += OnPausedChanged;
         SetLocked(!_gameStateManager.IsPaused);
-        LockCursor();
     }
 
     public void Dispose() {

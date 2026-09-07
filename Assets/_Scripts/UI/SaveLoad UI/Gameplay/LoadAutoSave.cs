@@ -1,23 +1,13 @@
-using SaveSystem;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-public class LoadAutoSave : MonoBehaviour
-{
+public class LoadAutoSave : MonoBehaviour {
     [SerializeField] Button button;
 
-    GameFlowController _gameFlowController;
-    SaveService _saveService;
+    IGameFlowController _gameFlowController;
 
-    [Inject]
-    private void Construct(GameFlowController gameFlowController, SaveService saveService) {
-        _gameFlowController = gameFlowController;
-        _saveService = saveService;
-    }
-
-    void Start() {
-        var acvtiveProfile = _saveService.ActiveProfile;
-        button.onClick.AddListener(() => _gameFlowController.StartManual(acvtiveProfile.id, acvtiveProfile.autoSave.id));
-    }
+    [Inject] void Construct(IGameFlowController gameFlowController) => _gameFlowController = gameFlowController;
+  
+    private void OnEnable() => button.onClick.AddListener(() => _gameFlowController.StartAutoFromActive());
 }

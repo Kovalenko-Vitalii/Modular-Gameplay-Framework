@@ -6,23 +6,16 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : IDisposable{
+public class SceneLoader {
     string TAG = "SceneLoader";
 
     readonly SortedDictionary<SceneType, string> _loadedScenes = new();
     readonly CancellationTokenSource _lifetimeCts = new();
 
-    bool isBusy;
-
     public float Progress { get; private set; } = 0f;
-    public bool IsBusy => isBusy;
+    public bool IsBusy { get; private set; }
 
     public event Action<SceneType, string> SceneLoaded;
-
-    public void Dispose() {
-        _lifetimeCts.Cancel();
-        _lifetimeCts.Dispose();
-    }
 
     #region Public API
     /// <returns> Name of the scene loaded in the specified slot. </returns>
@@ -44,7 +37,7 @@ public class SceneLoader : IDisposable{
     /// <summary> Loads scene into specified slot. </summary>
     /// <returns> Success of the operation. </returns>
     async public UniTask<bool> Load(SceneType slot, string sceneName) {
-        if (isBusy) { GameLog.Warning(TAG, $"Load({slot}, '{sceneName}') ignored: already busy"); return false; }
+        if (IsBusy) { GameLog.Warning(TAG, $"Load({slot}, '{sceneName}') ignored: already busy"); return false; }
 
         if (GetLoaded(slot) == sceneName) { // early exit
             var scene = SceneManager.GetSceneByName(sceneName);
@@ -59,7 +52,7 @@ public class SceneLoader : IDisposable{
 
         var token = _lifetimeCts.Token;
 
-        isBusy = true;
+        IsBusy = true;
         Progress = 0f;
 
         try {
@@ -91,7 +84,7 @@ public class SceneLoader : IDisposable{
             SceneLoaded?.Invoke(slot, sceneName);
             return true;
         } finally {
-            isBusy = false;
+            IsBusy = false;
         }
     }
 
@@ -103,9 +96,4 @@ public class SceneLoader : IDisposable{
         _loadedScenes.Remove(slot);
     }
     #endregion
-}
-
-public enum SceneType {
-    Shell,
-    Level
 }
