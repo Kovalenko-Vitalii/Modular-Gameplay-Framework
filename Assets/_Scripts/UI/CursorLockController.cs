@@ -6,22 +6,14 @@ using VContainer.Unity;
 public sealed class CursorLockController : IStartable, IDisposable {
     public bool IsLocked { get; private set; }
 
-    GameStateManager _gameStateManager;
+    PauseService _pauseService;
 
     [Inject]
-    void Construct(GameStateManager gameStateManager) {
-        _gameStateManager = gameStateManager;
-    }
-
-    public void Start() {
-        _gameStateManager.PauseChanged += OnPausedChanged;
-        SetLocked(!_gameStateManager.IsPaused);
-    }
-
-    public void Dispose() {
-        _gameStateManager.PauseChanged -= OnPausedChanged;
-    }
-
+    void Construct(PauseService pauseService) => _pauseService = pauseService;
+       
+    public void Start() => _pauseService.PauseChanged += OnPausedChanged;
+    public void Dispose() => _pauseService.PauseChanged -= OnPausedChanged;
+        
     private void OnPausedChanged(bool isPaused) => SetLocked(!isPaused); 
 
     public void LockCursor() {

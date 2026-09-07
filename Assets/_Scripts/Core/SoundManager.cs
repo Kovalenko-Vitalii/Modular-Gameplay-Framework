@@ -36,11 +36,11 @@ public class SoundManager : MonoBehaviour {
     public float SubtitleVolume => volumeSubtitle;
     public float WorldVolume => volumeWorld;
 
-    GameStateManager _gameStateManager;
+    PauseService _pauseService;
 
     [Inject]
-    void Construct(GameStateManager gameStateManager) {
-        _gameStateManager = gameStateManager;
+    void Construct(PauseService pauseService) {
+        _pauseService = pauseService;
     }
 
     private void Awake() {
@@ -53,11 +53,11 @@ public class SoundManager : MonoBehaviour {
 
     private void OnEnable()
     {
-        _gameStateManager.PauseChanged += OnPausedChanged;
-        SetAudioPaused(_gameStateManager.IsPaused); 
+        _pauseService.PauseChanged += OnPausedChanged;
+        SetAudioPaused(_pauseService.IsPaused); 
     }
 
-    private void OnDisable() => _gameStateManager.PauseChanged -= OnPausedChanged;
+    private void OnDisable() => _pauseService.PauseChanged -= OnPausedChanged;
     private void OnPausedChanged(bool isPaused) =>SetAudioPaused(isPaused);
 
     private void Start() => ApplyVolumes();

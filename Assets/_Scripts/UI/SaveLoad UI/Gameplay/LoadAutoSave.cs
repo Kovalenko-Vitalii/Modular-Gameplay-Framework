@@ -9,5 +9,5 @@ public class LoadAutoSave : MonoBehaviour {
 
     [Inject] void Construct(IGameFlowController gameFlowController) => _gameFlowController = gameFlowController;
   
-    private void OnEnable() => button.onClick.AddListener(() => _gameFlowController.StartAutoFromActive());
+    private void OnEnable() => button.onClick.AddListener(() => _gameFlowController.StartAutoSaveFromActive());
 }

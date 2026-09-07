@@ -17,29 +17,21 @@ public class UIWindowManager : MonoBehaviour {
     public event Action<UIWindowDefinition> WindowOpened;
     public event Action<UIWindowDefinition> WindowClosed;
 
-    GameStateManager _gameStateManager;
+    PauseService _pauseService;
     IInputListener _inputListener;
 
     [Inject]
-    void Construct(GameStateManager gameStateManager, IInputListener inputListener) {
-        _gameStateManager = gameStateManager;
+    void Construct(PauseService pauseService, IInputListener inputListener) {
+        _pauseService = pauseService;
         _inputListener = inputListener;
     }
 
     private void OnEnable() {
-        _gameStateManager.ModeChanged += HandleGameModeChanged;
         _inputListener.Pressed += HandleAction;
-        HandleGameModeChanged(_gameStateManager.CurrentMode);
     }
 
     private void OnDisable() {
-        _gameStateManager.ModeChanged -= HandleGameModeChanged;
         _inputListener.Pressed -= HandleAction;
-    }
-
-    private void HandleGameModeChanged(GameMode state) {
-        if (state == GameMode.Loading)
-            CloseAll();
     }
 
     public void OpenDefaults() {
@@ -109,7 +101,7 @@ public class UIWindowManager : MonoBehaviour {
         if (string.IsNullOrEmpty(pauseReason)) 
             return;
         bool shouldPause = stack.Any(w => w.pausesGame);
-        _gameStateManager.SetPauseReason(pauseReason, shouldPause);
+        _pauseService.SetPauseReason(pauseReason, shouldPause);
     }
 }
 

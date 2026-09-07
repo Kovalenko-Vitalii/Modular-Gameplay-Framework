@@ -15,6 +15,6 @@ public class GameplayLifetimeScope : LifetimeScope {
         builder.RegisterComponentInHierarchy<LoadAutoSave>();
         builder.RegisterComponentInHierarchy<SettingsMenuController>();
 
-        builder.Register<GameplayStateController>(Lifetime.Singleton);
+        builder.Register<GameplayModeProvider>(Lifetime.Singleton);
     }
 }

@@ -14,7 +14,7 @@ public class GameFlowController : IGameFlowController, IInitializable {
     string _gameplayShellName;
 
     SceneDatabase _sceneDatabase;
-    GameStateManager _gameStateManager;
+    GameModeProvider _gameModeProvider;
     SceneLoader _sceneLoader;
     SaveService _saveService;
 
@@ -22,8 +22,8 @@ public class GameFlowController : IGameFlowController, IInitializable {
     public GameFlowController(SceneDatabase sceneDatabase) => _sceneDatabase = sceneDatabase;
 
     [Inject]
-    void Construct(GameStateManager gameStateManager, SceneLoader sceneLoader, SaveService saveService) {
-        _gameStateManager = gameStateManager;
+    void Construct(GameModeProvider gameModeProvider, SceneLoader sceneLoader, SaveService saveService) {
+        _gameModeProvider = gameModeProvider;
         _sceneLoader = sceneLoader;
         _saveService = saveService;
 
@@ -44,7 +44,7 @@ public class GameFlowController : IGameFlowController, IInitializable {
         StartGameplay(newGameScene).Forget();
     }
 
-    public void StartGame(string profileId) {
+    public void StartLatestSaveFrom(string profileId) {
         if (string.IsNullOrEmpty(profileId)) { Debug.Log($"Invalid profile id: '{profileId}'"); return; }
 
         string sceneName = _saveService.StartLatestFrom(profileId);
@@ -52,19 +52,19 @@ public class GameFlowController : IGameFlowController, IInitializable {
         StartGameplay(sceneName).Forget();
     }
 
-    public void StartAutoFromActive() { 
+    public void StartAutoSaveFromActive() { 
         string sceneName = _saveService.StartFrom(_saveService.ActiveProfile.id, _saveService.ActiveProfile.autoSave.id);
         if (string.IsNullOrEmpty(sceneName)) { Debug.Log("Invalid scene name, load canceled!"); return; }
         StartGameplay(sceneName).Forget();
     }
 
-    public void StartFromActive(string saveId) {
+    public void StartSaveFromActive(string saveId) {
         string sceneName = _saveService.StartFrom(_saveService.ActiveProfile.id, saveId);
         if (string.IsNullOrEmpty(sceneName)) { Debug.Log("Invalid scene name, load canceled!"); return; }
         StartGameplay(sceneName).Forget();
     }
 
-    public void StartManual(string profileId, string slotId) {
+    public void StartManualSave(string profileId, string slotId) {
         if (string.IsNullOrEmpty(profileId)) { Debug.Log($"Invalid profile id: '{profileId}'"); return; }
         if (string.IsNullOrEmpty(slotId)) { Debug.Log($"Invalid slot id: '{slotId}'"); return; }
 
@@ -88,22 +88,22 @@ public class GameFlowController : IGameFlowController, IInitializable {
     async UniTaskVoid StartGameplay(string levelSceneName) {
         if (_sceneLoader.IsBusy) { Debug.LogWarning($"Start gameplay '{levelSceneName}' ignored: busy"); return; }
 
-        _gameStateManager.SetMode(GameMode.Loading);
+        _gameModeProvider.SetMode(GameMode.Loading);
 
         if (!await _sceneLoader.LoadShell(_gameplayShellName)) {
             Debug.LogError($"Failed to load gameplay shell '{_gameplayShellName}'");
-            _gameStateManager.SetMode(GameMode.MainMenu);
+            _gameModeProvider.SetMode(GameMode.MainMenu);
             return;
         }
 
         if (!await _sceneLoader.LoadLevel(levelSceneName)) {
             Debug.LogError($"Failed to load level '{levelSceneName}'");
-            _gameStateManager.SetMode(GameMode.MainMenu);
+            _gameModeProvider.SetMode(GameMode.MainMenu);
             return;
         }
 
         _saveService.ApplyPendingData(levelSceneName);
-        _gameStateManager.SetMode(GameMode.Gameplay);
+        _gameModeProvider.SetMode(GameMode.Gameplay);
 
         if (isNewGame) {
             _saveService.AutoSave(levelSceneName);
@@ -111,14 +111,13 @@ public class GameFlowController : IGameFlowController, IInitializable {
         }
     }
 
-
     async UniTaskVoid LoadMenu() {
         _saveService.Clean();
-        _gameStateManager.SetMode(GameMode.Loading);
+        _gameModeProvider.SetMode(GameMode.Loading);
 
         if (!await _sceneLoader.LoadShell(_menuShellName)) { Debug.LogError($"Failed to load menu '{_menuShellName}'"); return; }
 
-        _gameStateManager.SetMode(GameMode.MainMenu);
+        _gameModeProvider.SetMode(GameMode.MainMenu);
     }
 
     #endregion

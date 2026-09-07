@@ -13,7 +13,7 @@ public class AmbientZone : MonoBehaviour {
 
     [Inject]
     public void Construct(AmbientManager ambientManager) => _ambientManager = ambientManager;
-       
+
     private void OnDestroy() => _ambientManager.UnregisterZone(this);
         
     private void OnTriggerEnter(Collider other) {

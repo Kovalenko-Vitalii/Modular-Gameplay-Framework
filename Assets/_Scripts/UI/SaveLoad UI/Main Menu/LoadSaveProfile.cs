@@ -45,7 +45,7 @@ public class LoadSaveProfile : MonoBehaviour {
             spawnedSlots.Add(instance);
 
             Action loadFunction = () => {
-                _gameFlowController.StartGame(saveProfile.id);
+                _gameFlowController.StartLatestSaveFrom(saveProfile.id);
             };
 
             Action deleteFunction = () => {

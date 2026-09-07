@@ -11,7 +11,8 @@ public class RootLifetimeScope : LifetimeScope {
         /// Register global systems
         builder.RegisterEntryPoint<GameFlowController>(Lifetime.Singleton).As<IGameFlowController>();
         builder.RegisterEntryPoint<CursorLockController>(Lifetime.Singleton); /// !!!
-        builder.Register<GameStateManager>(Lifetime.Singleton);
+        builder.Register<PauseService>(Lifetime.Singleton);
+        builder.Register<GameModeProvider>(Lifetime.Singleton);
         builder.Register<SceneLoader>(Lifetime.Singleton);
         builder.Register<SaveService>(Lifetime.Singleton);
         builder.RegisterComponentInHierarchy<InputListener>().As<IInputListener>();

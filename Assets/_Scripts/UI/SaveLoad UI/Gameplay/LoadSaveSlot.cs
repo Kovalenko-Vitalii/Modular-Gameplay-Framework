@@ -45,7 +45,7 @@ public class LoadSaveSlot : MonoBehaviour {
             spawnedUISlots.Add(instance);
 
             Action loadFunction = () => {
-                _gameFlowController.StartFromActive(saveSlot.id);
+                _gameFlowController.StartSaveFromActive(saveSlot.id);
             };
 
             Action deleteFunction = () => {

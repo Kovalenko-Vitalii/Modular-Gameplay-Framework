@@ -19,21 +19,21 @@ public class TickSystem : MonoBehaviour {
 
     bool isTicking = true;
 
-    GameStateManager _gameStateManager;
+    PauseService _pauseService;
 
     [Inject]
-    void Construct(GameStateManager gameStateManager) {
-        _gameStateManager = gameStateManager;
+    void Construct(PauseService pauseService) {
+        _pauseService = pauseService;
     }
 
     // acceptable level of glue 
     private void OnEnable()
     {
-        _gameStateManager.PauseChanged += OnPausedChanged;
-        isTicking = !_gameStateManager.IsPaused;
+        _pauseService.PauseChanged += OnPausedChanged;
+        isTicking = !_pauseService.IsPaused;
     }
 
-    private void OnDisable() => _gameStateManager.PauseChanged -= OnPausedChanged; 
+    private void OnDisable() => _pauseService.PauseChanged -= OnPausedChanged; 
 
     private void OnPausedChanged(bool isPaused) =>isTicking = !isPaused;
 

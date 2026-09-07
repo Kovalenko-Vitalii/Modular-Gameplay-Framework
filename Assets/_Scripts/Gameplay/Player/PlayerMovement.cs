@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
-using static UnityEngine.CullingGroup;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(CharacterController))]
@@ -139,17 +138,16 @@ public sealed class PlayerMovement : MonoBehaviour, ITick
         public float Angle;
     }
 
-    GameStateManager _gameStateManager;
+    GameModeProvider _gameModeProvider;
     TickSystem _tickSystem;
 
     [Inject]
-    void Construct(GameStateManager gameStateManager, TickSystem tickSystem) {
-        _gameStateManager = gameStateManager;
+    void Construct(GameModeProvider gameModeProvider, TickSystem tickSystem) {
+        _gameModeProvider = gameModeProvider;
         _tickSystem = tickSystem;
     }
 
-    private void Awake()
-    {
+    private void Awake() {
         controller = GetComponent<CharacterController>();
         controller.enableOverlapRecovery = true;
 
@@ -178,7 +176,7 @@ public sealed class PlayerMovement : MonoBehaviour, ITick
 
         _tickSystem.Register(this);
 
-        _gameStateManager.ModeChanged += OnStateChanged;
+        _gameModeProvider.ModeChanged += OnStateChanged;
     }
 
     private void OnDisable()
@@ -190,7 +188,7 @@ public sealed class PlayerMovement : MonoBehaviour, ITick
 
         _tickSystem.Unregister(this);
 
-        _gameStateManager.ModeChanged -= OnStateChanged;
+        _gameModeProvider.ModeChanged -= OnStateChanged;
     }
 
     private void OnStateChanged(GameMode state)
