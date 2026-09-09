@@ -2,32 +2,28 @@ using System;
 using System.Collections.Generic;
 
 public class PauseService {
-    private readonly HashSet<string> pauseReasons = new();
     public bool IsPaused { get; private set; } = false;
+    readonly HashSet<string> _requests = new();
 
     public event Action<bool> PauseChanged;
 
-    /// <summary>
-    /// Sets a pause reason. If active is true, the reason is added to the list of reasons to pause.
-    /// If active is false, the reason is removed from the list of reasons to pause.
-    /// </summary>
-    public void SetPauseReason(string reason, bool active) { // !!! reason could be changed to object but string works for now !!!
+    public void RequestPause(string name, bool paused) { // !!! reason could be changed to object but string works for now !!!
         bool changed;
 
-        if (active)
-            changed = pauseReasons.Add(reason);
+        if (paused)
+            changed = _requests.Add(name);
         else
-            changed = pauseReasons.Remove(reason);
+            changed = _requests.Remove(name);
 
         if (!changed)
             return;
 
-        RecomputePause();
+        Recalculate();
     }
 
     /// <summary> If any pause reasons are active, pause the game </summary>
-    private void RecomputePause() {
-        bool shouldPause = pauseReasons.Count > 0;
+    void Recalculate() {
+        bool shouldPause = _requests.Count > 0;
         if (shouldPause == IsPaused)
             return;
 

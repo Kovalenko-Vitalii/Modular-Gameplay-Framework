@@ -1,10 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
-using VContainer;
 
-// <summary>
-// Singleton class that manages all audio in the game, including UI, subtitles, and world sounds
-// </summary>
 public class SoundManager : MonoBehaviour {
     [SerializeField] AudioMixerGroup worldMixerGroup;
 
@@ -36,13 +32,6 @@ public class SoundManager : MonoBehaviour {
     public float SubtitleVolume => volumeSubtitle;
     public float WorldVolume => volumeWorld;
 
-    PauseService _pauseService;
-
-    [Inject]
-    void Construct(PauseService pauseService) {
-        _pauseService = pauseService;
-    }
-
     private void Awake() {
         if (uiSource != null)
             uiSource.ignoreListenerPause = true;
@@ -50,13 +39,6 @@ public class SoundManager : MonoBehaviour {
         LoadVolumes();
     }
 
-
-    private void OnEnable() {
-        _pauseService.PauseChanged += OnPausedChanged;
-        SetAudioPaused(_pauseService.IsPaused); 
-    }
-
-    private void OnDisable() => _pauseService.PauseChanged -= OnPausedChanged;
     private void OnPausedChanged(bool isPaused) =>SetAudioPaused(isPaused);
 
     private void Start() => ApplyVolumes();

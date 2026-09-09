@@ -1,20 +1,34 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
-using VContainer;
-using VContainer.Unity;
 
-public sealed class CursorLockController : IStartable, IDisposable {
-    public bool IsLocked { get; private set; }
+public sealed class CursorLockController {
+    public bool IsLocked { get; private set; } = false;
 
-    PauseService _pauseService;
+    /*
+    readonly HashSet<string> _requests = new();
 
-    [Inject]
-    void Construct(PauseService pauseService) => _pauseService = pauseService;
-       
-    public void Start() => _pauseService.PauseChanged += OnPausedChanged;
-    public void Dispose() => _pauseService.PauseChanged -= OnPausedChanged;
+    public void ChangeState(string name, bool isLocked) { // !!! reason could be changed to object but string works for now !!!
+        bool changed;
+
+        if (isLocked)
+            changed = _requests.Add(name);
+        else
+            changed = _requests.Remove(name);
+
+        if (!changed)
+            return;
         
-    private void OnPausedChanged(bool isPaused) => SetLocked(!isPaused); 
+        Recalculate();
+    }
+
+    void Recalculate() {
+        bool shouldLock = _requests.Count > 0;
+        if (shouldLock == IsLocked)
+            return;
+
+        SetLocked(shouldLock);
+    }
+    */
 
     public void LockCursor() {
         IsLocked = true;

@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Window_Inventory
   m_EditorClassIdentifier: Assembly-CSharp::UIWindowDefinition
   id: inventory
-  pausesGame: 1
+  pausesSimulation: 1
+  locksPlayerInput: 1
+  releasesCursor: 1
   closableWithEsc: 1

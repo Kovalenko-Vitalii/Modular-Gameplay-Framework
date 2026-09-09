@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Window_Escape
   m_EditorClassIdentifier: Assembly-CSharp::UIWindowDefinition
   id: escape
-  pausesGame: 1
+  pausesSimulation: 1
+  locksPlayerInput: 1
+  releasesCursor: 1
   closableWithEsc: 1

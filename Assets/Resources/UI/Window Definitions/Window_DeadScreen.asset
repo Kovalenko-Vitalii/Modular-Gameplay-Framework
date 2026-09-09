@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Window_DeadScreen
   m_EditorClassIdentifier: Assembly-CSharp::UIWindowDefinition
   id: deadscreen
-  pausesGame: 1
-  closableWithEsc: 0
+  pausesSimulation: 1
+  locksPlayerInput: 1
+  releasesCursor: 1
+  closableWithEsc: 1

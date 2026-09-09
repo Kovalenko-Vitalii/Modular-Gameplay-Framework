@@ -7,8 +7,6 @@ using VContainer;
 public class UIWindowManager : MonoBehaviour {
     [SerializeField] private UIActionBinding[] bindings;
     [SerializeField] private UIWindowDefinition defaultWindow;
-
-    private string pauseReason = "UI";
     private readonly List<UIWindowDefinition> stack = new();
 
     public IReadOnlyList<UIWindowDefinition> Stack => stack;
@@ -19,24 +17,20 @@ public class UIWindowManager : MonoBehaviour {
 
     PauseService _pauseService;
     IInputProvider _inputProvider;
+    CursorLockController _cursorLockController;
 
     [Inject]
-    void Construct(PauseService pauseService, IInputProvider inputProvider) {
+    void Construct(PauseService pauseService, IInputProvider inputProvider, CursorLockController cursorLockController) {
         _pauseService = pauseService;
         _inputProvider = inputProvider;
+        _cursorLockController = cursorLockController;   
     }
 
-    private void OnEnable() {
-        _inputProvider.Pressed += HandleAction;
-    }
-
-    private void OnDisable() {
-        _inputProvider.Pressed -= HandleAction;
-    }
-
+    private void OnEnable() => _inputProvider.Pressed += HandleAction;
+    private void OnDisable() => _inputProvider.Pressed -= HandleAction;
+      
     public void OpenDefaults() {
-        if (defaultWindow == null) return;
-            Open(defaultWindow);
+        if (defaultWindow != null) Open(defaultWindow);   
     }
 
     // Called by UIScreenManager, only on the currently active screen
@@ -56,9 +50,8 @@ public class UIWindowManager : MonoBehaviour {
 
     private void HandleBack(UIWindowDefinition fallback) {
         if (Top != null)
-            if (Top.closableWithEsc) 
+            if (Top.ClosableWithEsc) 
                 Close(Top);
-        
         else if (fallback != null)  
             Open(fallback);
     }
@@ -70,13 +63,15 @@ public class UIWindowManager : MonoBehaviour {
             return;
         stack.Add(window);
         WindowOpened?.Invoke(window);
-        RefreshPause();
+        _cursorLockController.UnlockCursor();
+        RefreshLocks();
     }
 
     public void Close(UIWindowDefinition window) {
         if (window == null || !stack.Remove(window)) return;
         WindowClosed?.Invoke(window);
-        RefreshPause();
+        _cursorLockController.LockCursor();
+        RefreshLocks();
     }
 
     public void Toggle(UIWindowDefinition window) {
@@ -94,14 +89,15 @@ public class UIWindowManager : MonoBehaviour {
         foreach (var w in closing) {
             WindowClosed?.Invoke(w);
         }
-        RefreshPause();
+        _cursorLockController.LockCursor();
+        RefreshLocks();
     }
 
-    private void RefreshPause() {
-        if (string.IsNullOrEmpty(pauseReason)) 
-            return;
-        bool shouldPause = stack.Any(w => w.pausesGame);
-        _pauseService.SetPauseReason(pauseReason, shouldPause);
+    private void RefreshLocks() {
+        bool pause = stack.Any(windowDefinition => windowDefinition.PausesSimulation);
+        bool input = stack.Any(windowDefinition => windowDefinition.LocksPlayerInput);
+
+        _pauseService.RequestPause("UI", pause);   
     }
 }
 
