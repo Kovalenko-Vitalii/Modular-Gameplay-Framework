@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 /// <summary>
 /// Layer of abstraction over Unity Input System
@@ -9,46 +11,43 @@ using UnityEngine;
 public class InputProvider : MonoBehaviour, IInputProvider {
     [SerializeField] List<ListenedAction> actions;
 
-    public event Action<InputAction> Pressed;
-    public event Action<InputAction> Released;
+    public event Action<InputActionId> Pressed;
+    public event Action<InputActionId> Released;
 
-    readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> performedHandlers = new();
-    readonly Dictionary<InputAction, Action<UnityEngine.InputSystem.InputAction.CallbackContext>> canceledHandlers = new();
+    readonly List<(InputAction action, Action<CallbackContext> onPerformed, Action<CallbackContext> onCanceled)> subscriptions = new();
 
     void OnEnable() {
         foreach (var entry in actions) {
-            if (entry.action == null || entry.action.action == null)
-                continue;
+            if (entry.action?.action == null) continue;
+            var id = entry.id;
+            var action = entry.action.action;
 
-            InputAction id = entry.id;
+            void onPerformed(CallbackContext context) => Pressed?.Invoke(id);
+            void onCanceled(CallbackContext context) => Released?.Invoke(id);
 
-            Action<UnityEngine.InputSystem.InputAction.CallbackContext> onPerformed = _ => Pressed?.Invoke(id);
-            Action<UnityEngine.InputSystem.InputAction.CallbackContext> onCanceled = _ => Released?.Invoke(id);
-
-            performedHandlers[id] = onPerformed;
-            canceledHandlers[id] = onCanceled;
-
-            entry.action.action.performed += onPerformed;
-            entry.action.action.canceled += onCanceled;
-            entry.action.action.Enable();
+            action.performed += onPerformed;
+            action.canceled += onCanceled;
+            subscriptions.Add((action, onPerformed, onCanceled));
         }
     }
 
     void OnDisable() {
-        foreach (var entry in actions) {
-            if (entry.action == null || entry.action.action == null)
-                continue;
-
-            if (performedHandlers.TryGetValue(entry.id, out var onPerformed))
-                entry.action.action.performed -= onPerformed;
-
-            if (canceledHandlers.TryGetValue(entry.id, out var onCanceled))
-                entry.action.action.canceled -= onCanceled;
-
-            entry.action.action.Disable();
+        foreach (var (action, onPerformed, onCanceled) in subscriptions) {
+            action.performed -= onPerformed;
+            action.canceled -= onCanceled;
         }
-
-        performedHandlers.Clear();
-        canceledHandlers.Clear();
+        subscriptions.Clear();
     }
+}
+
+[Serializable]
+public class ListenedAction {
+    public InputActionId id;
+    public InputActionReference action;
+}
+
+public enum InputActionId {
+    Esc,
+    Inventory,
+    Interact
 }

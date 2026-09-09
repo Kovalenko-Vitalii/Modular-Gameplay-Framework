@@ -1,12 +1,14 @@
+using MessagePipe;
 using SaveSystem;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
-using MessagePipe;
 
 public class RootLifetimeScope : LifetimeScope {
     [SerializeField] private SaveConfig _saveConfig;
     [SerializeField] SceneDatabase _sceneDatabase;
+    [SerializeField] private InputActionAsset _inputActions;
 
     protected override void Configure(IContainerBuilder builder) {
         builder.RegisterMessagePipe();
@@ -17,6 +19,7 @@ public class RootLifetimeScope : LifetimeScope {
         builder.Register<GameModeProvider>(Lifetime.Singleton);
         builder.Register<SceneLoadService>(Lifetime.Singleton);
         builder.Register<SaveService>(Lifetime.Singleton);
+        builder.Register<ActionMapController>(Lifetime.Singleton);
         builder.RegisterComponentInHierarchy<InputProvider>().As<IInputProvider>();
         builder.RegisterComponentInHierarchy<SoundManager>();
 
@@ -26,5 +29,6 @@ public class RootLifetimeScope : LifetimeScope {
         /// Register configs
         builder.RegisterInstance(_saveConfig);
         builder.RegisterInstance(_sceneDatabase);
+        builder.RegisterInstance(_inputActions);
     }
 }

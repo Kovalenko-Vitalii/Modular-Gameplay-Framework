@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using VContainer;
 
@@ -17,12 +18,14 @@ public class UIWindowManager : MonoBehaviour {
 
     PauseService _pauseService;
     IInputProvider _inputProvider;
+    ActionMapController _actionMapController;
     CursorLockController _cursorLockController;
 
     [Inject]
-    void Construct(PauseService pauseService, IInputProvider inputProvider, CursorLockController cursorLockController) {
+    void Construct(PauseService pauseService, IInputProvider inputProvider, ActionMapController actionMapController, CursorLockController cursorLockController) {
         _pauseService = pauseService;
         _inputProvider = inputProvider;
+        _actionMapController = actionMapController;
         _cursorLockController = cursorLockController;   
     }
 
@@ -34,7 +37,7 @@ public class UIWindowManager : MonoBehaviour {
     }
 
     // Called by UIScreenManager, only on the currently active screen
-    public void HandleAction(InputAction action) {
+    public void HandleAction(InputActionId action) {
         foreach (var binding in bindings) {
             if (binding.action != action) continue;
 
@@ -97,13 +100,15 @@ public class UIWindowManager : MonoBehaviour {
         bool pause = stack.Any(windowDefinition => windowDefinition.PausesSimulation);
         bool input = stack.Any(windowDefinition => windowDefinition.LocksPlayerInput);
 
-        _pauseService.RequestPause("UI", pause);   
+        _pauseService.RequestPause("UI", pause);
+        if (input) _actionMapController.SetContext(InputContext.UI);
+        else _actionMapController.SetContext(InputContext.Gameplay);
     }
 }
 
 [Serializable]
 public class UIActionBinding {
-    public InputAction action;
+    public InputActionId action;
     public UIWindowDefinition window;
     public UIActionMode mode = UIActionMode.Toggle;
 }

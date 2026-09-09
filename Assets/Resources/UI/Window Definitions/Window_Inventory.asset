@@ -15,5 +15,4 @@ MonoBehaviour:
   id: inventory
   pausesSimulation: 1
   locksPlayerInput: 1
-  releasesCursor: 1
   closableWithEsc: 1

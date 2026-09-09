@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5634078812588241795}
   - component: {fileID: 5421775984304837379}
   - component: {fileID: 6944872456822341456}
-  - component: {fileID: 894922707437227568}
   - component: {fileID: 1664029244021394634}
   m_Layer: 0
   m_Name: CinemachineCamera
@@ -148,7 +147,7 @@ MonoBehaviour:
       Owner: {fileID: 5421775984304837379}
       Enabled: 1
       Input:
-        InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
+        InputAction: {fileID: -846016072457957390, guid: 052faaac586de48259a63d0c4782560b, type: 3}
         Gain: 1
         CancelDeltaTime: 0
       InputValue: 0
@@ -159,7 +158,7 @@ MonoBehaviour:
       Owner: {fileID: 5421775984304837379}
       Enabled: 1
       Input:
-        InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
+        InputAction: {fileID: -846016072457957390, guid: 052faaac586de48259a63d0c4782560b, type: 3}
         Gain: -1
         CancelDeltaTime: 0
       InputValue: 0
@@ -168,19 +167,6 @@ MonoBehaviour:
         DecelTime: 0.2
   PlayerIndex: -1
   AutoEnableInputs: 1
---- !u!114 &894922707437227568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2214319029491062050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6630da86e58ed2b449e02374eec4e595, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CinemachineController
-  inputController: {fileID: 6944872456822341456}
 --- !u!114 &1664029244021394634
 MonoBehaviour:
   m_ObjectHideFlags: 0

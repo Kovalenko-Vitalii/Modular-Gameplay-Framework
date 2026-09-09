@@ -1,6 +1,6 @@
 using System;
 
 public interface IInputProvider {
-    event Action<InputAction> Pressed;
-    event Action<InputAction> Released;
+    event Action<InputActionId> Pressed;
+    event Action<InputActionId> Released;
 }

@@ -1,16 +1,19 @@
-using UnityEngine;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
-public class CutsceneState : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+public sealed class CutsceneState : IGameplayState {
+    public GameplayState State => GameplayState.Cutscene;
+
+    GameplayContext _context;
+    public CutsceneState(GameplayContext context) => _context = context;
+       
+    public async UniTask Enter(CancellationToken ct) {
+        _context.PauseService.RequestPause("Cutscene", true);
+        await UniTask.CompletedTask;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public UniTask Exit() {
+        _context.PauseService.RequestPause("Cutscene", false);
+        return UniTask.CompletedTask;
     }
 }
