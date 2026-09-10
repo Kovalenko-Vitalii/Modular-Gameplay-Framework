@@ -15,7 +15,7 @@ public class GameplayStateMachine {
             _states.Add(state.State, state);
     }
 
-    public async UniTask Start(GameplayState initialState,CancellationToken ct = default) {
+    public async UniTask Start(GameplayState initialState, CancellationToken ct = default) {
         if (CurrentState != default)
             return;
 

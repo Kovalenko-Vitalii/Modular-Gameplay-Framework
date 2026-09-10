@@ -256,7 +256,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1715465410}
-  - component: {fileID: 1715465411}
   m_Layer: 0
   m_Name: InputListener
   m_TagString: Untagged
@@ -279,25 +278,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1871126287}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1715465411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1715465409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67f4f833ba8022b4e9bc910136cde19e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InputListener
-  actions:
-  - id: 0
-    action: {fileID: 2508485126667199406, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  - id: 1
-    action: {fileID: -604600521750129395, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  - id: 2
-    action: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!1 &1871126285
 GameObject:
   m_ObjectHideFlags: 0

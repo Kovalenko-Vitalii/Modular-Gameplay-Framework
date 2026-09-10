@@ -147,7 +147,7 @@ MonoBehaviour:
       Owner: {fileID: 5421775984304837379}
       Enabled: 1
       Input:
-        InputAction: {fileID: -846016072457957390, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+        InputAction: {fileID: 5784041527564159287, guid: 052faaac586de48259a63d0c4782560b, type: 3}
         Gain: 1
         CancelDeltaTime: 0
       InputValue: 0
@@ -158,7 +158,7 @@ MonoBehaviour:
       Owner: {fileID: 5421775984304837379}
       Enabled: 1
       Input:
-        InputAction: {fileID: -846016072457957390, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+        InputAction: {fileID: 5784041527564159287, guid: 052faaac586de48259a63d0c4782560b, type: 3}
         Gain: -1
         CancelDeltaTime: 0
       InputValue: 0

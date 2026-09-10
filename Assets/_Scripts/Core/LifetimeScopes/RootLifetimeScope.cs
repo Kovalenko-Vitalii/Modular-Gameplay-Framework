@@ -19,8 +19,7 @@ public class RootLifetimeScope : LifetimeScope {
         builder.Register<GameModeProvider>(Lifetime.Singleton);
         builder.Register<SceneLoadService>(Lifetime.Singleton);
         builder.Register<SaveService>(Lifetime.Singleton);
-        builder.Register<ActionMapController>(Lifetime.Singleton);
-        builder.RegisterComponentInHierarchy<InputProvider>().As<IInputProvider>();
+        builder.Register<InputService>(Lifetime.Singleton).As<IInputService>();
         builder.RegisterComponentInHierarchy<SoundManager>();
 
         /// Register UI panels 

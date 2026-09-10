@@ -6,14 +6,9 @@ public class UIWindowDefinition : ScriptableObject
     [SerializeField] string id;
 
     [Header("Behavior")]
-    [SerializeField] bool pausesSimulation;
-    [SerializeField] bool locksPlayerInput;
-    [SerializeField] bool closableWithEsc = true;
+    [SerializeField] bool closableWithEsc = true; 
 
-    public string Id =>
-        string.IsNullOrEmpty(id) ? name : id;
+    public string Id => string.IsNullOrEmpty(id) ? name : id;
 
-    public bool PausesSimulation => pausesSimulation;
-    public bool LocksPlayerInput => locksPlayerInput;
     public bool ClosableWithEsc => closableWithEsc;
 }

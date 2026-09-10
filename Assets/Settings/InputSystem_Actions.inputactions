@@ -86,7 +86,7 @@
                 {
                     "name": "Look",
                     "type": "Value",
-                    "id": "66c7b4bb-50d7-4377-83a5-3e351ac2511f",
+                    "id": "a4152c7c-a8de-4473-a459-5db3c9dd2bed",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -150,28 +150,6 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "c620f56a-e940-4a79-af42-f3cfa4d635d4",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "ScaleVector2(x=100,y=100)",
-                    "groups": ";Gamepad",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7e3c6738-f7e8-4305-aadd-9fd8525b2fea",
-                    "path": "<Pointer>/delta",
-                    "interactions": "",
-                    "processors": "DeltaTimeScale,ScaleVector2(x=0.1,y=0.1)",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "05f6913d-c316-48b2-a6bb-e225f14c7960",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -189,6 +167,28 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "SecondayAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a33c5146-1531-469d-aa43-46fca8e17f2c",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "ScaleVector2(x=100,y=100)",
+                    "groups": ";Gamepad",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2aee86be-b2d4-441a-85c2-984e0980dd20",
+                    "path": "<Pointer>/delta",
+                    "interactions": "",
+                    "processors": "DeltaTimeScale,ScaleVector2(x=0.1,y=0.1)",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
