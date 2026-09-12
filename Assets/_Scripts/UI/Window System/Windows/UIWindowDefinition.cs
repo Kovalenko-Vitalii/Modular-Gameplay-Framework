@@ -1,14 +1,9 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "UI/Window Definition", fileName = "Window_")]
-public class UIWindowDefinition : ScriptableObject
-{
-    [SerializeField] string id;
-
+public class UIWindowDefinition : ScriptableObject {
     [Header("Behavior")]
     [SerializeField] bool closableWithEsc = true; 
-
-    public string Id => string.IsNullOrEmpty(id) ? name : id;
 
     public bool ClosableWithEsc => closableWithEsc;
 }

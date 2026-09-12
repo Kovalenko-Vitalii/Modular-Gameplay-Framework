@@ -19,14 +19,12 @@ public class GameFlowOrchestrator : IGameFlowOrchestrator, IInitializable {
     SaveService _saveService;
 
     [Inject]
-    public GameFlowOrchestrator(SceneDatabase sceneDatabase) => _sceneDatabase = sceneDatabase;
-
-    [Inject]
-    void Construct(GameModeProvider gameModeProvider, SceneLoadService sceneLoadService, SaveService saveService) {
+    void Construct(GameModeProvider gameModeProvider, SceneLoadService sceneLoadService, SaveService saveService, SceneDatabase sceneDatabase) {
         _gameModeProvider = gameModeProvider;
         _sceneLoadService = sceneLoadService;
         _saveService = saveService;
 
+        _sceneDatabase = sceneDatabase;
         _menuShellName = _sceneDatabase.MainMenuSchell.sceneName;
         _gameplayShellName = _sceneDatabase.GameplayShell.sceneName;
     }

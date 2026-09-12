@@ -4,16 +4,14 @@ using UnityEngine;
 using VContainer;
 
 public class UIWindowManager : MonoBehaviour {
-    [SerializeField] private UIActionBinding[] bindings;
-    [SerializeField] private UIWindowDefinition defaultWindow;
-    private readonly List<UIWindowDefinition> stack = new();
+    [SerializeField] UIActionBinding[] _uiBindings;
 
-    public IReadOnlyList<UIWindowDefinition> Stack => stack;
+    public readonly List<UIWindowDefinition> stack = new();
+
+    public event Action<UIWindowDefinition> TriggerOpen;
+    public event Action<UIWindowDefinition> TriggerClose;
+
     public UIWindowDefinition Top => stack.Count > 0 ? stack[^1] : null;
-    public bool HasOpenWindows => stack.Count > 0;
-
-    public event Action<UIWindowDefinition> WindowOpened;
-    public event Action<UIWindowDefinition> WindowClosed;
 
     PauseService _pauseService;
     IInputService _inputService;
@@ -28,55 +26,23 @@ public class UIWindowManager : MonoBehaviour {
 
     private void OnEnable() => _inputService.Performed += HandleAction;
     private void OnDisable() => _inputService.Performed -= HandleAction;
-      
-    public void OpenDefaults() {
-        if (defaultWindow != null) Open(defaultWindow);   
-    }
 
-    // Called by UIScreenManager, only on the currently active screen
-    public void HandleAction(InputActionId action) {
-        foreach (var binding in bindings) {
-            if (binding.action != action) continue;
-
-            switch (binding.mode) {
-                case UIActionMode.Toggle: Toggle(binding.window); break;
-                case UIActionMode.Open: Open(binding.window); break;
-                case UIActionMode.Close: Close(binding.window); break;
-                case UIActionMode.Back: HandleBack(binding.window); break;
-            }
-            return;
-        }
-    }
-
-    private void HandleBack(UIWindowDefinition fallback) {
-        if (Top != null) {
-            if (Top.ClosableWithEsc)
-                Close(Top);
-        } else if (fallback != null)
-            Open(fallback);
-    }
+    #region API
 
     public bool IsOpen(UIWindowDefinition window) => window != null && stack.Contains(window);
 
     public void Open(UIWindowDefinition window) {
-        if (window == null || stack.Contains(window)) 
+        if (window == null || stack.Contains(window))
             return;
         stack.Add(window);
-        WindowOpened?.Invoke(window);
+        TriggerOpen?.Invoke(window);
         RefreshLocks();
     }
 
     public void Close(UIWindowDefinition window) {
         if (window == null || !stack.Remove(window)) return;
-        WindowClosed?.Invoke(window);
+        TriggerClose?.Invoke(window);
         RefreshLocks();
-    }
-
-    public void Toggle(UIWindowDefinition window) {
-        if (IsOpen(window)) 
-            Close(window);
-        else 
-            Open(window);
     }
 
     public void CloseAll() {
@@ -84,13 +50,46 @@ public class UIWindowManager : MonoBehaviour {
         var closing = new List<UIWindowDefinition>(stack);
         stack.Clear();
         foreach (var w in closing) {
-            WindowClosed?.Invoke(w);
+            TriggerClose?.Invoke(w);
         }
         RefreshLocks();
     }
 
-    private void RefreshLocks() {
-        if (HasOpenWindows) {
+    #endregion
+
+    #region Private
+
+    void Back(UIWindowDefinition fallback) {
+        if (Top != null) {
+            if (Top.ClosableWithEsc)
+                Close(Top);
+        } else if (fallback != null)
+            Open(fallback);
+    }
+
+    void Toggle(UIWindowDefinition window) {
+        if (IsOpen(window)) 
+            Close(window);
+        else 
+            Open(window);
+    }
+
+    void HandleAction(InputActionId action) {
+        foreach (var binding in _uiBindings) {
+            if (binding.action != action) continue;
+
+            switch (binding.mode) {
+                case UIActionMode.Toggle: Toggle(binding.window); break;
+                case UIActionMode.Open: Open(binding.window); break;
+                case UIActionMode.Close: Close(binding.window); break;
+                case UIActionMode.Back: Back(binding.window); break;
+            }
+            return;
+        }
+    }
+
+    void RefreshLocks() {
+        if (Top != null) {
             _pauseService.RequestPause("UI", true);
             _inputService.RequestContext("UI", InputContext.UI);
             _cursorLockController.UnlockCursor();
@@ -100,6 +99,8 @@ public class UIWindowManager : MonoBehaviour {
             _cursorLockController.LockCursor();
         }
     }
+
+    #endregion
 }
 
 [Serializable]

@@ -6,9 +6,10 @@ using VContainer;
 using VContainer.Unity;
 
 public class RootLifetimeScope : LifetimeScope {
-    [SerializeField] private SaveConfig _saveConfig;
+    [Header("Drop global configs here")]
+    [SerializeField] SaveConfig _saveConfig;
     [SerializeField] SceneDatabase _sceneDatabase;
-    [SerializeField] private InputActionAsset _inputActions;
+    [SerializeField] InputActionAsset _inputActions;
 
     protected override void Configure(IContainerBuilder builder) {
         builder.RegisterMessagePipe();

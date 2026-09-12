@@ -3,20 +3,23 @@ using VContainer.Unity;
 
 public class GameplayLifetimeScope : LifetimeScope {
     protected override void Configure(IContainerBuilder builder) {
-        builder.RegisterEntryPoint<GameplayFlowOrchestrator>(Lifetime.Singleton);
-        builder.Register<GameplayStateMachine>(Lifetime.Singleton);
-
-        builder.Register<GameplayContext>(Lifetime.Singleton);
-        builder.Register<PlayingState>(Lifetime.Singleton).As<IGameplayState>();
-        builder.Register<DeadState>(Lifetime.Singleton).As<IGameplayState>();
-        builder.Register<CutsceneState>(Lifetime.Singleton).As<IGameplayState>();
+        /// Services Registration
+        builder.RegisterEntryPoint<GameplayFlowOrchestrator>(Lifetime.Scoped);
+        builder.Register<GameplayStateMachine>(Lifetime.Scoped);
+        builder.Register<GameplayContext>(Lifetime.Scoped);
+        builder.Register<PlayingState>(Lifetime.Scoped).As<IGameplayState>();
+        builder.Register<DeadState>(Lifetime.Scoped).As<IGameplayState>();
+        builder.Register<CutsceneState>(Lifetime.Scoped).As<IGameplayState>();
 
         builder.RegisterComponentInHierarchy<AmbientManager>();
         builder.RegisterComponentInHierarchy<SurfaceResolver>();
         builder.RegisterComponentInHierarchy<TickSystem>();
-        builder.Register<PauseService>(Lifetime.Singleton);
-            
+        builder.Register<PauseService>(Lifetime.Scoped);
+
+        /// UI Registration
         builder.RegisterComponentInHierarchy<UIWindowManager>();
+        builder.RegisterComponentInHierarchy<UIWindowView>();
+
         builder.RegisterComponentInHierarchy<LoadSaveSlot>();
         builder.RegisterComponentInHierarchy<SaveToManual>();
         builder.RegisterComponentInHierarchy<UIExitToMenuButton>();

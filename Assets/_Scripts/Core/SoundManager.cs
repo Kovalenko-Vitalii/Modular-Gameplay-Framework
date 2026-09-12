@@ -22,10 +22,10 @@ public class SoundManager : MonoBehaviour {
     [SerializeField] private AudioSource subtitleSource;
 
     [Header("Volumes")]
-    [SerializeField, Range(0f, 1f)] private float volumeMaster = 1f;
-    [SerializeField, Range(0f, 1f)] private float volumeUI = 1f;
-    [SerializeField, Range(0f, 1f)] private float volumeSubtitle = 1f;
-    [SerializeField, Range(0f, 1f)] private float volumeWorld = 1f;
+    [SerializeField, Range(0f, 1f)] float volumeMaster = 1f;
+    [SerializeField, Range(0f, 1f)] float volumeUI = 1f;
+    [SerializeField, Range(0f, 1f)] float volumeSubtitle = 1f;
+    [SerializeField, Range(0f, 1f)] float volumeWorld = 1f;
 
     public float MasterVolume => volumeMaster;
     public float UIVolume => volumeUI;
@@ -37,23 +37,19 @@ public class SoundManager : MonoBehaviour {
             uiSource.ignoreListenerPause = true;
 
         LoadVolumes();
+        ApplyVolumes();
     }
 
-    private void OnPausedChanged(bool isPaused) =>SetAudioPaused(isPaused);
-
-    private void Start() => ApplyVolumes();
     public void SetAudioPaused(bool paused) => AudioListener.pause = paused;
    
-    public void PlayUI(AudioClip clip, float volumeMul = 1f)
-    {
+    public void PlayUI(AudioClip clip, float volumeMul = 1f) { // <---
         if (uiSource == null || clip == null)
             return;
 
         uiSource.PlayOneShot(clip, volumeMul);
     }
 
-    public void PlaySubtitleSound(AudioClip clip, float volumeMul = 1f)
-    {
+    public void PlaySubtitleSound(AudioClip clip, float volumeMul = 1f) {
         if (subtitleSource == null || clip == null)
             return;
 

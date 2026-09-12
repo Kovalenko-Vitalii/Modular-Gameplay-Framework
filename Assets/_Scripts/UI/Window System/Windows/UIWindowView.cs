@@ -1,49 +1,40 @@
 using UnityEngine;
 using UnityEngine.Events;
+using VContainer;
 
 public class UIWindowView : MonoBehaviour {
-    [SerializeField] private UIWindowDefinition definition;
-    [SerializeField] private GameObject root;
+    [SerializeField] UIWindowDefinition _definition;
+    [SerializeField] GameObject _root;
 
-    [SerializeField] private UnityEvent onShown;
-    [SerializeField] private UnityEvent onHidden;
+    [SerializeField] UnityEvent _onShown;
+    [SerializeField] UnityEvent _onHidden;
 
-    [SerializeField] private UIWindowManager manager;
+    [SerializeField] UIWindowManager _uiWindowManager;
 
-    public string PanelId => definition != null ? definition.Id : null;
-    public UIWindowDefinition Definition => definition;
-
-    protected virtual void Awake() {
-        if (manager == null) GameLog.Warning("UIWindowView", $"{name} has no UIWindowManager in its parent hierarchy");
-            
-    }
+    public UIWindowDefinition Definition => _definition;
 
     protected virtual void OnEnable() {
-        if (manager == null) return;
+        _uiWindowManager.TriggerOpen += HandleWindowOpened;
+        _uiWindowManager.TriggerClose += HandleWindowClosed;
 
-        manager.WindowOpened += HandleWindowOpened;
-        manager.WindowClosed += HandleWindowClosed;
-
-        SetVisible(manager.IsOpen(definition));
+        SetVisible(_uiWindowManager.IsOpen(_definition));
     }
 
     protected virtual void OnDisable() {
-        if (manager == null) return;
-
-        manager.WindowOpened -= HandleWindowOpened;
-        manager.WindowClosed -= HandleWindowClosed;
+        _uiWindowManager.TriggerOpen -= HandleWindowOpened;
+        _uiWindowManager.TriggerClose -= HandleWindowClosed;
     }
 
     private void HandleWindowOpened(UIWindowDefinition window) {
-        if (window == definition) SetVisible(true);
+        if (window == _definition) SetVisible(true);
     }
 
     private void HandleWindowClosed(UIWindowDefinition window) {
-        if (window == definition) SetVisible(false);
+        if (window == _definition) SetVisible(false);
     }
 
     private void SetVisible(bool visible) {
-        if (root != null) root.SetActive(visible);
+        if (_root != null) _root.SetActive(visible);
 
         if (visible) 
             Show(); 
@@ -51,6 +42,6 @@ public class UIWindowView : MonoBehaviour {
             Hide();
     }
 
-    public virtual void Show() => onShown?.Invoke();
-    public virtual void Hide() => onHidden?.Invoke();
+    public virtual void Show() => _onShown?.Invoke();
+    public virtual void Hide() => _onHidden?.Invoke();
 }

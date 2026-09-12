@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,8 +30,6 @@ public class InputService : IInputService {
         _ui = asset.FindActionMap("UI");
         _windows = asset.FindActionMap("Windows");
 
-        // The asset IS the source of truth. No manual list to keep in sync —
-        // just name every InputActionId enum value after the real action name.
         foreach (var map in asset.actionMaps)
             foreach (var action in map.actions) {
                 if (!Enum.TryParse<InputActionId>(action.name, true, out var id)) {
