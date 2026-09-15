@@ -2,6 +2,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
 
+public enum MovementState {
+    Walking,
+    Sprinting,
+    Crouching,
+    Air
+}
+
 [DisallowMultipleComponent]
 [RequireComponent(typeof(CharacterController))]
 public sealed class PlayerMovement : MonoBehaviour, ITick
@@ -70,17 +77,9 @@ public sealed class PlayerMovement : MonoBehaviour, ITick
     [Header("References")]
     [SerializeField] private Transform orientation;
 
-    private CharacterController controller;
+    public CharacterController controller; // !!!
 
     public event System.Action Jumped;
-
-    public enum MovementState
-    {
-        Walking,
-        Sprinting,
-        Crouching,
-        Air
-    }
 
     public MovementState State { get; private set; }
 

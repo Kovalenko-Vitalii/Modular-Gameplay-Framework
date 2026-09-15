@@ -1,0 +1,2264 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1069431850",
+    "Type": "User",
+    "GUID": "{AB071AA6-FD81-4518-AA79-BD4D899BEA95}",
+    "Language": "SFX",
+    "Hash": "{90207FD7-B29F-F56A-B58C-8D50C91ED4C4}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\Player",
+    "ShortName": "Player",
+    "Path": "Player.bnk",
+    "Media": [
+     {
+      "Id": "2817427",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV1_Jump_Land_01.wav",
+      "CachePath": "5A/{5A103C07-A212-D076-07AF-FCA0CF53DF6A}.wem"
+     },
+     {
+      "Id": "15847179",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Run\\Footsteps_Wood_Run_08.wav",
+      "CachePath": "16/{16D8FF4F-5720-60D7-D734-6351239A8A0A}.wem"
+     },
+     {
+      "Id": "31063186",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_02.wav",
+      "CachePath": "D0/{D0CC7C8F-CF72-C92E-5BA0-B0BDA98CB0C0}.wem"
+     },
+     {
+      "Id": "41138163",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_13.wav",
+      "CachePath": "24/{2428D297-B471-413B-FF40-9C0145106D8A}.wem"
+     },
+     {
+      "Id": "58684423",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Run\\Footsteps_Wood_Run_03.wav",
+      "CachePath": "39/{39380B12-5FF4-0FC0-4175-4C263FAEF8BA}.wem"
+     },
+     {
+      "Id": "61334086",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_01.wav",
+      "CachePath": "C7/{C771C216-A44B-28B3-64A8-C3A6382D07BE}.wem"
+     },
+     {
+      "Id": "68354106",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV1_Jump_Start_04.wav",
+      "CachePath": "2E/{2E045C7A-C7A8-B18D-E17B-790D262F3FBF}.wem"
+     },
+     {
+      "Id": "73636268",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_10.wav",
+      "CachePath": "4D/{4DFDF724-6292-4075-AD2B-9F6C472CCFCB}.wem"
+     },
+     {
+      "Id": "82904003",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_05.wav",
+      "CachePath": "73/{73A4EB9D-912C-617C-5EBA-3CC4DB16F2FE}.wem"
+     },
+     {
+      "Id": "90907091",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_06.wav",
+      "CachePath": "A6/{A6382B2B-7985-C51C-A014-6E68C905F8B8}.wem"
+     },
+     {
+      "Id": "99917428",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_04.wav",
+      "CachePath": "7A/{7A3A08C9-93F2-690B-BDF4-C8283569450D}.wem"
+     },
+     {
+      "Id": "105666055",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Run\\Footsteps_Wood_Run_07.wav",
+      "CachePath": "E2/{E21F34E6-471D-5E90-05E0-666FAA9CBF0D}.wem"
+     },
+     {
+      "Id": "113413332",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Jump\\Footsteps_Sand_Jump_Land_01.wav",
+      "CachePath": "D5/{D5778C8B-C53F-2EA0-0298-9DF280CADB14}.wem"
+     },
+     {
+      "Id": "118127228",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_17.wav",
+      "CachePath": "EA/{EAB7C0AA-F03F-4748-6456-EB81A5550A23}.wem"
+     },
+     {
+      "Id": "138172354",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_11.wav",
+      "CachePath": "01/{01B7EE19-B060-8579-B6AC-8F3E8C36D95E}.wem"
+     },
+     {
+      "Id": "139258938",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_02.wav",
+      "CachePath": "8F/{8FCFC3EA-639F-58F7-EF4A-2C2F5A784945}.wem"
+     },
+     {
+      "Id": "142384721",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Walk\\Footsteps_DirtyGround_Walk_08.wav",
+      "CachePath": "8C/{8C910A77-5401-D538-D374-377CC7794746}.wem"
+     },
+     {
+      "Id": "157748380",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_20.wav",
+      "CachePath": "71/{71DDF59A-A7AC-945D-A9F8-9973251DC903}.wem"
+     },
+     {
+      "Id": "159645122",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Run\\Footsteps_DirtyGround_Run_02.wav",
+      "CachePath": "B2/{B2B26D08-243A-37AC-DEEA-550D8F1078E2}.wem"
+     },
+     {
+      "Id": "166559832",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_15.wav",
+      "CachePath": "CF/{CF28F2E9-0044-AF79-E94F-F7AB29154769}.wem"
+     },
+     {
+      "Id": "169364358",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_12.wav",
+      "CachePath": "1D/{1D891DF1-50ED-F5E7-6574-20F720876AA5}.wem"
+     },
+     {
+      "Id": "173340438",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Walk\\Footsteps_Wood_Walk_01.wav",
+      "CachePath": "B9/{B9073CA2-2F96-2EBA-1B8F-E8898F4E4CC2}.wem"
+     },
+     {
+      "Id": "191153243",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_05.wav",
+      "CachePath": "DE/{DE6C8892-C884-650E-0951-CC136EAE55BD}.wem"
+     },
+     {
+      "Id": "194795232",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Run\\Footsteps_Wood_Run_04.wav",
+      "CachePath": "1E/{1E220A1E-EA38-034C-D5B7-271B27095C77}.wem"
+     },
+     {
+      "Id": "203801933",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_01.wav",
+      "CachePath": "9C/{9C9A5180-3006-418A-62C2-19557E696036}.wem"
+     },
+     {
+      "Id": "207687867",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Run\\Footsteps_Wood_Run_09.wav",
+      "CachePath": "B7/{B7867691-6907-F5AF-7B7C-98EE0F051B03}.wem"
+     },
+     {
+      "Id": "213347712",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_13.wav",
+      "CachePath": "9B/{9B64DA0C-1E1D-6FD4-71C9-E34B2818C40A}.wem"
+     },
+     {
+      "Id": "221822499",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_07.wav",
+      "CachePath": "22/{22E3F62E-D0AF-F4C9-71E6-97B36955B6D9}.wem"
+     },
+     {
+      "Id": "222199207",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV2_Jump_Start_02.wav",
+      "CachePath": "37/{377C3C71-2148-2B3F-D048-9656718A6418}.wem"
+     },
+     {
+      "Id": "225775810",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Run\\Footsteps_Wood_Run_02.wav",
+      "CachePath": "8B/{8B4129C5-1688-CB3B-7A3F-2A69B37CE891}.wem"
+     },
+     {
+      "Id": "228788234",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_05.wav",
+      "CachePath": "33/{331FF61D-0A4C-27EA-FE30-28717FF93919}.wem"
+     },
+     {
+      "Id": "237231192",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Land\\Footsteps_DirtyGround_Jump_Land_03.wav",
+      "CachePath": "18/{184A4770-39F4-26BD-4ABE-AEB1C9D76011}.wem"
+     },
+     {
+      "Id": "242192963",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV1_Jump_Start_03.wav",
+      "CachePath": "B5/{B5FA4930-B526-078F-EAE8-AE152298C026}.wem"
+     },
+     {
+      "Id": "242617977",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Jump\\Footsteps_Sand_Jump_Land_02.wav",
+      "CachePath": "B1/{B139B1F6-2DD4-0C0E-D145-D2A74D784E19}.wem"
+     },
+     {
+      "Id": "250609952",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_13.wav",
+      "CachePath": "89/{893A2304-A575-F405-B2EB-1DC781B7FA04}.wem"
+     },
+     {
+      "Id": "253727915",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_12.wav",
+      "CachePath": "6B/{6B490C71-8A23-94CF-3EE9-A88DCDF14665}.wem"
+     },
+     {
+      "Id": "260243580",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_08.wav",
+      "CachePath": "8F/{8FD312CC-4697-7100-8027-4E2E5F607D52}.wem"
+     },
+     {
+      "Id": "272346789",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_04.wav",
+      "CachePath": "DA/{DA78D002-07E5-ADE0-6126-DFE0CCC09026}.wem"
+     },
+     {
+      "Id": "276702485",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Run\\Footsteps_Wood_Run_01.wav",
+      "CachePath": "D0/{D02AC7E4-390E-EA9E-3E72-EAB8B9645E6A}.wem"
+     },
+     {
+      "Id": "286374059",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_08.wav",
+      "CachePath": "31/{31C2A351-C868-12DA-E817-770A664345CE}.wem"
+     },
+     {
+      "Id": "289316161",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Walk\\Footsteps_Wood_Walk_02.wav",
+      "CachePath": "34/{3440F6BC-6F96-B467-F25C-1A6C3BBBDDAA}.wem"
+     },
+     {
+      "Id": "290941594",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_03.wav",
+      "CachePath": "4D/{4D353438-CD64-28AF-0C07-0F86B9A26991}.wem"
+     },
+     {
+      "Id": "292125320",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_09.wav",
+      "CachePath": "AE/{AE0391B3-4C2B-61E2-8B89-5DD221B9C707}.wem"
+     },
+     {
+      "Id": "299581916",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_08.wav",
+      "CachePath": "9E/{9E0EFE05-9484-CC26-1E1D-63C5EC88FDB8}.wem"
+     },
+     {
+      "Id": "299592444",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Jump\\Footsteps_Wood_Jump_Start_01.wav",
+      "CachePath": "F6/{F6436321-DB32-E8AD-8061-A298609989C4}.wem"
+     },
+     {
+      "Id": "301426128",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_05.wav",
+      "CachePath": "48/{4862A886-21E6-89EC-F30E-959945E65F44}.wem"
+     },
+     {
+      "Id": "301638179",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV1_Jump_Start_01.wav",
+      "CachePath": "A4/{A487C542-3D46-2A4C-2B7D-03E5B6A2A5E1}.wem"
+     },
+     {
+      "Id": "307258561",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_07.wav",
+      "CachePath": "50/{50A1FEEE-DD7A-00B9-8C90-9C35A98E1A50}.wem"
+     },
+     {
+      "Id": "307657137",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_10.wav",
+      "CachePath": "80/{80936354-B08D-77F7-3D4C-B3B387CCE840}.wem"
+     },
+     {
+      "Id": "308256504",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_06.wav",
+      "CachePath": "10/{10B4DEFD-32C7-B671-5D22-B33963E9FFCA}.wem"
+     },
+     {
+      "Id": "308636311",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV2_Jump_Start_03.wav",
+      "CachePath": "05/{05B553D5-D2DD-C260-15E0-DB65BBF646C1}.wem"
+     },
+     {
+      "Id": "317289342",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Run\\Footsteps_DirtyGround_Run_07.wav",
+      "CachePath": "AF/{AF90485F-C8C7-F767-A5D5-D64CD313CD30}.wem"
+     },
+     {
+      "Id": "317795628",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_14.wav",
+      "CachePath": "8A/{8AAF1BCC-EBE6-05B2-7A4F-ADF7DDF3BE13}.wem"
+     },
+     {
+      "Id": "318997291",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Run\\Footsteps_Wood_Run_05.wav",
+      "CachePath": "B2/{B2B30D2C-A720-7E0F-507A-CFA2F40A573A}.wem"
+     },
+     {
+      "Id": "323237048",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_02.wav",
+      "CachePath": "94/{940831C2-4400-A39E-7A49-56D3FCB1B73E}.wem"
+     },
+     {
+      "Id": "325444941",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_04.wav",
+      "CachePath": "50/{50CF9700-F94A-2B66-1172-0DD42C96A015}.wem"
+     },
+     {
+      "Id": "328098335",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_13.wav",
+      "CachePath": "81/{811C565D-67A9-E5A5-5270-CE79E3C86C97}.wem"
+     },
+     {
+      "Id": "334778264",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Walk\\Footsteps_DirtyGround_Walk_06.wav",
+      "CachePath": "A5/{A522A4CC-F721-E56C-9BE1-32B97C97927B}.wem"
+     },
+     {
+      "Id": "339602078",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Jump\\Footsteps_Sand_Jump_Land_05.wav",
+      "CachePath": "57/{579E1254-886D-230F-8A15-143114123A61}.wem"
+     },
+     {
+      "Id": "340334219",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Walk\\Footsteps_Wood_Walk_09.wav",
+      "CachePath": "88/{88061B1E-0EAE-0CE4-C6B7-02101543B203}.wem"
+     },
+     {
+      "Id": "353868252",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_15.wav",
+      "CachePath": "7A/{7A307506-7318-495E-6869-7F505D05427B}.wem"
+     },
+     {
+      "Id": "356887151",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Run\\Footsteps_DirtyGround_Run_08.wav",
+      "CachePath": "73/{73C754F9-A719-DE53-A0B2-47A0FAA6F345}.wem"
+     },
+     {
+      "Id": "357798603",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV1_Jump_Land_03.wav",
+      "CachePath": "B2/{B2974E29-9358-56F1-85BC-8B828FCE762A}.wem"
+     },
+     {
+      "Id": "359070182",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Land\\Footsteps_DirtyGround_Jump_Start_02.wav",
+      "CachePath": "03/{03D4C403-B481-5B51-54A4-F24E4E09F0C2}.wem"
+     },
+     {
+      "Id": "367203422",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Jump\\Footsteps_Sand_Jump_Start_01.wav",
+      "CachePath": "D7/{D788CDF8-D5CB-69E3-6568-A8CD70CCDC28}.wem"
+     },
+     {
+      "Id": "368158965",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV2_Jump_Land_03.wav",
+      "CachePath": "9D/{9DBF1ACD-9D76-1E0D-0F2D-D613DF9FA617}.wem"
+     },
+     {
+      "Id": "370324791",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_11.wav",
+      "CachePath": "3C/{3CD4FDB9-1125-F445-92AB-BB8AC3E007AD}.wem"
+     },
+     {
+      "Id": "372250729",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Run\\Footsteps_DirtyGround_Run_05.wav",
+      "CachePath": "DB/{DB6BF64F-A32C-15F0-6785-6642239D11E6}.wem"
+     },
+     {
+      "Id": "384846064",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_14.wav",
+      "CachePath": "34/{3467E7E4-159E-4082-DB8C-36595C915B27}.wem"
+     },
+     {
+      "Id": "385055629",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_03.wav",
+      "CachePath": "FB/{FBFE6689-BA76-47E1-D79B-A50677CE1945}.wem"
+     },
+     {
+      "Id": "389951675",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_06.wav",
+      "CachePath": "56/{56849330-BB4F-6C66-44DD-DBC5B3D1FC31}.wem"
+     },
+     {
+      "Id": "405851050",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_10.wav",
+      "CachePath": "0B/{0B66779A-3330-3FC2-FBE6-2D962CBB78DA}.wem"
+     },
+     {
+      "Id": "407118427",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Land\\Footsteps_DirtyGround_Jump_Land_01.wav",
+      "CachePath": "01/{01755219-370F-4A04-BA6D-34842CD55B90}.wem"
+     },
+     {
+      "Id": "421542695",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV1_Jump_Land_04.wav",
+      "CachePath": "48/{48C5D858-D15D-25FA-222D-566336066A7A}.wem"
+     },
+     {
+      "Id": "450231110",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Walk\\Footsteps_DirtyGround_Walk_09.wav",
+      "CachePath": "32/{32264299-D222-83E2-D560-E5F2A9E7C499}.wem"
+     },
+     {
+      "Id": "450613397",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Walk\\Footsteps_DirtyGround_Walk_05.wav",
+      "CachePath": "57/{5702C143-E436-9C29-FB18-017A3B0F9923}.wem"
+     },
+     {
+      "Id": "451775552",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_14.wav",
+      "CachePath": "A7/{A7C19F5C-DC1D-C98C-14CC-4A32BABAC45A}.wem"
+     },
+     {
+      "Id": "463741013",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_10.wav",
+      "CachePath": "A8/{A85EECA8-2E12-4162-47BE-72CB8588BB98}.wem"
+     },
+     {
+      "Id": "464647215",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Land\\Footsteps_DirtyGround_Jump_Start_03.wav",
+      "CachePath": "0A/{0A733A73-1DBA-E6C5-E43F-135BFE4CF927}.wem"
+     },
+     {
+      "Id": "470528701",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV2_Jump_Land_02.wav",
+      "CachePath": "BD/{BD9B3735-899C-8F3F-2EFF-52DE54F0CBDE}.wem"
+     },
+     {
+      "Id": "488155726",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_05.wav",
+      "CachePath": "40/{403DB98A-7A6F-F58B-831C-E1C1BE8E7A31}.wem"
+     },
+     {
+      "Id": "489272090",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Walk\\Footsteps_Wood_Walk_08.wav",
+      "CachePath": "F9/{F92DB205-A400-4E2B-171B-A41FE448337A}.wem"
+     },
+     {
+      "Id": "511573346",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Walk\\Footsteps_DirtyGround_Walk_10.wav",
+      "CachePath": "7F/{7FBF178A-F120-A10B-390C-F34C080A5170}.wem"
+     },
+     {
+      "Id": "521679972",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_19.wav",
+      "CachePath": "92/{92C4BC0A-B8AB-4E0E-CB6C-EADFA3AD00AD}.wem"
+     },
+     {
+      "Id": "522204692",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Jump\\Footsteps_Sand_Jump_Start_04.wav",
+      "CachePath": "5D/{5DA4D7DA-9924-F68F-E345-C641CCD1FDEA}.wem"
+     },
+     {
+      "Id": "527248859",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV1_Jump_Start_02.wav",
+      "CachePath": "7D/{7D527729-6C94-32C3-C945-DF479E6630AB}.wem"
+     },
+     {
+      "Id": "535131401",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_08.wav",
+      "CachePath": "EF/{EF8EAA3E-4F52-B9A0-EDBC-E61657600EFD}.wem"
+     },
+     {
+      "Id": "538753964",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_01.wav",
+      "CachePath": "B9/{B9C54BCD-81E7-7B24-750A-8E496F41BFBA}.wem"
+     },
+     {
+      "Id": "539879850",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_02.wav",
+      "CachePath": "22/{22F18664-C2DB-2C9F-4C6A-0FC3B111DC3D}.wem"
+     },
+     {
+      "Id": "567907264",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_15.wav",
+      "CachePath": "31/{31313218-1F89-2C30-3433-D3091CCF4F5A}.wem"
+     },
+     {
+      "Id": "573011121",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Run\\Footsteps_DirtyGround_Run_10.wav",
+      "CachePath": "AC/{AC7F325C-BBD5-D44F-2DD1-6A7E09579ABC}.wem"
+     },
+     {
+      "Id": "592563980",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Walk\\Footsteps_Wood_Walk_03.wav",
+      "CachePath": "29/{29DB37BF-598B-8418-B0DB-0940FE8A86E3}.wem"
+     },
+     {
+      "Id": "596594584",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_09.wav",
+      "CachePath": "E5/{E55AE364-6B8B-986F-08D2-DADBE3F73C94}.wem"
+     },
+     {
+      "Id": "603887201",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_10.wav",
+      "CachePath": "A9/{A9592905-AE6B-60D1-8388-A8D69FCC9533}.wem"
+     },
+     {
+      "Id": "639273602",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Jump\\Footsteps_Sand_Jump_Start_02.wav",
+      "CachePath": "8C/{8CE7E9E1-47C2-36FA-C8C2-65364ED777A4}.wem"
+     },
+     {
+      "Id": "643936431",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_01.wav",
+      "CachePath": "A2/{A293C4CF-87EE-FBF6-5868-A4EBCCFB3EA1}.wem"
+     },
+     {
+      "Id": "645018995",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Walk\\Footsteps_Wood_Walk_10.wav",
+      "CachePath": "8F/{8F33D078-C0A2-CC6A-D2EB-20378A0022DB}.wem"
+     },
+     {
+      "Id": "667005574",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_14.wav",
+      "CachePath": "0D/{0D148AAA-23BD-274B-CCB0-9CA0FB243D97}.wem"
+     },
+     {
+      "Id": "669437406",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_07.wav",
+      "CachePath": "30/{30B1284C-090C-8F93-7D95-EFD23041B90B}.wem"
+     },
+     {
+      "Id": "671965667",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Jump\\Footsteps_Sand_Jump_Land_03.wav",
+      "CachePath": "9D/{9D0BD245-A036-FBDF-E3EF-EF846D87337E}.wem"
+     },
+     {
+      "Id": "690573111",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Jump\\Footsteps_Wood_Jump_Start_02.wav",
+      "CachePath": "D5/{D5B81C3D-330F-478A-6123-5152D1037578}.wem"
+     },
+     {
+      "Id": "690740184",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Run\\Footsteps_DirtyGround_Run_04.wav",
+      "CachePath": "A4/{A454B935-0597-470C-6D6D-63EC69F88CEA}.wem"
+     },
+     {
+      "Id": "694236489",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Walk\\Footsteps_Wood_Walk_06.wav",
+      "CachePath": "C9/{C92156E2-C96B-939E-EEAE-CEADBD085722}.wem"
+     },
+     {
+      "Id": "694395565",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_14.wav",
+      "CachePath": "A3/{A3501CF3-5348-1857-5F60-1020664C236C}.wem"
+     },
+     {
+      "Id": "696640811",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_11.wav",
+      "CachePath": "3C/{3C7F61F9-A62D-5D72-EF7E-F44A66D2B6B4}.wem"
+     },
+     {
+      "Id": "716616835",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Walk\\Footsteps_DirtyGround_Walk_04.wav",
+      "CachePath": "4F/{4F8F87BE-3A94-825C-9AD6-9A6F850BE445}.wem"
+     },
+     {
+      "Id": "724906666",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_06.wav",
+      "CachePath": "D6/{D6F3508D-2CA3-7AB7-AA38-2E6FF4FF2B41}.wem"
+     },
+     {
+      "Id": "733622281",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Walk\\Footsteps_Wood_Walk_05.wav",
+      "CachePath": "44/{441DED28-5EDA-D467-FDB7-B72E26DA4F86}.wem"
+     },
+     {
+      "Id": "739674336",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_14.wav",
+      "CachePath": "33/{33BB7B9C-7BF7-D597-0ACE-33B13856E7E4}.wem"
+     },
+     {
+      "Id": "750192159",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Land\\Footsteps_DirtyGround_Jump_Land_02.wav",
+      "CachePath": "83/{83E50DF1-862A-C923-EC8D-40457BB40B0C}.wem"
+     },
+     {
+      "Id": "759720398",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Land\\Footsteps_DirtyGround_Jump_Start_01.wav",
+      "CachePath": "C5/{C5710874-B0D2-6A2B-08DA-A188C02809C6}.wem"
+     },
+     {
+      "Id": "761909744",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV2_Jump_Start_01.wav",
+      "CachePath": "B4/{B4CFCA0C-64A3-B6CB-B2A1-A43FA1BD95F5}.wem"
+     },
+     {
+      "Id": "763955431",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_16.wav",
+      "CachePath": "F1/{F1A96080-AAF6-BFC1-66EF-AB45BD6AEB17}.wem"
+     },
+     {
+      "Id": "772080164",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Run\\Footsteps_DirtyGround_Run_09.wav",
+      "CachePath": "F4/{F412F165-EACF-F45A-5BD3-3A44DB08B464}.wem"
+     },
+     {
+      "Id": "775022681",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Jump\\Footsteps_Wood_Jump_Land_01.wav",
+      "CachePath": "C2/{C227E463-493D-0038-0863-EAB82207EDDF}.wem"
+     },
+     {
+      "Id": "775593901",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Walk\\Footsteps_DirtyGround_Walk_01.wav",
+      "CachePath": "2E/{2ED3AD2C-4A5F-6F8A-DF07-476B5ED7706B}.wem"
+     },
+     {
+      "Id": "775939586",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_08.wav",
+      "CachePath": "01/{01EE0F32-AD3A-254E-9FAA-EDF65B003923}.wem"
+     },
+     {
+      "Id": "783583197",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_13.wav",
+      "CachePath": "5A/{5A5B42CF-DF3C-09EF-7542-60EE8CB4AC79}.wem"
+     },
+     {
+      "Id": "787425784",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Run\\Footsteps_DirtyGround_Run_06.wav",
+      "CachePath": "E7/{E7A9588E-A30A-8627-331E-E6703DE128EC}.wem"
+     },
+     {
+      "Id": "792079334",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Jump\\Footsteps_Sand_Jump_Start_03.wav",
+      "CachePath": "9C/{9C27B233-B36A-EEC5-5C59-EA18E2318EEE}.wem"
+     },
+     {
+      "Id": "815170027",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_09.wav",
+      "CachePath": "87/{877D096B-865D-B301-A82E-F2F83074CABB}.wem"
+     },
+     {
+      "Id": "816776651",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_09.wav",
+      "CachePath": "A0/{A085E697-76C0-9EF0-9B78-A4B6032151BF}.wem"
+     },
+     {
+      "Id": "824184796",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_01.wav",
+      "CachePath": "E5/{E5D9A670-CF71-9F8B-4687-1301FD03A61E}.wem"
+     },
+     {
+      "Id": "824831197",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Run\\Footsteps_Wood_Run_10.wav",
+      "CachePath": "9F/{9F72B338-E70A-33C8-0023-02A32427BAAB}.wem"
+     },
+     {
+      "Id": "825841883",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_03.wav",
+      "CachePath": "BF/{BF814EF9-0473-5AAC-7572-F7DF0E97236C}.wem"
+     },
+     {
+      "Id": "836874239",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Walk\\Footsteps_Wood_Walk_04.wav",
+      "CachePath": "19/{199BF574-ECC9-D4FB-01B2-9265A83C01B2}.wem"
+     },
+     {
+      "Id": "838943074",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV1_Jump_Land_02.wav",
+      "CachePath": "5F/{5F10DE61-272D-31DF-4D6C-6003106946AE}.wem"
+     },
+     {
+      "Id": "841154717",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Walk\\Footsteps_DirtyGround_Walk_02.wav",
+      "CachePath": "A0/{A00F36F3-B2D9-47E3-DC2D-B88186DB1FD4}.wem"
+     },
+     {
+      "Id": "842411525",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Jump\\Footsteps_Sand_Jump_Start_05.wav",
+      "CachePath": "EF/{EFB1357E-5A05-C595-7B4D-CD890CAA3B7D}.wem"
+     },
+     {
+      "Id": "849531682",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_17.wav",
+      "CachePath": "CF/{CF7BC6DF-D43D-6AEC-9D38-0B7459D04BBC}.wem"
+     },
+     {
+      "Id": "852154425",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_04.wav",
+      "CachePath": "5C/{5C7C653E-7841-5796-45F8-9A6ED36ADEEE}.wem"
+     },
+     {
+      "Id": "853879590",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_01.wav",
+      "CachePath": "27/{27134E3C-581C-2EFA-636F-854F11D99C8F}.wem"
+     },
+     {
+      "Id": "854353061",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Jump\\Footsteps_Sand_Jump_Land_04.wav",
+      "CachePath": "57/{57442C42-555E-3D84-D4D0-DF0A2B45C3AE}.wem"
+     },
+     {
+      "Id": "868008105",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_03.wav",
+      "CachePath": "4F/{4F3350DC-CF68-1921-93D4-17DC3B2C4752}.wem"
+     },
+     {
+      "Id": "874640448",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_18.wav",
+      "CachePath": "D5/{D5952204-699C-F9B0-5DED-AA6776882165}.wem"
+     },
+     {
+      "Id": "878063595",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_02.wav",
+      "CachePath": "94/{942BE6DC-511D-1E1F-F765-2E46A984CE9A}.wem"
+     },
+     {
+      "Id": "880105027",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_15.wav",
+      "CachePath": "CB/{CB504108-6D47-9248-98BD-BADCF8C688A8}.wem"
+     },
+     {
+      "Id": "884344010",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_13.wav",
+      "CachePath": "6A/{6A1934FC-C595-EE4D-C400-B0B5074A0045}.wem"
+     },
+     {
+      "Id": "886609774",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_11.wav",
+      "CachePath": "DA/{DA252A23-F7C9-4ED6-5852-8BBF03C286F9}.wem"
+     },
+     {
+      "Id": "887843643",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_07.wav",
+      "CachePath": "8C/{8CF2290B-41BB-5227-41CA-888969987BEC}.wem"
+     },
+     {
+      "Id": "890780736",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_08.wav",
+      "CachePath": "43/{43A4BB8B-3FAD-EA37-09B4-2AB7F6F756CC}.wem"
+     },
+     {
+      "Id": "896257823",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Walk\\Footsteps_Wood_Walk_07.wav",
+      "CachePath": "89/{894CCEF9-57AB-EADE-724A-441C06DCDA43}.wem"
+     },
+     {
+      "Id": "896895799",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Walk\\Footsteps_DirtyGround_Walk_03.wav",
+      "CachePath": "8D/{8D97C2B3-9C28-4D16-F66B-BB9CAA5CC55F}.wem"
+     },
+     {
+      "Id": "903564150",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_19.wav",
+      "CachePath": "4F/{4FE6F37E-BF78-B642-482B-BC7AF2FC6003}.wem"
+     },
+     {
+      "Id": "905259388",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_10.wav",
+      "CachePath": "4C/{4CBCD675-1FB3-424E-4FCC-21FC280E8AC3}.wem"
+     },
+     {
+      "Id": "906416776",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_20.wav",
+      "CachePath": "28/{28E12D69-B17C-04BB-4443-1975B1D92275}.wem"
+     },
+     {
+      "Id": "907003289",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Run\\Footsteps_DirtyGround_Run_01.wav",
+      "CachePath": "A4/{A475B636-1A35-BD2C-07BF-0919F357D338}.wem"
+     },
+     {
+      "Id": "911168731",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_15.wav",
+      "CachePath": "2A/{2A55DB83-6C34-1582-625E-5C094F40E1CF}.wem"
+     },
+     {
+      "Id": "918274091",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_15.wav",
+      "CachePath": "98/{98472AFD-D77C-C4D1-1A12-EE7483794E04}.wem"
+     },
+     {
+      "Id": "930929724",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_12.wav",
+      "CachePath": "80/{80703515-5C93-507C-FEDF-FFF5BCFF54B4}.wem"
+     },
+     {
+      "Id": "938961800",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_04.wav",
+      "CachePath": "19/{193D35C7-454E-8225-4177-FEE62BE33841}.wem"
+     },
+     {
+      "Id": "942990540",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Run\\Footsteps_Wood_Run_06.wav",
+      "CachePath": "27/{279E5174-1EBE-2921-0DF8-0979F06E96CA}.wem"
+     },
+     {
+      "Id": "955920513",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_11.wav",
+      "CachePath": "5D/{5D1D7B3D-A39A-161A-6ED3-64D68E671146}.wem"
+     },
+     {
+      "Id": "956948376",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_06.wav",
+      "CachePath": "40/{401DEBEE-7E4C-EDF5-A0A8-3FF0EE289073}.wem"
+     },
+     {
+      "Id": "964445623",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Walk\\Footsteps_DirtyGround_Walk_07.wav",
+      "CachePath": "D0/{D0310A46-2D58-6CFD-440A-0E3010A1A8B9}.wem"
+     },
+     {
+      "Id": "965215416",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_03.wav",
+      "CachePath": "75/{753EF206-BB00-915F-84BE-36E92AAC1450}.wem"
+     },
+     {
+      "Id": "973831807",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_18.wav",
+      "CachePath": "39/{39AF452B-EAF9-F95F-C300-F04439CB91E1}.wem"
+     },
+     {
+      "Id": "991891036",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Wood\\Footsteps_Wood_Jump\\Footsteps_Wood_Jump_Land_02.wav",
+      "CachePath": "17/{17D2911F-8DC1-220E-C33E-2F5501EC0D0B}.wem"
+     },
+     {
+      "Id": "992157942",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Jump\\Footsteps_MetalV2_Jump_Land_01.wav",
+      "CachePath": "FD/{FD65A2A9-3D6B-4571-A427-B01B5C415755}.wem"
+     },
+     {
+      "Id": "994358247",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_07.wav",
+      "CachePath": "BA/{BAEBFD80-6010-262F-5419-EE6BC0415172}.wem"
+     },
+     {
+      "Id": "994487551",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_16.wav",
+      "CachePath": "B6/{B692F2BF-3D16-3F0E-E4AA-FEBDB6314FA8}.wem"
+     },
+     {
+      "Id": "995172557",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV1_Run_07.wav",
+      "CachePath": "8B/{8BDFC605-5CB1-648F-9BB3-CF679AA7D2CE}.wem"
+     },
+     {
+      "Id": "1010564461",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_09.wav",
+      "CachePath": "D3/{D32C713A-EBB1-BDF7-F76F-63912A8D77F3}.wem"
+     },
+     {
+      "Id": "1012576852",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV2_Walk_09.wav",
+      "CachePath": "85/{85375DFB-D9CB-98AB-1A9C-B296D4B33800}.wem"
+     },
+     {
+      "Id": "1018648023",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_05.wav",
+      "CachePath": "03/{0394F0AD-1CE6-B73C-D8DC-86D438B78ECB}.wem"
+     },
+     {
+      "Id": "1020954186",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_11.wav",
+      "CachePath": "71/{71E68F42-0615-E2AC-8627-EB606EBBC813}.wem"
+     },
+     {
+      "Id": "1028071825",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_03.wav",
+      "CachePath": "45/{458EFC5B-5D44-3917-6E22-F04634D81979}.wem"
+     },
+     {
+      "Id": "1028863359",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_DirtyGround\\Footsteps_DirtyGround_Run\\Footsteps_DirtyGround_Run_03.wav",
+      "CachePath": "1B/{1B26BF3F-0438-673D-EFBA-C771B3603616}.wem"
+     },
+     {
+      "Id": "1030928760",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Walk\\Footsteps_Sand_Walk_12.wav",
+      "CachePath": "5A/{5A7A6443-E012-2E53-D22D-6D453A0BB621}.wem"
+     },
+     {
+      "Id": "1032955145",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_04.wav",
+      "CachePath": "7E/{7E901A29-EB1A-9287-81DE-6F482D1BF05F}.wem"
+     },
+     {
+      "Id": "1037360092",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_12.wav",
+      "CachePath": "BA/{BAB6A3F8-95BF-4CFB-9326-DFC4AF5AD284}.wem"
+     },
+     {
+      "Id": "1063758992",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Sand\\Footsteps_Sand_Run\\Footsteps_Sand_Run_06.wav",
+      "CachePath": "DA/{DA00D228-0BBC-E729-A17D-23E0554CECD1}.wem"
+     },
+     {
+      "Id": "1066401413",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Walk\\Footsteps_MetalV1_Walk_02.wav",
+      "CachePath": "AF/{AFFFC297-1021-231B-439A-EE0B41593E6F}.wem"
+     },
+     {
+      "Id": "1071914679",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Footsteps - Essentials\\Footsteps_Metal\\Footsteps_Metal_Run\\Footsteps_MetalV2_Run_12.wav",
+      "CachePath": "2B/{2BD3FBB8-E75B-96DC-9D30-FE123996249C}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "1602358412",
+      "Name": "Play_Footstep",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_Footstep",
+      "GUID": "{5C26D5CE-CB10-4ABF-8B50-5002842A9C2B}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.27872917",
+      "DurationMax": "1.22975",
+      "SwitchContainers": [
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "4064446173",
+         "Id": "1187830826",
+         "GUID": "{C12D7B4A-F250-403D-89B3-7DF0806BD0F0}"
+        },
+        "Children": [
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "712161704",
+           "GUID": "{4DB90D3B-B99A-4B02-A4FD-0126A456F978}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "159645122"
+           },
+           {
+            "Id": "317289342"
+           },
+           {
+            "Id": "356887151"
+           },
+           {
+            "Id": "372250729"
+           },
+           {
+            "Id": "573011121"
+           },
+           {
+            "Id": "690740184"
+           },
+           {
+            "Id": "772080164"
+           },
+           {
+            "Id": "787425784"
+           },
+           {
+            "Id": "907003289"
+           },
+           {
+            "Id": "1028863359"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "2108779966",
+           "GUID": "{98FBCE80-293A-4984-A590-C1067965CF3C}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "142384721"
+           },
+           {
+            "Id": "334778264"
+           },
+           {
+            "Id": "450231110"
+           },
+           {
+            "Id": "450613397"
+           },
+           {
+            "Id": "511573346"
+           },
+           {
+            "Id": "716616835"
+           },
+           {
+            "Id": "775593901"
+           },
+           {
+            "Id": "841154717"
+           },
+           {
+            "Id": "896895799"
+           },
+           {
+            "Id": "964445623"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "3419686739",
+           "GUID": "{1DD9ACAE-6017-4027-BDB6-2F25A8D0EC15}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "407118427"
+           },
+           {
+            "Id": "464647215"
+           },
+           {
+            "Id": "750192159"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "3244792144",
+           "GUID": "{6CCF86F1-4A6F-44DA-9E1A-8EC996E9E6EA}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "237231192"
+           },
+           {
+            "Id": "359070182"
+           },
+           {
+            "Id": "759720398"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "4064446173",
+         "Id": "2058049674",
+         "GUID": "{ADBACC67-CFBC-4CBD-8059-1E913F27DC70}"
+        },
+        "Children": [
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "712161704",
+           "GUID": "{4DB90D3B-B99A-4B02-A4FD-0126A456F978}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "15847179"
+           },
+           {
+            "Id": "58684423"
+           },
+           {
+            "Id": "105666055"
+           },
+           {
+            "Id": "194795232"
+           },
+           {
+            "Id": "207687867"
+           },
+           {
+            "Id": "225775810"
+           },
+           {
+            "Id": "276702485"
+           },
+           {
+            "Id": "318997291"
+           },
+           {
+            "Id": "824831197"
+           },
+           {
+            "Id": "942990540"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "2108779966",
+           "GUID": "{98FBCE80-293A-4984-A590-C1067965CF3C}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "173340438"
+           },
+           {
+            "Id": "289316161"
+           },
+           {
+            "Id": "340334219"
+           },
+           {
+            "Id": "489272090"
+           },
+           {
+            "Id": "592563980"
+           },
+           {
+            "Id": "645018995"
+           },
+           {
+            "Id": "694236489"
+           },
+           {
+            "Id": "733622281"
+           },
+           {
+            "Id": "836874239"
+           },
+           {
+            "Id": "896257823"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "3419686739",
+           "GUID": "{1DD9ACAE-6017-4027-BDB6-2F25A8D0EC15}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "775022681"
+           },
+           {
+            "Id": "991891036"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "3244792144",
+           "GUID": "{6CCF86F1-4A6F-44DA-9E1A-8EC996E9E6EA}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "299592444"
+           },
+           {
+            "Id": "690573111"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "4064446173",
+         "Id": "2473969246",
+         "GUID": "{E781DCB4-EC59-4F8A-AFEA-6773B5D9F074}"
+        },
+        "Children": [
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "712161704",
+           "GUID": "{4DB90D3B-B99A-4B02-A4FD-0126A456F978}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "41138163"
+           },
+           {
+            "Id": "73636268"
+           },
+           {
+            "Id": "82904003"
+           },
+           {
+            "Id": "90907091"
+           },
+           {
+            "Id": "169364358"
+           },
+           {
+            "Id": "191153243"
+           },
+           {
+            "Id": "203801933"
+           },
+           {
+            "Id": "292125320"
+           },
+           {
+            "Id": "299581916"
+           },
+           {
+            "Id": "317795628"
+           },
+           {
+            "Id": "384846064"
+           },
+           {
+            "Id": "538753964"
+           },
+           {
+            "Id": "539879850"
+           },
+           {
+            "Id": "596594584"
+           },
+           {
+            "Id": "696640811"
+           },
+           {
+            "Id": "775939586"
+           },
+           {
+            "Id": "825841883"
+           },
+           {
+            "Id": "878063595"
+           },
+           {
+            "Id": "880105027"
+           },
+           {
+            "Id": "884344010"
+           },
+           {
+            "Id": "886609774"
+           },
+           {
+            "Id": "905259388"
+           },
+           {
+            "Id": "911168731"
+           },
+           {
+            "Id": "938961800"
+           },
+           {
+            "Id": "956948376"
+           },
+           {
+            "Id": "965215416"
+           },
+           {
+            "Id": "994358247"
+           },
+           {
+            "Id": "995172557"
+           },
+           {
+            "Id": "1032955145"
+           },
+           {
+            "Id": "1071914679"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "2108779966",
+           "GUID": "{98FBCE80-293A-4984-A590-C1067965CF3C}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "31063186"
+           },
+           {
+            "Id": "61334086"
+           },
+           {
+            "Id": "213347712"
+           },
+           {
+            "Id": "221822499"
+           },
+           {
+            "Id": "286374059"
+           },
+           {
+            "Id": "290941594"
+           },
+           {
+            "Id": "307657137"
+           },
+           {
+            "Id": "308256504"
+           },
+           {
+            "Id": "325444941"
+           },
+           {
+            "Id": "328098335"
+           },
+           {
+            "Id": "370324791"
+           },
+           {
+            "Id": "385055629"
+           },
+           {
+            "Id": "405851050"
+           },
+           {
+            "Id": "451775552"
+           },
+           {
+            "Id": "488155726"
+           },
+           {
+            "Id": "567907264"
+           },
+           {
+            "Id": "694395565"
+           },
+           {
+            "Id": "724906666"
+           },
+           {
+            "Id": "824184796"
+           },
+           {
+            "Id": "852154425"
+           },
+           {
+            "Id": "887843643"
+           },
+           {
+            "Id": "890780736"
+           },
+           {
+            "Id": "918274091"
+           },
+           {
+            "Id": "930929724"
+           },
+           {
+            "Id": "1010564461"
+           },
+           {
+            "Id": "1012576852"
+           },
+           {
+            "Id": "1018648023"
+           },
+           {
+            "Id": "1020954186"
+           },
+           {
+            "Id": "1037360092"
+           },
+           {
+            "Id": "1066401413"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "3419686739",
+           "GUID": "{1DD9ACAE-6017-4027-BDB6-2F25A8D0EC15}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "2817427"
+           },
+           {
+            "Id": "357798603"
+           },
+           {
+            "Id": "368158965"
+           },
+           {
+            "Id": "421542695"
+           },
+           {
+            "Id": "470528701"
+           },
+           {
+            "Id": "838943074"
+           },
+           {
+            "Id": "992157942"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "3244792144",
+           "GUID": "{6CCF86F1-4A6F-44DA-9E1A-8EC996E9E6EA}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "68354106"
+           },
+           {
+            "Id": "222199207"
+           },
+           {
+            "Id": "242192963"
+           },
+           {
+            "Id": "301638179"
+           },
+           {
+            "Id": "308636311"
+           },
+           {
+            "Id": "527248859"
+           },
+           {
+            "Id": "761909744"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "4064446173",
+         "Id": "803837735",
+         "GUID": "{5B7E09B8-19BF-480C-ACDB-4010047C7013}"
+        },
+        "Children": [
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "712161704",
+           "GUID": "{4DB90D3B-B99A-4B02-A4FD-0126A456F978}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "99917428"
+           },
+           {
+            "Id": "118127228"
+           },
+           {
+            "Id": "228788234"
+           },
+           {
+            "Id": "253727915"
+           },
+           {
+            "Id": "323237048"
+           },
+           {
+            "Id": "353868252"
+           },
+           {
+            "Id": "535131401"
+           },
+           {
+            "Id": "603887201"
+           },
+           {
+            "Id": "643936431"
+           },
+           {
+            "Id": "667005574"
+           },
+           {
+            "Id": "669437406"
+           },
+           {
+            "Id": "763955431"
+           },
+           {
+            "Id": "783583197"
+           },
+           {
+            "Id": "815170027"
+           },
+           {
+            "Id": "868008105"
+           },
+           {
+            "Id": "903564150"
+           },
+           {
+            "Id": "906416776"
+           },
+           {
+            "Id": "955920513"
+           },
+           {
+            "Id": "973831807"
+           },
+           {
+            "Id": "1063758992"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "2108779966",
+           "GUID": "{98FBCE80-293A-4984-A590-C1067965CF3C}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "138172354"
+           },
+           {
+            "Id": "139258938"
+           },
+           {
+            "Id": "157748380"
+           },
+           {
+            "Id": "166559832"
+           },
+           {
+            "Id": "250609952"
+           },
+           {
+            "Id": "260243580"
+           },
+           {
+            "Id": "272346789"
+           },
+           {
+            "Id": "301426128"
+           },
+           {
+            "Id": "307258561"
+           },
+           {
+            "Id": "389951675"
+           },
+           {
+            "Id": "463741013"
+           },
+           {
+            "Id": "521679972"
+           },
+           {
+            "Id": "739674336"
+           },
+           {
+            "Id": "816776651"
+           },
+           {
+            "Id": "849531682"
+           },
+           {
+            "Id": "853879590"
+           },
+           {
+            "Id": "874640448"
+           },
+           {
+            "Id": "994487551"
+           },
+           {
+            "Id": "1028071825"
+           },
+           {
+            "Id": "1030928760"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "3419686739",
+           "GUID": "{1DD9ACAE-6017-4027-BDB6-2F25A8D0EC15}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "113413332"
+           },
+           {
+            "Id": "242617977"
+           },
+           {
+            "Id": "339602078"
+           },
+           {
+            "Id": "671965667"
+           },
+           {
+            "Id": "854353061"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "Switch",
+           "GroupId": "2615620554",
+           "Id": "3244792144",
+           "GUID": "{6CCF86F1-4A6F-44DA-9E1A-8EC996E9E6EA}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "367203422"
+           },
+           {
+            "Id": "522204692"
+           },
+           {
+            "Id": "639273602"
+           },
+           {
+            "Id": "792079334"
+           },
+           {
+            "Id": "842411525"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "SwitchGroups": [
+     {
+      "Id": "2615620554",
+      "Name": "Footstep_Type",
+      "ObjectPath": "\\Switches\\Default Work Unit\\Footstep_Type",
+      "GUID": "{8BBC6E49-7BCC-4A1B-ADDD-EA9495AD0CDE}",
+      "Switches": [
+       {
+        "Id": "712161704",
+        "Name": "Run",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Footstep_Type\\Run",
+        "GUID": "{4DB90D3B-B99A-4B02-A4FD-0126A456F978}"
+       },
+       {
+        "Id": "2108779966",
+        "Name": "Walk",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Footstep_Type\\Walk",
+        "GUID": "{98FBCE80-293A-4984-A590-C1067965CF3C}"
+       },
+       {
+        "Id": "3244792144",
+        "Name": "Jump_Start",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Footstep_Type\\Jump_Start",
+        "GUID": "{6CCF86F1-4A6F-44DA-9E1A-8EC996E9E6EA}"
+       },
+       {
+        "Id": "3419686739",
+        "Name": "Jump_Land",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Footstep_Type\\Jump_Land",
+        "GUID": "{1DD9ACAE-6017-4027-BDB6-2F25A8D0EC15}"
+       }
+      ]
+     },
+     {
+      "Id": "4064446173",
+      "Name": "Surface_Type",
+      "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type",
+      "GUID": "{9AA99F05-A0EA-4F74-867E-1CDDEB889BB7}",
+      "Switches": [
+       {
+        "Id": "582824249",
+        "Name": "Leaves",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Leaves",
+        "GUID": "{0B766880-7449-4E53-B56F-0CA32E98522C}"
+       },
+       {
+        "Id": "712897245",
+        "Name": "Mud",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Mud",
+        "GUID": "{1818C8EE-25A4-4355-A4FC-3EE8BF4BE747}"
+       },
+       {
+        "Id": "787898836",
+        "Name": "Snow",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Snow",
+        "GUID": "{1328DBB9-0718-4764-9ABD-7F1830821E48}"
+       },
+       {
+        "Id": "803837735",
+        "Name": "Sand",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Sand",
+        "GUID": "{5B7E09B8-19BF-480C-ACDB-4010047C7013}"
+       },
+       {
+        "Id": "1187830826",
+        "Name": "DirtyGround",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\DirtyGround",
+        "GUID": "{C12D7B4A-F250-403D-89B3-7DF0806BD0F0}"
+       },
+       {
+        "Id": "2058049674",
+        "Name": "Wood",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Wood",
+        "GUID": "{ADBACC67-CFBC-4CBD-8059-1E913F27DC70}"
+       },
+       {
+        "Id": "2144363834",
+        "Name": "Rock",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Rock",
+        "GUID": "{96FBAA8E-2FD4-4D75-9FBC-51B8144F62D3}"
+       },
+       {
+        "Id": "2185786256",
+        "Name": "Gravel",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Gravel",
+        "GUID": "{9AFA477C-AC37-49CC-9B84-8F1083584007}"
+       },
+       {
+        "Id": "2473969246",
+        "Name": "Metal",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Metal",
+        "GUID": "{E781DCB4-EC59-4F8A-AFEA-6773B5D9F074}"
+       },
+       {
+        "Id": "2637588553",
+        "Name": "Tile",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Tile",
+        "GUID": "{5E0E6F07-7C70-49C3-B5B7-F90D22E8C5BA}"
+       },
+       {
+        "Id": "2654748154",
+        "Name": "Water",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Water",
+        "GUID": "{C4834004-CA5A-4FE9-A187-4EE9BB025696}"
+       },
+       {
+        "Id": "4248645337",
+        "Name": "Grass",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Surface_Type\\Grass",
+        "GUID": "{46E51594-2C12-469D-B733-99DAF0D70177}"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{0F8F8601-E73A-F25C-9D8E-554CB7CF9A86}"
+ }
+}

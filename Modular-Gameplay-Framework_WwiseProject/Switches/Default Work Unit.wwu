@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{91594A87-FF59-4320-B9E8-74F1247AE083}" SchemaVersion="133">
+	<Switches>
+		<WorkUnit Name="Default Work Unit" ID="{91594A87-FF59-4320-B9E8-74F1247AE083}" PersistMode="Standalone">
+			<ChildrenList>
+				<SwitchGroup Name="Surface_Type" ID="{9AA99F05-A0EA-4F74-867E-1CDDEB889BB7}">
+					<ChildrenList>
+						<Switch Name="DirtyGround" ID="{C12D7B4A-F250-403D-89B3-7DF0806BD0F0}"/>
+						<Switch Name="Grass" ID="{46E51594-2C12-469D-B733-99DAF0D70177}"/>
+						<Switch Name="Gravel" ID="{9AFA477C-AC37-49CC-9B84-8F1083584007}"/>
+						<Switch Name="Leaves" ID="{0B766880-7449-4E53-B56F-0CA32E98522C}"/>
+						<Switch Name="Metal" ID="{E781DCB4-EC59-4F8A-AFEA-6773B5D9F074}"/>
+						<Switch Name="Mud" ID="{1818C8EE-25A4-4355-A4FC-3EE8BF4BE747}"/>
+						<Switch Name="Rock" ID="{96FBAA8E-2FD4-4D75-9FBC-51B8144F62D3}"/>
+						<Switch Name="Sand" ID="{5B7E09B8-19BF-480C-ACDB-4010047C7013}"/>
+						<Switch Name="Snow" ID="{1328DBB9-0718-4764-9ABD-7F1830821E48}"/>
+						<Switch Name="Tile" ID="{5E0E6F07-7C70-49C3-B5B7-F90D22E8C5BA}"/>
+						<Switch Name="Water" ID="{C4834004-CA5A-4FE9-A187-4EE9BB025696}"/>
+						<Switch Name="Wood" ID="{ADBACC67-CFBC-4CBD-8059-1E913F27DC70}"/>
+					</ChildrenList>
+				</SwitchGroup>
+				<SwitchGroup Name="Footstep_Type" ID="{8BBC6E49-7BCC-4A1B-ADDD-EA9495AD0CDE}">
+					<ChildrenList>
+						<Switch Name="Walk" ID="{98FBCE80-293A-4984-A590-C1067965CF3C}"/>
+						<Switch Name="Run" ID="{4DB90D3B-B99A-4B02-A4FD-0126A456F978}"/>
+						<Switch Name="Jump_Land" ID="{1DD9ACAE-6017-4027-BDB6-2F25A8D0EC15}"/>
+						<Switch Name="Jump_Start" ID="{6CCF86F1-4A6F-44DA-9E1A-8EC996E9E6EA}"/>
+					</ChildrenList>
+				</SwitchGroup>
+			</ChildrenList>
+		</WorkUnit>
+	</Switches>
+</WwiseDocument>

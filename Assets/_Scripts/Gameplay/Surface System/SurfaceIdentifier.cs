@@ -1,21 +1,22 @@
 using UnityEngine;
 
-public class SurfaceIdentifier : MonoBehaviour
-{
-    [SerializeField] private SurfaceType surfaceType = SurfaceType.Tile;
+public class SurfaceIdentifier : MonoBehaviour {
+    [SerializeField] SurfaceType surfaceType = SurfaceType.Grass;
 
     public SurfaceType SurfaceType => surfaceType;
 }
 
-public enum SurfaceType
-{
-    Tile,
-    Concrete,
-    Wood,
-    Metal,
+public enum SurfaceType {
+    DirtyGround,
     Grass,
-    Dirt,
     Gravel,
+    Leaves,
+    Metal,
+    Mud,
+    Rock,
+    Sand,
+    Snow,
+    Tile,
     Water,
-    Sand
+    Wood
 }
