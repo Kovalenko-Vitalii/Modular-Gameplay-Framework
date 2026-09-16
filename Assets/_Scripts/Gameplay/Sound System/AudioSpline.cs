@@ -2,15 +2,13 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
-public class AudioSpline : MonoBehaviour
-{
+public class AudioSpline : MonoBehaviour {
     [SerializeField] private SplineContainer spline;
     Transform listener;
 
     void Start() => listener = GameObject.FindGameObjectWithTag("Player").transform;
     
-    private void Update()
-    {
+    private void Update() {
         if (spline == null || listener == null)
             return;
 

@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{AB071AA6-FD81-4518-AA79-BD4D899BEA95}",
     "Language": "SFX",
-    "Hash": "{90207FD7-B29F-F56A-B58C-8D50C91ED4C4}",
+    "Hash": "{CE8A3468-0DF6-0709-3CC9-58CE1BA6C190}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Player",
     "ShortName": "Player",
     "Path": "Player.bnk",
@@ -1415,8 +1415,8 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Play_Footstep",
       "GUID": "{5C26D5CE-CB10-4ABF-8B50-5002842A9C2B}",
       "DurationType": "OneShot",
-      "DurationMin": "0.27872917",
-      "DurationMax": "1.22975",
+      "DurationMin": "0.18073352",
+      "DurationMax": "1.8965338",
       "SwitchContainers": [
        {
         "SwitchValue": {
@@ -2143,6 +2143,70 @@
       ]
      }
     ],
+    "Busses": [
+     {
+      "Id": "393239870",
+      "Name": "SFX",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Master\\SFX",
+      "GUID": "{28E3474C-4888-482C-B0FF-74690490962D}"
+     },
+     {
+      "Id": "1551306167",
+      "Name": "UI",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Master\\UI",
+      "GUID": "{6ABFDB84-8648-4FB2-A7CD-7026C03DD595}"
+     },
+     {
+      "Id": "3170124113",
+      "Name": "Voice",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Master\\Voice",
+      "GUID": "{3B95BEFF-CA2B-4393-AACD-544C2042B3B8}"
+     },
+     {
+      "Id": "3991942870",
+      "Name": "Music",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Master\\Music",
+      "GUID": "{6B1866B4-C8FB-49A7-8255-26F4E08E50CA}"
+     },
+     {
+      "Id": "4056684167",
+      "Name": "Master",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Master",
+      "GUID": "{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}"
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "12844109",
+      "Name": "GP_UI_Wolume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\GP_UI_Wolume",
+      "GUID": "{CE8D7458-6A58-47D6-9F07-BF1BA277F724}"
+     },
+     {
+      "Id": "755088716",
+      "Name": "GP_Voice_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\GP_Voice_Volume",
+      "GUID": "{E6BE5F05-C846-4307-8427-C9225961902C}"
+     },
+     {
+      "Id": "1449020017",
+      "Name": "GP_SFX_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\GP_SFX_Volume",
+      "GUID": "{5F07EF18-167D-4E7C-BE3D-C162B4B3DE25}"
+     },
+     {
+      "Id": "2492879145",
+      "Name": "GP_Music_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\GP_Music_Volume",
+      "GUID": "{CE6A6D8D-8FB1-40DA-BFBA-43A951455E60}"
+     },
+     {
+      "Id": "2752765826",
+      "Name": "GP_Master_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\GP_Master_Volume",
+      "GUID": "{4D566EDE-F390-4FEA-AA0E-1D0E0BDE065C}"
+     }
+    ],
     "SwitchGroups": [
      {
       "Id": "2615620554",
@@ -2259,6 +2323,6 @@
     ]
    }
   ],
-  "FileHash": "{0F8F8601-E73A-F25C-9D8E-554CB7CF9A86}"
+  "FileHash": "{E46E60F7-DA30-7466-4DE3-91C3AFE15C42}"
  }
 }

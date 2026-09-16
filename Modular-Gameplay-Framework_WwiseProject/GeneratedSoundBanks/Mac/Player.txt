@@ -23,6 +23,18 @@ Switch	ID	Name	Switch Group			Notes
 	2654748154	Water	Surface_Type			
 	4248645337	Grass	Surface_Type			
 
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	12844109	GP_UI_Wolume			\Default Work Unit\GP_UI_Wolume	
+	755088716	GP_Voice_Volume			\Default Work Unit\GP_Voice_Volume	
+	1449020017	GP_SFX_Volume			\Default Work Unit\GP_SFX_Volume	
+	2492879145	GP_Music_Volume			\Default Work Unit\GP_Music_Volume	
+
+Audio Bus	ID	Name			Wwise Object Path	Notes
+	393239870	SFX			\Default Work Unit\Master\SFX	
+	1551306167	UI			\Default Work Unit\Master\UI	
+	3170124113	Voice			\Default Work Unit\Master\Voice	
+	3991942870	Music			\Default Work Unit\Master\Music	
+
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	2817427	Footsteps_MetalV1_Jump_Land_01	.cache\5A\{5A103C07-A212-D076-07AF-FCA0CF53DF6A}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Meatl_Jump_Land\Footsteps_MetalV1_Jump_Land_01		88328
 	15847179	Footsteps_Wood_Run_08	.cache\16\{16D8FF4F-5720-60D7-D734-6351239A8A0A}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Wood\Footsteps_Wood_Run\Footsteps_Wood_Run_08		32914

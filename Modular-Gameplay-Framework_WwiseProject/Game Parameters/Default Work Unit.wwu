@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{10D5C9DA-E788-4B26-A446-02E63DD6DD6E}" SchemaVersion="133">
 	<GameParameters>
-		<WorkUnit Name="Default Work Unit" ID="{10D5C9DA-E788-4B26-A446-02E63DD6DD6E}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{10D5C9DA-E788-4B26-A446-02E63DD6DD6E}" PersistMode="Standalone">
+			<ChildrenList>
+				<GameParameter Name="GP_Master_Volume" ID="{4D566EDE-F390-4FEA-AA0E-1D0E0BDE065C}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="1"/>
+						<Property Name="Max" Type="Real64" Value="1"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="GP_SFX_Volume" ID="{5F07EF18-167D-4E7C-BE3D-C162B4B3DE25}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="1"/>
+						<Property Name="Max" Type="Real64" Value="1"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="GP_Music_Volume" ID="{CE6A6D8D-8FB1-40DA-BFBA-43A951455E60}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="1"/>
+						<Property Name="Max" Type="Real64" Value="1"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="GP_Voice_Volume" ID="{E6BE5F05-C846-4307-8427-C9225961902C}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="1"/>
+						<Property Name="Max" Type="Real64" Value="1"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="GP_UI_Wolume" ID="{CE8D7458-6A58-47D6-9F07-BF1BA277F724}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="1"/>
+						<Property Name="Max" Type="Real64" Value="1"/>
+					</PropertyList>
+				</GameParameter>
+			</ChildrenList>
+		</WorkUnit>
 	</GameParameters>
 </WwiseDocument>

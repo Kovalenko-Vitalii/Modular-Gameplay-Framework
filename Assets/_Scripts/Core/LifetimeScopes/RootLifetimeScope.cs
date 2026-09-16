@@ -21,7 +21,9 @@ public class RootLifetimeScope : LifetimeScope {
         builder.Register<SceneLoadService>(Lifetime.Singleton);
         builder.Register<SaveService>(Lifetime.Singleton);
         builder.Register<InputService>(Lifetime.Singleton).As<IInputService>();
-        builder.RegisterComponentInHierarchy<SoundManager>();
+
+        builder.Register<WwiseAudioSettings>(Lifetime.Singleton);
+        builder.Register<AudioSettingsProvider>(Lifetime.Singleton);
 
         /// Register UI panels 
         builder.RegisterComponentInHierarchy<LoadingPanel>();

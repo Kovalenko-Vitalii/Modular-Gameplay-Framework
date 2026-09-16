@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 // <summary>
 // Provides audio settings for the settings menu, including master volume, UI volume, subtitle volume, and world volume.
@@ -7,31 +8,41 @@ using UnityEngine;
 public class AudioSettingsProvider : ISettingsCategoryProvider {
     public string CategoryName => "Audio";
 
-    SoundManager _soundManager;
+    private WwiseAudioSettings _audioSettings;
 
-    public AudioSettingsProvider(SoundManager soundManager) { 
-        _soundManager = soundManager;
+    [Inject]
+    void Construct(WwiseAudioSettings wwiseAudioSettings) {
+        _audioSettings = wwiseAudioSettings;
     }
 
     public List<ISettingRow> BuildSettings()
     {
         return new List<ISettingRow>
         {
-            CreateVolumeSetting("Master Volume",
-                () => _soundManager.MasterVolume,
-                _soundManager.SetMasterVolume),
+             CreateVolumeSetting(
+                "Master Volume",
+                () => _audioSettings.MasterVolume,
+                _audioSettings.SetMasterVolume),
 
-            CreateVolumeSetting("UI Volume",
-                () => _soundManager.UIVolume,
-                _soundManager.SetUIVolume),
+            CreateVolumeSetting(
+                "SFX Volume",
+                () => _audioSettings.SFXVolume,
+                _audioSettings.SetSFXVolume),
 
-            CreateVolumeSetting("Subtitle Volume",
-                () => _soundManager.SubtitleVolume,
-                _soundManager.SetSubtitleVolume),
+            CreateVolumeSetting(
+                "Music Volume",
+                () => _audioSettings.MusicVolume,
+                _audioSettings.SetMusicVolume),
 
-            CreateVolumeSetting("World Volume",
-                () =>_soundManager.WorldVolume,
-                _soundManager.SetWorldVolume)
+            CreateVolumeSetting(
+                "Voice Volume",
+                () => _audioSettings.VoiceVolume,
+                _audioSettings.SetVoiceVolume),
+
+            CreateVolumeSetting(
+                "UI Volume",
+                () => _audioSettings.UIVolume,
+                _audioSettings.SetUIVolume)
         };
     }
 

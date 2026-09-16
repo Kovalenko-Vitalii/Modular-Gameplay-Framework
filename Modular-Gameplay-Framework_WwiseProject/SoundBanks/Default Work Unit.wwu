@@ -5,13 +5,16 @@
 			<ChildrenList>
 				<SoundBank Name="Player" ID="{AB071AA6-FD81-4518-AA79-BD4D899BEA95}">
 					<ObjectInclusionList>
+						<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{2D98556A-D0F4-4957-8673-30EEA8DB6751}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Voice" ID="{3B95BEFF-CA2B-4393-AACD-544C2042B3B8}" WorkUnitID="{2D98556A-D0F4-4957-8673-30EEA8DB6751}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Metal" ID="{1B10780B-38C7-4607-A4B4-0C61A5AC3E3A}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
-						<ObjectRef Name="Footsteps_Water" ID="{CC728672-75E5-4728-B6B8-174E65FD06B9}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Wood" ID="{73C371B7-BE3C-47C8-98B8-DD71A4A8507C}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="SFX" ID="{28E3474C-4888-482C-B0FF-74690490962D}" WorkUnitID="{2D98556A-D0F4-4957-8673-30EEA8DB6751}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Music" ID="{6B1866B4-C8FB-49A7-8255-26F4E08E50CA}" WorkUnitID="{2D98556A-D0F4-4957-8673-30EEA8DB6751}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_Footstep" ID="{5C26D5CE-CB10-4ABF-8B50-5002842A9C2B}" WorkUnitID="{8FCA06F3-661D-4D41-896A-CC2ECB8EFEAF}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_DirtyGround" ID="{9C99E40D-510F-4F58-BA12-99F9D59CD2B9}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Sand" ID="{93DACA48-3D6A-4F6D-8517-82CCB53FEA1B}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
-						<ObjectRef Name="Footsteps_Grass" ID="{F147A639-9694-4F9C-B60A-55659E5DE2A7}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="UI" ID="{6ABFDB84-8648-4FB2-A7CD-7026C03DD595}" WorkUnitID="{2D98556A-D0F4-4957-8673-30EEA8DB6751}" Origin="Manual" Filter="7"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>

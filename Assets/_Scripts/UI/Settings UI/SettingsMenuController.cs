@@ -8,16 +8,14 @@ public class SettingsMenuController : MonoBehaviour
     [SerializeField] private InputActionAsset inputActions;
 
     private VideoSettingsProvider videoSettings = new();
-    private AudioSettingsProvider audioSetings;
+    private AudioSettingsProvider audioSettings;
     private GameSettingsProvider gameSettings = new();
     private ControlsSettingsProvider controlSettings;
 
-    SoundManager _soundManager;
-
     [Inject]
-    void Construct(SoundManager soundManager) {
-        _soundManager = soundManager;
-        audioSetings = new AudioSettingsProvider(_soundManager);
+    void Construct(
+        AudioSettingsProvider audioSettings) {
+        this.audioSettings = audioSettings;
     }
 
     private void Awake() {
@@ -28,7 +26,7 @@ public class SettingsMenuController : MonoBehaviour
     private void Start() => ShowGame();
 
     public void ShowVideo() => settingsPanel.Build(videoSettings.BuildSettings());
-    public void ShowAudio() => settingsPanel.Build(audioSetings.BuildSettings());
+    public void ShowAudio() => settingsPanel.Build(audioSettings.BuildSettings());
     public void ShowGame() => settingsPanel.Build(gameSettings.BuildSettings());
     public void ShowControls() => settingsPanel.Build(controlSettings.BuildSettings());
 }
