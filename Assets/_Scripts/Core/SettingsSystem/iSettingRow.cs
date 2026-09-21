@@ -1,13 +1,6 @@
 using System;
 
-public enum SettingRowMode
-{
-    Cycle,
-    Rebind
-}
-
-public interface ISettingRow
-{
+public interface ISettingRow {
     string Name { get; }
     string CurrentValue { get; }
     bool SecondaryEnabled { get; }
@@ -17,4 +10,9 @@ public interface ISettingRow
 
     void PrimaryAction();
     void SecondaryAction();
+}
+
+public enum SettingRowMode {
+    Cycle,
+    Rebind
 }

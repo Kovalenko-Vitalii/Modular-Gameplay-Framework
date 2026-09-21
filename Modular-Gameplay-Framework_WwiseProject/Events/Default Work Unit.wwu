@@ -14,6 +14,80 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Folder Name="Play_Room_Tones" ID="{F00F9B4A-DD30-4DE0-9056-B5F784512D05}" ShortID="891527692">
+					<ChildrenList>
+						<Event Name="Play_Room_Tone_Default_01" ID="{7974830B-BBC5-4526-A8F5-284DAA257711}">
+							<ChildrenList>
+								<Action Name="" ID="{0FA685AF-1C18-415B-9482-51BE5ED89038}" ShortID="600662305">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Room_Tone_Default_01" ID="{6970DCAF-6D06-4B60-BD12-2D74E71DB6E9}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Room_Tone_Default_02" ID="{B973071D-4FB4-49DD-95A2-E303FB3D1E6F}">
+							<ChildrenList>
+								<Action Name="" ID="{45C96F66-8056-4055-AE4F-0A59D2AEB227}" ShortID="1014354529">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Room_Tone_Default_02" ID="{1077178C-1F0E-4B4A-9A22-01CA43F01EC1}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="Play_World_Sounds" ID="{15BA260E-04AE-4CC6-863E-B199E9290F03}" ShortID="1036727043">
+					<ChildrenList>
+						<Event Name="Play_Radio_Song_01" ID="{CDF502C5-4109-4815-8D16-961E01B70325}">
+							<ChildrenList>
+								<Action Name="" ID="{6B393EA7-902E-428C-8A1D-0E5FB16141DA}" ShortID="822809834">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Radio_Song_01" ID="{1ABC2FB1-CF25-4910-9654-D4EDB949F623}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Radio_Song_02" ID="{C45F729D-CF93-4006-A8B3-C3B8370347B4}">
+							<ChildrenList>
+								<Action Name="" ID="{8FB2297E-D9AD-4659-991F-4DA63E649CD2}" ShortID="614623238">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Radio_Song_02" ID="{24540039-F446-42FA-BE5C-01910E0D8F62}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_River_Stream_Medium" ID="{7690B424-AC8D-4794-8A45-7E1C6509B6E5}">
+							<ChildrenList>
+								<Action Name="" ID="{D7E0B268-6AE3-44E4-A3E1-AB86D1BE8792}" ShortID="775712652">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Ambiance_River_Moderate_Loop_Stereo" ID="{8A700803-2DC9-4637-82F8-65F60DE6D385}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Sea" ID="{17F8D3F3-3B6F-4023-98A3-44D355296110}">
+							<ChildrenList>
+								<Action Name="" ID="{7017DA77-D5F8-4733-93D6-11BBBADD06D0}" ShortID="76577109">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Ambiance_Sea_Loop_Stereo" ID="{A098E1D2-7C25-498B-B460-E8EDD11814DC}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

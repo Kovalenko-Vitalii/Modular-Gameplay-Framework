@@ -10,46 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02220771678653c4b944df947c37472c, type: 3}
-  m_Name: Surface Database
+  m_Name: SurfaceDatabase
   m_EditorClassIdentifier: Assembly-CSharp::SurfaceDatabase
   defaultSurface: 0
   surfaces:
   - surfaceType: 0
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 1
   - surfaceType: 1
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 1
   - surfaceType: 2
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 1
   - surfaceType: 3
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 0
   - surfaceType: 4
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 2
   - surfaceType: 5
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 1
   - surfaceType: 6
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 2
   - surfaceType: 7
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 1
   - surfaceType: 8
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 0
   - surfaceType: 9
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 2
   - surfaceType: 10
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 2
   - surfaceType: 11
-    impactParticlePrefab: {fileID: 0}
-    decalPrefab: {fileID: 0}
+    occlusionPower: 1
   terrainLayerSurfaces:
   - layer: {fileID: 8574412962073106934, guid: d2f812cda9a67324c9ec06a6b4b28c2a, type: 2}
     surfaceType: 0

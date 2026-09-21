@@ -13,6 +13,7 @@ public class RootLifetimeScope : LifetimeScope {
 
     protected override void Configure(IContainerBuilder builder) {
         builder.RegisterMessagePipe();
+        builder.RegisterComponentInHierarchy<AkAudioListener>();
 
         /// Register global systems
         builder.RegisterEntryPoint<GameFlowOrchestrator>(Lifetime.Singleton).As<IGameFlowOrchestrator>();

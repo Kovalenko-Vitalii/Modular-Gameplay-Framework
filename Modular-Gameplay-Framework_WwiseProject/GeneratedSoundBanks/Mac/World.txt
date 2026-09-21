@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	3157907375	Play_Sea			\Default Work Unit\Play_World_Sounds\Play_Sea	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	34676119	Ambiance_Sea_Loop_Stereo	.cache\F5\{F5E4B913-7C75-BC50-B5B2-F2D082161609}.wem		\Containers\Default Work Unit\World_Sounds\Enviroment\Ambiance_Sea_Loop_Stereo		5759060
+

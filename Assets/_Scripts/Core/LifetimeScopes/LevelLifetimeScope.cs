@@ -5,5 +5,6 @@ public class LevelLifetimeScope : LifetimeScope {
     protected override void Configure(IContainerBuilder builder) {
         builder.RegisterComponentInHierarchy<PlayerSpawner>();
         builder.RegisterComponentInHierarchy<AmbientZone>();
+        builder.RegisterComponentInHierarchy<OccludableAudio>();
     }
 }

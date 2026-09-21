@@ -64,14 +64,14 @@ public class TerrainLayerSurface {
 [Serializable]
 public class SurfaceEntry {
     [SerializeField] private SurfaceType surfaceType = SurfaceType.Tile;
-
-    [Header("Impact VFX")]
-    [SerializeField] private GameObject impactParticlePrefab; 
-
-    [Header("Decals")]
-    [SerializeField] private GameObject decalPrefab; // template
+    [SerializeField] private OcclusionPower occlusionPower;
 
     public SurfaceType SurfaceType => surfaceType;
-    public GameObject ImpactParticlePrefab => impactParticlePrefab;
-    public GameObject DecalPrefab => decalPrefab;
+    public OcclusionPower OcclusionPower => occlusionPower;
+}
+
+public enum OcclusionPower {
+    Low,
+    Medium,
+    Hard
 }

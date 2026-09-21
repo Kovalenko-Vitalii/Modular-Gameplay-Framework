@@ -2,8 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
 
-public class SettingsMenuController : MonoBehaviour
-{
+public class SettingsMenuController : MonoBehaviour {
     [SerializeField] private UISettingsCategory settingsPanel;
     [SerializeField] private InputActionAsset inputActions;
 

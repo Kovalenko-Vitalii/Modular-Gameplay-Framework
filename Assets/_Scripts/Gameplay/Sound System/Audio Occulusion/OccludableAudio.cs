@@ -1,44 +1,49 @@
 using UnityEngine;
+using VContainer;
 
-[RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(AudioLowPassFilter))]
-public class OccludableAudio : MonoBehaviour
-{
-    [Header("Occlusion Response")]
-    [SerializeField, Range(0f, 1f)] private float occludedVolumeMultiplier = 0.3f;
+[RequireComponent(typeof(AkGameObj))]
+public class OccludableAudio : MonoBehaviour {
+    [Header("Wwise Response")]
+    [SerializeField, Range(0f, 1f)] float occlusionInfluence = 0f;
 
-    [SerializeField] private float openCutoffFrequency = 22000f;
-    [SerializeField] private float occludedCutoffFrequency = 1200f;
+    [SerializeField] float smoothSpeed = 8f;
 
-    [SerializeField] private float smoothSpeed = 8f;
+    public float Occlusion;
 
-    [HideInInspector] public float Occlusion;
+    float smoothedValue;
+    AkAudioListener audioListener;
 
-    public AudioSource Source { get; private set; }
-    public AudioLowPassFilter LowPass { get; private set; }
+    AudioOcclusionSystem _audioOcclusionSystem;
+    [Inject]
+    void Construct(AudioOcclusionSystem audioOcclusionSystem) {
+        _audioOcclusionSystem = audioOcclusionSystem;
 
-    private float baseVolume;
-
-    private void Awake()
-    {
-        Source = GetComponent<AudioSource>();
-        LowPass = GetComponent<AudioLowPassFilter>();
-        baseVolume = Source.volume;
+        _audioOcclusionSystem.Register(this);
+        audioListener = _audioOcclusionSystem.AudioListener;
     }
 
-    private void OnEnable() => AudioOcclusionSystem.Instance?.Register(this);       
-    private void OnDisable() => AudioOcclusionSystem.Instance?.Unregister(this);   
-    
-    private void FixedUpdate()
-    {
-        float targetVolume = baseVolume * Mathf.Lerp(1f, occludedVolumeMultiplier, Occlusion);
-        float targetCutoff = Mathf.Lerp(openCutoffFrequency, occludedCutoffFrequency, Occlusion);
+    private void OnDisable() {
+        _audioOcclusionSystem.Unregister(this);
+
+        if (audioListener != null)
+            AkUnitySoundEngine.SetObjectObstructionAndOcclusion(gameObject, audioListener.gameObject, 0f, 0f);
+    }
+
+    private void LateUpdate() {
+        if (_audioOcclusionSystem == null)
+            return;
+
+        if (audioListener == null) {
+            audioListener = _audioOcclusionSystem.AudioListener;
+            if (audioListener == null) return;
+        }
 
         float t = 1f - Mathf.Exp(-smoothSpeed * Time.deltaTime);
+        smoothedValue = Mathf.Lerp(smoothedValue, Occlusion, t);
 
-        Source.volume = Mathf.Lerp(Source.volume, targetVolume, t);
-        LowPass.cutoffFrequency = Mathf.Lerp(LowPass.cutoffFrequency, targetCutoff, t);
+        float obstruction = smoothedValue;
+        float occlusion = smoothedValue * occlusionInfluence;
+
+        AkUnitySoundEngine.SetObjectObstructionAndOcclusion(gameObject, audioListener.gameObject, obstruction, occlusion);
     }
-
-    public void RefreshBaseVolume() => baseVolume = Source.volume;
 }

@@ -14,6 +14,7 @@ public class GameplayLifetimeScope : LifetimeScope {
         builder.RegisterComponentInHierarchy<AmbientManager>();
         builder.RegisterComponentInHierarchy<SurfaceResolver>();
         builder.RegisterComponentInHierarchy<TickSystem>();
+        builder.RegisterComponentInHierarchy<AudioOcclusionSystem>();
         builder.Register<PauseService>(Lifetime.Scoped);
 
         /// UI Registration

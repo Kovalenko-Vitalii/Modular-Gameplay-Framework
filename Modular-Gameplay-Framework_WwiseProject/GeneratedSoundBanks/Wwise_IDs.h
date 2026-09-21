@@ -14,6 +14,12 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID PLAY_FOOTSTEP = 1602358412U;
+        static const AkUniqueID PLAY_RADIO_SONG_01 = 954980041U;
+        static const AkUniqueID PLAY_RADIO_SONG_02 = 954980042U;
+        static const AkUniqueID PLAY_RIVER_STREAM_MEDIUM = 2700023159U;
+        static const AkUniqueID PLAY_ROOM_TONE_DEFAULT_01 = 505117330U;
+        static const AkUniqueID PLAY_ROOM_TONE_DEFAULT_02 = 505117329U;
+        static const AkUniqueID PLAY_SEA = 3157907375U;
     } // namespace EVENTS
 
     namespace SWITCHES
@@ -67,6 +73,8 @@ namespace AK
     {
         static const AkUniqueID INIT = 1355168291U;
         static const AkUniqueID PLAYER = 1069431850U;
+        static const AkUniqueID UI = 1551306167U;
+        static const AkUniqueID WORLD = 2609808943U;
     } // namespace BANKS
 
     namespace BUSSES
@@ -77,6 +85,11 @@ namespace AK
         static const AkUniqueID UI = 1551306167U;
         static const AkUniqueID VOICE = 3170124113U;
     } // namespace BUSSES
+
+    namespace AUX_BUSSES
+    {
+        static const AkUniqueID ENV_REVERB = 1327267853U;
+    } // namespace AUX_BUSSES
 
     namespace AUDIO_DEVICES
     {

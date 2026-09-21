@@ -10,11 +10,21 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{25FDCE5C-1763-C695-6652-D1DBF6281FAB}",
+    "Hash": "{77F4D813-76FA-DED5-63C6-B3A7528648BF}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
     "Plugins": {
+     "ShareSets": [
+      {
+       "Id": "2995775460",
+       "Name": "Room_Small",
+       "ObjectPath": "\\Effects\\Factory Effects\\RoomVerb\\Rooms\\Room_Small",
+       "GUID": "{577F1466-A63B-47F7-98BD-C56E433F8B5D}",
+       "LibName": "Wwise RoomVerb",
+       "LibId": "7733251"
+      }
+     ],
      "AudioDevices": [
       {
        "Id": "2317455096",
@@ -64,6 +74,21 @@
       "Name": "Master",
       "ObjectPath": "\\Busses\\Default Work Unit\\Master",
       "GUID": "{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}"
+     }
+    ],
+    "AuxBusses": [
+     {
+      "Id": "1327267853",
+      "Name": "Env_Reverb",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Master\\Env_Reverb",
+      "GUID": "{C11028AF-24B5-4CFA-B29A-EBBBD4AAA748}",
+      "PluginRefs": {
+       "ShareSets": [
+        {
+         "Id": "2995775460"
+        }
+       ]
+      }
      }
     ],
     "GameParameters": [
@@ -214,6 +239,6 @@
     ]
    }
   ],
-  "FileHash": "{A88CEA75-0C84-AB30-3C54-627F88CB45BD}"
+  "FileHash": "{C6E3E740-824B-7A50-A938-BA3B16FA5B2F}"
  }
 }
