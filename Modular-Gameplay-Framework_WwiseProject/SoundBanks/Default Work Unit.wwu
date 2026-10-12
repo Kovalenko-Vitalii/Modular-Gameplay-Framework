@@ -7,7 +7,9 @@
 					<ObjectInclusionList>
 						<ObjectRef Name="Play_Radio_Song_02" ID="{C45F729D-CF93-4006-A8B3-C3B8370347B4}" WorkUnitID="{8FCA06F3-661D-4D41-896A-CC2ECB8EFEAF}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_Sea" ID="{17F8D3F3-3B6F-4023-98A3-44D355296110}" WorkUnitID="{8FCA06F3-661D-4D41-896A-CC2ECB8EFEAF}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Tiny Click_Minimal UI Sounds" ID="{8343535F-3623-40DC-A83A-1BDB2C6F1014}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{2D98556A-D0F4-4957-8673-30EEA8DB6751}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Click 04_Minimal UI Sounds" ID="{0CCF3A7C-5BAF-42CF-94B9-5EEF002126BE}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Radio_Song_02" ID="{24540039-F446-42FA-BE5C-01910E0D8F62}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Voice" ID="{3B95BEFF-CA2B-4393-AACD-544C2042B3B8}" WorkUnitID="{2D98556A-D0F4-4957-8673-30EEA8DB6751}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Mud" ID="{1056EAAB-A864-43FE-9C8B-6000B56AE079}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
@@ -15,11 +17,13 @@
 						<ObjectRef Name="Play_Room_Tone_Default_01" ID="{7974830B-BBC5-4526-A8F5-284DAA257711}" WorkUnitID="{8FCA06F3-661D-4D41-896A-CC2ECB8EFEAF}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Metal" ID="{1B10780B-38C7-4607-A4B4-0C61A5AC3E3A}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Ambiance_River_Moderate_Loop_Stereo" ID="{8A700803-2DC9-4637-82F8-65F60DE6D385}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Click 01_Minimal UI Sounds" ID="{6CFF8303-D3C3-4681-9835-06C5EBA4B022}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Gravel" ID="{21562740-0DFE-4683-BA46-D5BE4F60F5F9}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Water" ID="{CC728672-75E5-4728-B6B8-174E65FD06B9}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_River_Stream_Medium" ID="{7690B424-AC8D-4794-8A45-7E1C6509B6E5}" WorkUnitID="{8FCA06F3-661D-4D41-896A-CC2ECB8EFEAF}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Wood" ID="{73C371B7-BE3C-47C8-98B8-DD71A4A8507C}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="SFX" ID="{28E3474C-4888-482C-B0FF-74690490962D}" WorkUnitID="{2D98556A-D0F4-4957-8673-30EEA8DB6751}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Play_Button_Hover" ID="{6EB60488-733C-4852-B176-13BBA7564FEF}" WorkUnitID="{8FCA06F3-661D-4D41-896A-CC2ECB8EFEAF}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Radio_Song_01" ID="{1ABC2FB1-CF25-4910-9654-D4EDB949F623}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Tile" ID="{5999BB1B-796A-4964-8681-95AED4671428}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Ambiance_Sea_Loop_Stereo" ID="{A098E1D2-7C25-498B-B460-E8EDD11814DC}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
@@ -28,13 +32,21 @@
 						<ObjectRef Name="Footsteps_Rock" ID="{D9E270DB-5986-4A2F-A2CE-91D8D61347BD}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Snow" ID="{7F21663B-FB59-4A90-A002-82146FC91B70}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_Footstep" ID="{5C26D5CE-CB10-4ABF-8B50-5002842A9C2B}" WorkUnitID="{8FCA06F3-661D-4D41-896A-CC2ECB8EFEAF}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Ping_Minimal UI Sounds" ID="{2FEFA9D6-8861-4AE2-9EF8-5CB4A84D797E}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Room_Tone_Default_02" ID="{1077178C-1F0E-4B4A-9A22-01CA43F01EC1}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Room_Tone_Default_01" ID="{6970DCAF-6D06-4B60-BD12-2D74E71DB6E9}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Clack_Minimal UI Sounds" ID="{D399FAC9-3D41-4BFF-8B63-1C2FF964D6A2}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Coarse Click_Minimal UI Sounds" ID="{4DC245F8-955D-4C87-B1AC-AB2A8F6CC94F}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Play_Button_Click" ID="{1385AAC6-6C58-4C94-9969-DF5D855415AD}" WorkUnitID="{8FCA06F3-661D-4D41-896A-CC2ECB8EFEAF}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Env_Reverb" ID="{C11028AF-24B5-4CFA-B29A-EBBBD4AAA748}" WorkUnitID="{2D98556A-D0F4-4957-8673-30EEA8DB6751}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Click 03_Minimal UI Sounds" ID="{E39AE8C8-D865-4D73-9F0E-3D8F1BCE18AD}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Click 02_Minimal UI Sounds" ID="{74B6CB73-92AF-4EC9-9641-EAD2CA2F888B}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Spacey Click_Minimal UI Sounds" ID="{7E312294-2770-4F0A-B883-01E5F16B1844}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_DirtyGround" ID="{9C99E40D-510F-4F58-BA12-99F9D59CD2B9}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Sand" ID="{93DACA48-3D6A-4F6D-8517-82CCB53FEA1B}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Footsteps_Grass" ID="{F147A639-9694-4F9C-B60A-55659E5DE2A7}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="UI" ID="{6ABFDB84-8648-4FB2-A7CD-7026C03DD595}" WorkUnitID="{2D98556A-D0F4-4957-8673-30EEA8DB6751}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Funny Click_Minimal UI Sounds" ID="{4AFA121A-0D94-4FCF-A179-FC0DE256C49A}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}" Origin="Manual" Filter="7"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>

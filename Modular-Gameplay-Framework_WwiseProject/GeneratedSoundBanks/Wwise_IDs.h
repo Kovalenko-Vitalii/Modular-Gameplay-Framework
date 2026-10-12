@@ -13,6 +13,8 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_BUTTON_CLICK = 1149159311U;
+        static const AkUniqueID PLAY_BUTTON_HOVER = 4021863785U;
         static const AkUniqueID PLAY_FOOTSTEP = 1602358412U;
         static const AkUniqueID PLAY_RADIO_SONG_01 = 954980041U;
         static const AkUniqueID PLAY_RADIO_SONG_02 = 954980042U;
@@ -65,7 +67,7 @@ namespace AK
         static const AkUniqueID GP_MASTER_VOLUME = 2752765826U;
         static const AkUniqueID GP_MUSIC_VOLUME = 2492879145U;
         static const AkUniqueID GP_SFX_VOLUME = 1449020017U;
-        static const AkUniqueID GP_UI_WOLUME = 12844109U;
+        static const AkUniqueID GP_UI_VOLUME = 513216714U;
         static const AkUniqueID GP_VOICE_VOLUME = 755088716U;
     } // namespace GAME_PARAMETERS
 

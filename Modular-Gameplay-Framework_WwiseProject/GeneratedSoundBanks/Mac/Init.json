@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{8E25F02A-B475-3672-FF4F-4A43AEC6F941}",
+    "Hash": "{1648AA0C-705E-DC23-638C-EB36E3914C7E}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -93,9 +93,9 @@
     ],
     "GameParameters": [
      {
-      "Id": "12844109",
-      "Name": "GP_UI_Wolume",
-      "ObjectPath": "\\Game Parameters\\Default Work Unit\\GP_UI_Wolume",
+      "Id": "513216714",
+      "Name": "GP_UI_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\GP_UI_Volume",
       "GUID": "{CE8D7458-6A58-47D6-9F07-BF1BA277F724}"
      },
      {
@@ -239,6 +239,6 @@
     ]
    }
   ],
-  "FileHash": "{335B3034-77C4-EB21-65D5-A719832C6B05}"
+  "FileHash": "{B8E22581-9A7E-AE21-FB89-F844E5C1CF7B}"
  }
 }

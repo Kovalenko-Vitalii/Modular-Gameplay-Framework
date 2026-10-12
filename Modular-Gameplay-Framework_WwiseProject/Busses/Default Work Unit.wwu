@@ -19,7 +19,7 @@
 										</PropertyList>
 										<ReferenceList>
 											<Reference Name="ControlInput">
-												<ObjectRef Name="GP_UI_Wolume" ID="{CE8D7458-6A58-47D6-9F07-BF1BA277F724}" WorkUnitID="{10D5C9DA-E788-4B26-A446-02E63DD6DD6E}"/>
+												<ObjectRef Name="GP_UI_Volume" ID="{CE8D7458-6A58-47D6-9F07-BF1BA277F724}" WorkUnitID="{10D5C9DA-E788-4B26-A446-02E63DD6DD6E}"/>
 											</Reference>
 											<Reference Name="Curve">
 												<Custom>

@@ -3,9 +3,11 @@ Event	ID	Name			Wwise Object Path	Notes
 	505117330	Play_Room_Tone_Default_01			\Default Work Unit\Play_Room_Tones\Play_Room_Tone_Default_01	
 	954980041	Play_Radio_Song_01			\Default Work Unit\Play_World_Sounds\Play_Radio_Song_01	
 	954980042	Play_Radio_Song_02			\Default Work Unit\Play_World_Sounds\Play_Radio_Song_02	
+	1149159311	Play_Button_Click			\Default Work Unit\UI\Play_Button_Click	
 	1602358412	Play_Footstep			\Default Work Unit\Play_Footstep	
 	2700023159	Play_River_Stream_Medium			\Default Work Unit\Play_World_Sounds\Play_River_Stream_Medium	
 	3157907375	Play_Sea			\Default Work Unit\Play_World_Sounds\Play_Sea	
+	4021863785	Play_Button_Hover			\Default Work Unit\UI\Play_Button_Hover	
 
 Switch Group	ID	Name			Wwise Object Path	Notes
 	2615620554	Footstep_Type			\Default Work Unit\Footstep_Type	
@@ -30,7 +32,7 @@ Switch	ID	Name	Switch Group			Notes
 	4248645337	Grass	Surface_Type			
 
 Game Parameter	ID	Name			Wwise Object Path	Notes
-	12844109	GP_UI_Wolume			\Default Work Unit\GP_UI_Wolume	
+	513216714	GP_UI_Volume			\Default Work Unit\GP_UI_Volume	
 	755088716	GP_Voice_Volume			\Default Work Unit\GP_Voice_Volume	
 	1449020017	GP_SFX_Volume			\Default Work Unit\GP_SFX_Volume	
 	2492879145	GP_Music_Volume			\Default Work Unit\GP_Music_Volume	
@@ -66,6 +68,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	40619731	Footsteps_WaterV2_Walk_05	.cache\0B\{0B081F40-0782-C1BD-BEA0-E3976339D832}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Water\Footsteps_Water_Walk\Footsteps_WaterV2_Walk_05		82312
 	41088757	Footsteps_Walk_Grass_Mono_18	.cache\6B\{6B19039B-283B-B7ED-2201-76A386FE460C}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Walk\Footsteps_Walk_Grass_Mono_18		41472
 	41138163	Footsteps_MetalV1_Run_13	.cache\24\{2428D297-B471-413B-FF40-9C0145106D8A}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Run\Footsteps_MetalV1_Run_13		29296
+	42134296	Click 02_Minimal UI Sounds	.cache\2E\{2E22BA36-456B-F427-F8A5-4D696FB05739}.wem		\Containers\Default Work Unit\UI\Click 02_Minimal UI Sounds		1448
 	42535373	Footsteps_Walk_Grass_Mono_14	.cache\F4\{F4E86872-44E5-076B-87B7-A49C2225479C}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Walk\Footsteps_Walk_Grass_Mono_14		55056
 	45155531	Footsteps_Grass_Jump_Start_07	.cache\31\{3151D4A6-5859-09CD-4735-DDC106043BBD}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Jump_Start\Footsteps_Grass_Jump_Start_07		42286
 	50373893	Footsteps_Snow_Run_02	.cache\6C\{6C8CD126-CB89-FAA7-DC74-F83FA6BA6CCA}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Footsteps_Snow_Run\Footsteps_Snow_Run_02		29272
@@ -83,6 +86,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	73636268	Footsteps_MetalV2_Run_10	.cache\4D\{4DFDF724-6292-4075-AD2B-9F6C472CCFCB}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Run\Footsteps_MetalV2_Run_10		36562
 	76215945	Footsteps_Gravel_Walk_04	.cache\92\{921FBB01-5A0B-C89C-A8A4-4DDECBAD89E3}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Gravel\Footsteps_Gravel_Walk\Footsteps_Gravel_Walk_04		58538
 	76944851	Footsteps_Walk_Grass_Mono_13	.cache\1E\{1E918599-2121-B970-BACC-998D25FD3486}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Walk\Footsteps_Walk_Grass_Mono_13		54020
+	77959174	Click 03_Minimal UI Sounds	.cache\41\{41D2C27F-9CA9-65BA-3FBE-948E9FDC9126}.wem		\Containers\Default Work Unit\UI\Click 03_Minimal UI Sounds		840
 	82904003	Footsteps_MetalV2_Run_05	.cache\73\{73A4EB9D-912C-617C-5EBA-3CC4DB16F2FE}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Run\Footsteps_MetalV2_Run_05		35846
 	88806193	Footsteps_Jump_Start_01	.cache\4C\{4C23FF49-B91D-646D-93E0-4D01BBFFC924}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Gravel\Footsteps_Gravel_Jump_Start\Footsteps_Jump_Start_01		41470
 	90907091	Footsteps_MetalV1_Run_06	.cache\A6\{A6382B2B-7985-C51C-A014-6E68C905F8B8}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Run\Footsteps_MetalV1_Run_06		41746
@@ -172,7 +176,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	286374059	Footsteps_MetalV2_Walk_08	.cache\31\{31C2A351-C868-12DA-E817-770A664345CE}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Walk\Footsteps_MetalV2_Walk_08		50340
 	288405344	Footsteps_Snow_Hard_Run_07	.cache\60\{60BB6E5C-2730-2151-3454-E9F1E19DCE1B}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Footsteps_Snow_Run\Footsteps_Snow_Hard_Run_07		23192
 	289316161	Footsteps_Wood_Walk_02	.cache\34\{3440F6BC-6F96-B467-F25C-1A6C3BBBDDAA}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Wood\Footsteps_Wood_Walk\Footsteps_Wood_Walk_02		45428
-	289538938	Room_Tone_Default_02	.cache\E0\{E02B9783-79D9-5026-C39F-4445667DF422}.wem		\Containers\Default Work Unit\Room_Tones\Room_Tone_Default_02		19399776
+	289538938	Room_Tone_Default_02	.cache\E0\{E02B9783-79D9-5026-C39F-4445667DF422}.wem		\Containers\Default Work Unit\World_Sounds\Room_Tones\Room_Tone_Default_02		19399776
 	290941594	Footsteps_MetalV2_Walk_03	.cache\4D\{4D353438-CD64-28AF-0C07-0F86B9A26991}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Walk\Footsteps_MetalV2_Walk_03		49886
 	292125320	Footsteps_MetalV2_Run_09	.cache\AE\{AE0391B3-4C2B-61E2-8B89-5DD221B9C707}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Run\Footsteps_MetalV2_Run_09		35460
 	296152373	Footsteps_Snow_Hard_Run_10	.cache\FF\{FF25C30C-66AC-7F72-8B37-07A964219371}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Footsteps_Snow_Run\Footsteps_Snow_Hard_Run_10		26514
@@ -191,6 +195,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	317289342	Footsteps_DirtyGround_Run_07	.cache\AF\{AF90485F-C8C7-F767-A5D5-D64CD313CD30}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_DirtyGround\Footsteps_DirtyGround_Run\Footsteps_DirtyGround_Run_07		26854
 	317795628	Footsteps_MetalV1_Run_14	.cache\8A\{8AAF1BCC-EBE6-05B2-7A4F-ADF7DDF3BE13}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Run\Footsteps_MetalV1_Run_14		39024
 	318997291	Footsteps_Wood_Run_05	.cache\B2\{B2B30D2C-A720-7E0F-507A-CFA2F40A573A}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Wood\Footsteps_Wood_Run\Footsteps_Wood_Run_05		35378
+	321164833	Coarse Click_Minimal UI Sounds	.cache\A4\{A46920C3-A9CF-D218-B045-C2D05C328AAD}.wem		\Containers\Default Work Unit\UI\Coarse Click_Minimal UI Sounds		8786
 	323237048	Footsteps_Sand_Run_02	.cache\94\{940831C2-4400-A39E-7A49-56D3FCB1B73E}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Sand\Footsteps_Sand_Run\Footsteps_Sand_Run_02		35786
 	325444941	Footsteps_MetalV1_Walk_04	.cache\50\{50CF9700-F94A-2B66-1172-0DD42C96A015}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Walk\Footsteps_MetalV1_Walk_04		50558
 	326952474	Footsteps_Walk_Grass_Mono_05	.cache\5B\{5B82E7B4-21F9-CDC0-8A22-B78787510B8B}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Walk\Footsteps_Walk_Grass_Mono_05		47002
@@ -203,6 +208,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	340334219	Footsteps_Wood_Walk_09	.cache\88\{88061B1E-0EAE-0CE4-C6B7-02101543B203}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Wood\Footsteps_Wood_Walk\Footsteps_Wood_Walk_09		49048
 	341432305	Footsteps_Rock_Walk_05	.cache\8E\{8E36593F-B46D-4930-7902-4E8B167E873F}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Rock\Footsteps_Rock_Walk\Footsteps_Rock_Walk_05		46992
 	346316865	Footsteps_Walk_Grass_Mono_32	.cache\EF\{EF12A2D0-BDAC-7D09-DCF4-54C5984B292D}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Walk\Footsteps_Walk_Grass_Mono_32		48062
+	347061763	Funny Click_Minimal UI Sounds	.cache\A8\{A8FB50D0-DA8B-0A5C-D93F-A377BDE13195}.wem		\Containers\Default Work Unit\UI\Funny Click_Minimal UI Sounds		11644
 	352442678	Footsteps_Mud_Walk_10	.cache\89\{89043EAF-A784-04C1-BCB4-922BCFBB8E40}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Mud\Footsteps_Mud_Walk\Footsteps_Mud_Walk_10		50416
 	353868252	Footsteps_Sand_Run_15	.cache\7A\{7A307506-7318-495E-6869-7F505D05427B}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Sand\Footsteps_Sand_Run\Footsteps_Sand_Run_15		39036
 	353986176	Footsteps_Snow_Walk_06	.cache\63\{6322C730-DC71-217C-03A1-3F72D120BE6D}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Footsteps_Snow_Walk\Footsteps_Snow_Walk_06		47576
@@ -218,6 +224,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	385055629	Footsteps_MetalV1_Walk_03	.cache\FB\{FBFE6689-BA76-47E1-D79B-A50677CE1945}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Walk\Footsteps_MetalV1_Walk_03		51932
 	387802684	Footsteps_Walk_Grass_Mono_50	.cache\6B\{6B866C27-2F0F-379C-2551-0DCC144422F7}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Walk\Footsteps_Walk_Grass_Mono_50		48794
 	388318138	Footsteps_Snow_Walk_11	.cache\EF\{EFC3920E-C7CA-982E-2F78-EAA569EE9D2A}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Footsteps_Snow_Walk\Footsteps_Snow_Walk_11		44442
+	388384313	Spacey Click_Minimal UI Sounds	.cache\61\{61BAF053-FA86-0BBF-95C3-E2CAE0A12C8F}.wem		\Containers\Default Work Unit\UI\Spacey Click_Minimal UI Sounds		8864
 	388641135	Footsteps_Grass_Jump_Land_03	.cache\34\{34F2BAF3-0A5C-5E89-6718-DD79EBE17096}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Jump_Land\Footsteps_Grass_Jump_Land_03		43682
 	388726782	Footsteps_Leaves_Run_04	.cache\6B\{6B283035-85F6-A3F9-48AB-8C793C74B391}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Leaves\Footsteps_Leaves_Run\Footsteps_Leaves_Run_04		48858
 	389951675	Footsteps_Sand_Walk_06	.cache\56\{56849330-BB4F-6C66-44DD-DBC5B3D1FC31}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Sand\Footsteps_Sand_Walk\Footsteps_Sand_Walk_06		46100
@@ -273,6 +280,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	521679972	Footsteps_Sand_Walk_19	.cache\92\{92C4BC0A-B8AB-4E0E-CB6C-EADFA3AD00AD}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Sand\Footsteps_Sand_Walk\Footsteps_Sand_Walk_19		58480
 	522079041	Footsteps_Walk_Grass_Mono_48	.cache\25\{2566EC1A-4133-515D-BBF5-EBA6BBA2D6F7}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Walk\Footsteps_Walk_Grass_Mono_48		43998
 	522204692	Footsteps_Sand_Jump_Start_04	.cache\5D\{5DA4D7DA-9924-F68F-E345-C641CCD1FDEA}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Sand\Footsteps_Sand_Jump_Start\Footsteps_Sand_Jump_Start_04		51756
+	526194650	Clack_Minimal UI Sounds	.cache\24\{24B19E7E-403D-80D6-A648-FC4D2554FA62}.wem		\Containers\Default Work Unit\UI\Clack_Minimal UI Sounds		7958
 	527248859	Footsteps_MetalV1_Jump_Start_02	.cache\7D\{7D527729-6C94-32C3-C945-DF479E6630AB}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Jump_Start\Footsteps_MetalV1_Jump_Start_02		34022
 	529564915	Footsteps_Grass_Jump_Land_04	.cache\0E\{0E953F55-F66F-F5D5-1BEA-7D4AC4836A06}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Jump_Land\Footsteps_Grass_Jump_Land_04		56078
 	531122467	Footsteps_Gravel_Walk_05	.cache\62\{62E8A67D-1F2F-93B1-8976-9DD0207F1160}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Gravel\Footsteps_Gravel_Walk\Footsteps_Gravel_Walk_05		59486
@@ -297,6 +305,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	576869642	Footsteps_Tile_Run_02	.cache\A0\{A0B234F4-801E-A07B-4DAD-2956047A73E6}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Tile\Footsteps_Tile_Run\Footsteps_Tile_Run_02		32264
 	577658610	Footsteps_Water_Run_02	.cache\ED\{ED12993B-1CA2-4E6F-4CC7-FAFE0ADB5EDB}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Water\Footsteps_Water_Run\Footsteps_Water_Run_02		112632
 	579348193	Footsteps_Rock_Run_04	.cache\3C\{3C3823E2-611A-E410-B980-12574F1BFD9A}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Rock\Footsteps_Rock_Jump_Start\Footsteps_Rock_Run_04		34996
+	580386530	Click 04_Minimal UI Sounds	.cache\AF\{AF5866CB-4DF2-0EE8-FE00-07F7961C7711}.wem		\Containers\Default Work Unit\UI\Click 04_Minimal UI Sounds		1372
 	582518211	Footsteps_Gravel_Walk_09	.cache\E7\{E7832204-FD44-F785-09CB-A4256F462376}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Gravel\Footsteps_Gravel_Walk\Footsteps_Gravel_Walk_09		50590
 	585220156	Footsteps_Jump_Start_02	.cache\0B\{0B86084F-66FD-B83A-7F48-FCC2579905BF}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Gravel\Footsteps_Gravel_Jump_Start\Footsteps_Jump_Start_02		45458
 	585235435	Footsteps_Snow_Jump_Land_03	.cache\A4\{A43A5B33-2050-6265-9E4E-C77E3F7214D5}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Foosteps_Snow_Jump_Land\Footsteps_Snow_Jump_Land_03		46920
@@ -308,6 +317,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	597705040	Footsteps_Mud_Walk_04	.cache\19\{1937D635-FAC9-B684-F0F7-AA5D668D05F0}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Mud\Footsteps_Mud_Walk\Footsteps_Mud_Walk_04		53948
 	603887201	Footsteps_Sand_Run_10	.cache\A9\{A9592905-AE6B-60D1-8388-A8D69FCC9533}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Sand\Footsteps_Sand_Run\Footsteps_Sand_Run_10		38750
 	603888890	Footsteps_Leaves_Walk_03	.cache\43\{43669105-F955-E394-BA26-D8ACD60059D8}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Leaves\Footsteps_Leaves_Walk\Footsteps_Leaves_Walk_03		48096
+	606935263	Ping_Minimal UI Sounds	.cache\44\{4416931B-E85A-20E1-6752-06D2DF1ECA12}.wem		\Containers\Default Work Unit\UI\Ping_Minimal UI Sounds		4644
 	613686985	Footsteps_Leaves_Jump_Start_02	.cache\36\{36D2B917-7AE6-2629-BB7B-1AFE9DDCFC32}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Leaves\Footsteps_Leaves_Jump_Start\Footsteps_Leaves_Jump_Start_02		57958
 	613905060	Footsteps_Rock_Walk_02	.cache\CA\{CAE9B27F-1138-F446-3A55-8C6FF5523650}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Rock\Footsteps_Rock_Walk\Footsteps_Rock_Walk_02		40428
 	620332319	Footsteps_Leaves_Walk_02	.cache\35\{35B18B14-13C4-C4B3-EBB3-868ADED2FDE8}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Leaves\Footsteps_Leaves_Walk\Footsteps_Leaves_Walk_02		46492
@@ -394,7 +404,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	815920883	Footsteps_Grass_Run_01	.cache\98\{98415C2E-A802-8302-1D02-CB740FBBE6A4}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Run\Footsteps_Grass_Run_01		39280
 	816263354	Footsteps_Snow_Hard_Run_09	.cache\07\{07B1A602-EF09-B987-1293-F97254CF20EB}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Footsteps_Snow_Run\Footsteps_Snow_Hard_Run_09		27300
 	816776651	Footsteps_Sand_Walk_09	.cache\A0\{A085E697-76C0-9EF0-9B78-A4B6032151BF}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Sand\Footsteps_Sand_Walk\Footsteps_Sand_Walk_09		50216
-	817936580	Room_Tone_Default_01	.cache\AC\{ACB0CC9A-3752-4A5F-AD96-A1681329F4EA}.wem		\Containers\Default Work Unit\Room_Tones\Room_Tone_Default_01		5608032
+	817936580	Room_Tone_Default_01	.cache\AC\{ACB0CC9A-3752-4A5F-AD96-A1681329F4EA}.wem		\Containers\Default Work Unit\World_Sounds\Room_Tones\Room_Tone_Default_01		5608032
 	819318448	Footsteps_Rock_Run_02	.cache\1E\{1E6BF702-72D9-117E-4452-EE6F8B7EE9E2}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Rock\Footsteps_Rock_Jump_Start\Footsteps_Rock_Run_02		32794
 	819776558	Footsteps_Snow_Hard_Jump_Start_03	.cache\21\{21D83F4A-B29F-EE8A-159E-CED180465729}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Footsteps_Snow_Jump_Start\Footsteps_Snow_Hard_Jump_Start_03		31178
 	819848804	Footsteps_Snow_Run_01	.cache\25\{25187D36-F26C-5A6E-F9AC-A02DB89104B6}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Footsteps_Snow_Run\Footsteps_Snow_Run_01		31294
@@ -465,6 +475,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	936746772	Footsteps_Snow_Hard_Walk_01	.cache\92\{9288A847-EE5C-20EA-CCB2-E2FEFCCB60A2}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Footsteps_Snow_Walk\Footsteps_Snow_Hard_Walk_01		51386
 	938961800	Footsteps_MetalV1_Run_04	.cache\19\{193D35C7-454E-8225-4177-FEE62BE33841}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Run\Footsteps_MetalV1_Run_04		37766
 	941928928	Footsteps_Rock_Jump_Start_06	.cache\06\{06A9FA82-263C-AB45-1AC9-25F2A2E13933}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Rock\Footsteps_Rock_Jump_Start\Footsteps_Rock_Jump_Start_06		36362
+	942340863	Click 01_Minimal UI Sounds	.cache\48\{482F6619-6265-2775-03BD-97E66742D3A1}.wem		\Containers\Default Work Unit\UI\Click 01_Minimal UI Sounds		836
 	942990540	Footsteps_Wood_Run_06	.cache\27\{279E5174-1EBE-2921-0DF8-0979F06E96CA}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Wood\Footsteps_Wood_Run\Footsteps_Wood_Run_06		32220
 	948456540	Footsteps_Gravel_Run_02	.cache\AF\{AF2D2E4F-803B-27FC-2162-251D5EB01714}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Gravel\Footsteps_Gravel_Run\Footsteps_Gravel_Run_02		41036
 	955920513	Footsteps_Sand_Run_11	.cache\5D\{5D1D7B3D-A39A-161A-6ED3-64D68E671146}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Sand\Footsteps_Sand_Run\Footsteps_Sand_Run_11		42172
@@ -507,6 +518,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	1030928760	Footsteps_Sand_Walk_12	.cache\5A\{5A7A6443-E012-2E53-D22D-6D453A0BB621}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Sand\Footsteps_Sand_Walk\Footsteps_Sand_Walk_12		63332
 	1032955145	Footsteps_MetalV2_Run_04	.cache\7E\{7E901A29-EB1A-9287-81DE-6F482D1BF05F}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Run\Footsteps_MetalV2_Run_04		35916
 	1033804788	Footsteps_Rock_Run_10	.cache\78\{78CE0B8D-D987-84BB-B11F-82A6989813DC}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Rock\Footsteps_Rock_Run\Footsteps_Rock_Run_10		38084
+	1034260834	Tiny Click_Minimal UI Sounds	.cache\E9\{E9BFB675-E1E3-69A7-DA60-0FAEBFF86BC3}.wem		\Containers\Default Work Unit\UI\Tiny Click_Minimal UI Sounds		1636
 	1035125095	Footsteps_Snow_Walk_07	.cache\4A\{4A33712A-0D12-3907-EE55-57CBA32BBBE4}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Snow\Footsteps_Snow_Walk\Footsteps_Snow_Walk_07		42342
 	1037043912	Footsteps_Grass_Jump_Land_06	.cache\76\{7677622B-4E16-AF2B-A11B-BF6CE75627FD}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Grass\Footsteps_Grass_Jump_Land\Footsteps_Grass_Jump_Land_06		57436
 	1037360092	Footsteps_MetalV1_Walk_12	.cache\BA\{BAB6A3F8-95BF-4CFB-9326-DFC4AF5AD284}.wem		\Containers\Default Work Unit\Player\Footsteps\Footsteps_Metal\Footsteps_Metal_Walk\Footsteps_MetalV1_Walk_12		42848

@@ -1,5 +1,5 @@
 Game Parameter	ID	Name			Wwise Object Path	Notes
-	12844109	GP_UI_Wolume			\Default Work Unit\GP_UI_Wolume	
+	513216714	GP_UI_Volume			\Default Work Unit\GP_UI_Volume	
 	755088716	GP_Voice_Volume			\Default Work Unit\GP_Voice_Volume	
 	1449020017	GP_SFX_Volume			\Default Work Unit\GP_SFX_Volume	
 	2492879145	GP_Music_Volume			\Default Work Unit\GP_Music_Volume	

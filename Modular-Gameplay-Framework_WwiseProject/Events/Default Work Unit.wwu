@@ -88,6 +88,32 @@
 						</Event>
 					</ChildrenList>
 				</Folder>
+				<Folder Name="UI" ID="{4640E97D-F579-432D-92E7-0F6057CD5B0D}" ShortID="942925485">
+					<ChildrenList>
+						<Event Name="Play_Button_Hover" ID="{6EB60488-733C-4852-B176-13BBA7564FEF}">
+							<ChildrenList>
+								<Action Name="" ID="{D2A398E7-0588-4F12-81EB-E7DB839A231B}" ShortID="472649256">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Coarse Click_Minimal UI Sounds" ID="{4DC245F8-955D-4C87-B1AC-AB2A8F6CC94F}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Button_Click" ID="{1385AAC6-6C58-4C94-9969-DF5D855415AD}">
+							<ChildrenList>
+								<Action Name="" ID="{E0C7CE65-FE74-48AB-A51A-6B3FCB03EFE9}" ShortID="849687729">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Click 01_Minimal UI Sounds" ID="{6CFF8303-D3C3-4681-9835-06C5EBA4B022}" WorkUnitID="{288F4762-FD7A-4DFD-BA74-AE6EC31B1C61}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

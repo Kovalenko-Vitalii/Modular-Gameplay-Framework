@@ -27,7 +27,7 @@
 						<Property Name="Max" Type="Real64" Value="1"/>
 					</PropertyList>
 				</GameParameter>
-				<GameParameter Name="GP_UI_Wolume" ID="{CE8D7458-6A58-47D6-9F07-BF1BA277F724}">
+				<GameParameter Name="GP_UI_Volume" ID="{CE8D7458-6A58-47D6-9F07-BF1BA277F724}">
 					<PropertyList>
 						<Property Name="InitialValue" Type="Real64" Value="1"/>
 						<Property Name="Max" Type="Real64" Value="1"/>

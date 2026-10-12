@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{AB071AA6-FD81-4518-AA79-BD4D899BEA95}",
     "Language": "SFX",
-    "Hash": "{4231EABA-D6D3-062F-5C9E-277FEC632D83}",
+    "Hash": "{05FBDDAE-FD53-B737-D296-9721C4FAC0B8}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Player",
     "ShortName": "Player",
     "Path": "Player.bnk",
@@ -160,6 +160,14 @@
       "CachePath": "24/{2428D297-B471-413B-FF40-9C0145106D8A}.wem"
      },
      {
+      "Id": "42134296",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Click 02_Minimal UI Sounds.wav",
+      "CachePath": "2E/{2E22BA36-456B-F427-F8A5-4D696FB05739}.wem"
+     },
+     {
       "Id": "42535373",
       "Language": "SFX",
       "Streaming": "false",
@@ -294,6 +302,14 @@
       "Location": "Memory",
       "ShortName": "Footsteps - Essentials\\Footsteps_Grass\\Footsteps_Grass_Walk\\Footsteps_Walk_Grass_Mono_13.wav",
       "CachePath": "1E/{1E918599-2121-B970-BACC-998D25FD3486}.wem"
+     },
+     {
+      "Id": "77959174",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Click 03_Minimal UI Sounds.wav",
+      "CachePath": "41/{41D2C27F-9CA9-65BA-3FBE-948E9FDC9126}.wem"
      },
      {
       "Id": "82904003",
@@ -1160,6 +1176,14 @@
       "CachePath": "B2/{B2B30D2C-A720-7E0F-507A-CFA2F40A573A}.wem"
      },
      {
+      "Id": "321164833",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Coarse Click_Minimal UI Sounds.wav",
+      "CachePath": "A4/{A46920C3-A9CF-D218-B045-C2D05C328AAD}.wem"
+     },
+     {
       "Id": "323237048",
       "Language": "SFX",
       "Streaming": "false",
@@ -1254,6 +1278,14 @@
       "Location": "Memory",
       "ShortName": "Footsteps - Essentials\\Footsteps_Grass\\Footsteps_Grass_Walk\\Footsteps_Walk_Grass_Mono_32.wav",
       "CachePath": "EF/{EF12A2D0-BDAC-7D09-DCF4-54C5984B292D}.wem"
+     },
+     {
+      "Id": "347061763",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Funny Click_Minimal UI Sounds.wav",
+      "CachePath": "A8/{A8FB50D0-DA8B-0A5C-D93F-A377BDE13195}.wem"
      },
      {
       "Id": "352442678",
@@ -1374,6 +1406,14 @@
       "Location": "Memory",
       "ShortName": "Footsteps - Essentials\\Footsteps_Snow\\Footsteps_Snow_Walk\\Footsteps_Snow_Walk_11.wav",
       "CachePath": "EF/{EFC3920E-C7CA-982E-2F78-EAA569EE9D2A}.wem"
+     },
+     {
+      "Id": "388384313",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Spacey Click_Minimal UI Sounds.wav",
+      "CachePath": "61/{61BAF053-FA86-0BBF-95C3-E2CAE0A12C8F}.wem"
      },
      {
       "Id": "388641135",
@@ -1816,6 +1856,14 @@
       "CachePath": "5D/{5DA4D7DA-9924-F68F-E345-C641CCD1FDEA}.wem"
      },
      {
+      "Id": "526194650",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Clack_Minimal UI Sounds.wav",
+      "CachePath": "24/{24B19E7E-403D-80D6-A648-FC4D2554FA62}.wem"
+     },
+     {
       "Id": "527248859",
       "Language": "SFX",
       "Streaming": "false",
@@ -2008,6 +2056,14 @@
       "CachePath": "3C/{3C3823E2-611A-E410-B980-12574F1BFD9A}.wem"
      },
      {
+      "Id": "580386530",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Click 04_Minimal UI Sounds.wav",
+      "CachePath": "AF/{AF5866CB-4DF2-0EE8-FE00-07F7961C7711}.wem"
+     },
+     {
       "Id": "582518211",
       "Language": "SFX",
       "Streaming": "false",
@@ -2094,6 +2150,14 @@
       "Location": "Memory",
       "ShortName": "Footsteps - Essentials\\Footsteps_Leaves\\Footsteps_Leaves_Walk\\Footsteps_Leaves_Walk_03.wav",
       "CachePath": "43/{43669105-F955-E394-BA26-D8ACD60059D8}.wem"
+     },
+     {
+      "Id": "606935263",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Ping_Minimal UI Sounds.wav",
+      "CachePath": "44/{4416931B-E85A-20E1-6752-06D2DF1ECA12}.wem"
      },
      {
       "Id": "613686985",
@@ -3352,6 +3416,14 @@
       "CachePath": "06/{06A9FA82-263C-AB45-1AC9-25F2A2E13933}.wem"
      },
      {
+      "Id": "942340863",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Click 01_Minimal UI Sounds.wav",
+      "CachePath": "48/{482F6619-6265-2775-03BD-97E66742D3A1}.wem"
+     },
+     {
       "Id": "942990540",
       "Language": "SFX",
       "Streaming": "false",
@@ -3688,6 +3760,14 @@
       "CachePath": "78/{78CE0B8D-D987-84BB-B11F-82A6989813DC}.wem"
      },
      {
+      "Id": "1034260834",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Tiny Click_Minimal UI Sounds.wav",
+      "CachePath": "E9/{E9BFB675-E1E3-69A7-DA60-0FAEBFF86BC3}.wem"
+     },
+     {
       "Id": "1035125095",
       "Language": "SFX",
       "Streaming": "false",
@@ -3837,6 +3917,34 @@
      ]
     },
     "Events": [
+     {
+      "Id": "1149159311",
+      "Name": "Play_Button_Click",
+      "ObjectPath": "\\Events\\Default Work Unit\\UI\\Play_Button_Click",
+      "GUID": "{1385AAC6-6C58-4C94-9969-DF5D855415AD}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.0077083334",
+      "DurationMax": "0.0077083334",
+      "MediaRefs": [
+       {
+        "Id": "942340863"
+       }
+      ]
+     },
+     {
+      "Id": "4021863785",
+      "Name": "Play_Button_Hover",
+      "ObjectPath": "\\Events\\Default Work Unit\\UI\\Play_Button_Hover",
+      "GUID": "{6EB60488-733C-4852-B176-13BBA7564FEF}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.09052084",
+      "DurationMax": "0.09052084",
+      "MediaRefs": [
+       {
+        "Id": "321164833"
+       }
+      ]
+     },
      {
       "Id": "1602358412",
       "Name": "Play_Footstep",
@@ -5994,9 +6102,9 @@
     ],
     "GameParameters": [
      {
-      "Id": "12844109",
-      "Name": "GP_UI_Wolume",
-      "ObjectPath": "\\Game Parameters\\Default Work Unit\\GP_UI_Wolume",
+      "Id": "513216714",
+      "Name": "GP_UI_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\GP_UI_Volume",
       "GUID": "{CE8D7458-6A58-47D6-9F07-BF1BA277F724}"
      },
      {
@@ -6140,6 +6248,6 @@
     ]
    }
   ],
-  "FileHash": "{2DC75839-BEC6-F171-CB88-54725072C580}"
+  "FileHash": "{CACD4A71-13FA-D304-63F1-C0B3F9ABE3F3}"
  }
 }
