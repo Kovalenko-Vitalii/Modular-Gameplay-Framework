@@ -35,7 +35,7 @@ public class TickSystem : MonoBehaviour {
 
     private void OnDisable() => _pauseService.PauseChanged -= OnPausedChanged; 
 
-    private void OnPausedChanged(bool isPaused) =>isTicking = !isPaused;
+    private void OnPausedChanged(bool isPaused) => isTicking = !isPaused;
 
     // <summary>
     // Registers an object that implements IPlayerTick or IPlayerLateTick to be ticked every frame

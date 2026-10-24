@@ -28,3 +28,4 @@ public class UIExitToMenuButton : MonoBehaviour {
 
     private void OnExitToMenuClicked() => _gameFlowController.GoToMainMenu(); 
 }
+ 

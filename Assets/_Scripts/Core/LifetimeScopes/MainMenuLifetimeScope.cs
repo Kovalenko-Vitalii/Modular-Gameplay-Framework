@@ -1,3 +1,4 @@
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -7,5 +8,6 @@ public class MainMenuLifetimeScope : LifetimeScope {
         builder.RegisterComponentInHierarchy<NewGame>();
         builder.RegisterComponentInHierarchy<ResumeGameButton>();
         builder.RegisterComponentInHierarchy<LoadSaveProfile>();
+        builder.RegisterComponentInHierarchy<SettingsMenuController>();
     }
 }

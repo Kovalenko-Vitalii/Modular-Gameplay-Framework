@@ -61,7 +61,6 @@ public class InputService : IInputService {
     }
 
     void Apply(InputContext context) {
-        if (_current == context) return;
         _current = context;
 
         _player.Disable();

@@ -111,11 +111,9 @@ public class AudioOcclusionSystem : MonoBehaviour {
             source.Occlusion = surface != null
                 ? GetOcclusionStrength(surface.OcclusionPower)
                 : 0f;
-        } else {
-            Debug.Log("[Occlusion] NOT BLOCKED");
-
+        } else 
             source.Occlusion = 0f;
-        }
+        
     }
 
     private float SampleSoftOcclusion(
