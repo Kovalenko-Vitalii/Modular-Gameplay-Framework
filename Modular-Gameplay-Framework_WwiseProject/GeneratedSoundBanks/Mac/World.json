@@ -1,0 +1,46 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "2609808943",
+    "Type": "User",
+    "GUID": "{CB391F5F-44C9-4E8B-A035-ABDC595C50B7}",
+    "Language": "SFX",
+    "Hash": "{1C72BBB3-E965-F0B6-3503-CD97DC553D9C}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\World",
+    "ShortName": "World",
+    "Path": "World.bnk",
+    "Media": [
+     {
+      "Id": "34676119",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Ambiance_Sea_Loop_Stereo.wav",
+      "CachePath": "F5/{F5E4B913-7C75-BC50-B5B2-F2D082161609}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3157907375",
+      "Name": "Play_Sea",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_World_Sounds\\Play_Sea",
+      "GUID": "{17F8D3F3-3B6F-4023-98A3-44D355296110}",
+      "MaxAttenuation": "100",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "34676119"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{C60B9474-E079-AC8E-58B3-1599FA269502}"
+ }
+}

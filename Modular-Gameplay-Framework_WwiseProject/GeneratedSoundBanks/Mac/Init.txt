@@ -1,0 +1,24 @@
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	513216714	GP_UI_Volume			\Default Work Unit\GP_UI_Volume	
+	755088716	GP_Voice_Volume			\Default Work Unit\GP_Voice_Volume	
+	1449020017	GP_SFX_Volume			\Default Work Unit\GP_SFX_Volume	
+	2492879145	GP_Music_Volume			\Default Work Unit\GP_Music_Volume	
+	2752765826	GP_Master_Volume			\Default Work Unit\GP_Master_Volume	
+
+Audio Bus	ID	Name			Wwise Object Path	Notes
+	393239870	SFX			\Default Work Unit\Master\SFX	
+	1551306167	UI			\Default Work Unit\Master\UI	
+	3170124113	Voice			\Default Work Unit\Master\Voice	
+	3991942870	Music			\Default Work Unit\Master\Music	
+	4056684167	Master			\Default Work Unit\Master	
+
+Auxiliary Bus	ID	Name			Wwise Object Path	Notes
+	1327267853	Env_Reverb			\Default Work Unit\Master\Env_Reverb	
+
+Effect plug-ins	ID	Name	Type				Notes
+	2995775460	Room_Small	Wwise RoomVerb			
+
+Audio Devices	ID	Name	Type				Notes
+	2317455096	No_Output	No Output			
+	3859886410	System	System			
+
